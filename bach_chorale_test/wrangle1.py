@@ -1,8 +1,9 @@
 from music21 import *
 import math
-import copy
+import os
 from sys import maxsize
 from pprint import pprint as pp
+import numpy as npy
 
 #####
 #
@@ -43,13 +44,16 @@ PARTS = ['Soprano', 'Alto', 'Tenor', 'Bass']
 
 
 def getTimeSignature(_stream):
-	return _stream.flat.getElementsByClass(meter.TimeSignature)[0]
+	return _stream.flat.getElementsByClass('TimeSignature')[0]
+
+def getKeySignature(_stream):
+	return _stream.flat.getElementsByClass('KeySignature')[0]
 
 def getMeasures(_stream):
 	return _stream.getElementsByClass(stream.Measure)
 
 def getNotes(_stream):
-	return _stream.getElementsByClass(note.Note)
+	return _stream.flat.notes
 
 def getPart(_score, _partID):
 	return _score.parts[PARTS.index(_partID)]
@@ -96,11 +100,10 @@ def quantize(_score, _partID):
 	for ms in measures:
 		index = 0
 		notes = getNotes(ms)
-
+		note_num = len(notes)
 		# iterate over each note
-		while index < len(notes):
+		while index < note_num:
 			n = notes[index]
-
 			# skip quarter notes
 			if length(n) == 1:
 				index += 1
@@ -118,14 +121,15 @@ def quantize(_score, _partID):
 					n.duration.quarterLength = 1.0
 					for other_note in context[1:]:
 						ms.remove(other_note)
-				index += len(context)
+				index += 1
 
-			# break down half notes, dotted halves, whole notes
+			# break down half notes, dotted halves, whole notes (keeping fermatas)
 			elif length(n) > 1 and length(n) % 1 == 0:
 				total_beats = int(length(n))
 				n.quarterLength = 1.0
 				for beat in range(1, total_beats):
 					new_note = note.Note(n.pitch.nameWithOctave, quarterLength=1.0)
+					new_note.expressions = n.expressions
 					# avoid unneccessary accidentals
 					if n.accidental != None:
 						new_note.accidental = None
@@ -146,6 +150,16 @@ def quantize(_score, _partID):
 				for other_note in context[2:]:
 					ms.remove(other_note)
 				index += 2
+
+			else:
+				print "Error occurred in quanitization."
+				print ms
+				print n
+				raise Exception(part, ms, n, n.offset)
+
+			# Reset these values since notes may have been added/deleted
+			notes = getNotes(ms)
+			note_num = len(notes)
 
 	# part.show()
 
@@ -245,9 +259,9 @@ RANGE = {
 	},
 	'Alto': {
 		'max': 74,
-		'min': 53},
+		'min': 53,
 	},
-	'Tenor': {d
+	'Tenor': {
 		'max': 69,
 		'min': 48
 	},
@@ -259,45 +273,166 @@ RANGE = {
 TOTAL_RANGE = 95 # the sum of these ranges, inclusive
 
 
+# Since Torch is one-based(?)
+VECTOR_OFF = 0
+VECTOR_ON = 1
+
 # Create a binary vector to represent a MIDI note for a given voice range
-# <n>: a midi note, where m_min <= n <= m_max
+# <n>: a midi note, where m_min <= n.midi <= m_max
 # <m_min>: the lowest midi note for the given part
 # <m_max>: the highest midi note for the given part
 def vectorizeMIDI(n, m_min, m_max):
-	vector = [0 for i in range(0, m_max - m_min + 1)]
-	vector[n - m_min] = 1
+	vector = [VECTOR_OFF for i in range(m_max - m_min + 1)]
+	vector[n.midi - m_min] = VECTOR_ON
+	assert any(x == VECTOR_ON for x in vector)
 	return vector
 
 # Create a vector for the harmony voices(Alto, Tenor, and Bass)
 # <alto>: the Alto note in MIDI
 # <tenor>: the Tenor note in MIDI
-# <bass>: the Bass notei in MIDI
-def vectorizeHarmony(alto, tenor, bass):
-	global RANGE
-	return vectorizeMIDI(alto, RANGE.Alto.min, RANGE.Alto.max) +
-		vectorizeMIDI(tenor, RANGE.Tenor.min, RANGE.Tenor.max) +
-		vectorizeMIDI(bass, RANGE.Bass.min, RANGE.Bass.max)
+# <bass>: the Bass note in MIDI
+def vectorizeHarmonyNotes(alto, tenor, bass):
+	alto_v = vectorizeMIDI(alto, RANGE['Alto']['min'], RANGE['Alto']['max'])
+	tenor_v = vectorizeMIDI(tenor, RANGE['Tenor']['min'], RANGE['Tenor']['max'])
+	bass_v = vectorizeMIDI(bass, RANGE['Bass']['min'], RANGE['Bass']['max'])
+	return alto_v + tenor_v + bass_v
 
-# Normalizes the Soprano MIDI range. Therefore, 0 represents 'no note', 1 the lowest soprano note, and
-# so on up to the highest note.
-# <soprano
-def normalizeSoprano(soprano):
-	global RANGE
-	return soprano - RANGE.Soprano.min + 1
+
+# Iterates over each example in the chorale and return a list of lists, where 
+# each list represents the input features of a single soprano note.
+# <soprano>: the soprano music21.stream.Part
+def generateChoraleInputVectors(soprano):
+	vectors = []
+	time_signature = getTimeSignature(soprano)
+	key_signature = getKeySignature(soprano)
+	notes_lst = getNotes(soprano)
+	fermata_locations = map(hasFermata, notes_lst)
+
+	for n in notes_lst:
+		index = notes_lst.index(n)
+
+		# Represent pitch as a binary vector [22 units] (range of soprano)
+		pitch_v = vectorizeMIDI(n, RANGE['Soprano']['min'], RANGE['Soprano']['max'])
+
+		# Represent beat strength as 1-based beat position [1 unit]
+		beat_strength_v = [ math.floor(n.beat) ]
+		assert beat_strength_v[0] % 1 == 0
+
+		# Represent cadence (contains a fermata) as a boolean [1 unit]
+		cadence_v = [ VECTOR_ON if hasFermata(n) else VECTOR_OFF ]
+
+		# Represent distance to the next fermata [1 unit] (1 = on fermata)
+		if index == len(notes_lst) - 1 or hasFermata(n):
+			cadence_dist_v = [ VECTOR_OFF ]
+		else:
+			cadence_dist_v = [ fermata_locations[index + 1:].index(True) + VECTOR_ON ]
+
+		# Represent offset from the beginning of the work [1 unit]
+		# TODO: should be adjusted for pickups
+		offset_start_v = [ math.floor(n.offset) ]
+
+		# Represent offset from the end of the work [1 unit]
+		offset_end_v = [ len(notes_lst) - 1 - math.floor(n.offset) ]
+
+		# Represent time signature [2 units]
+		time_sig_v = [ time_signature.numerator, time_signature.denominator ]
+
+		# Represent key signature (sharps/flats, major/minor) [2 units]
+		key_sig_v = [ key_signature.sharps, VECTOR_ON if key_signature.mode == 'major' else VECTOR_OFF ]
+		
+		# Total: 31 input units
+		#print pitch_v
+		#print beat_strength_v
+		#print cadence_v
+		#print cadence_dist_v
+		#print offset_start_v
+		#print offset_end_v
+		#print time_sig_v
+		#print key_sig_v
+		v = pitch_v + beat_strength_v + cadence_v + cadence_dist_v + offset_start_v + offset_end_v + time_sig_v + key_sig_v
+		vectors.append(v)
+	return vectors
+
+
+def generateChoraleOutputVectors(alto, tenor, bass):
+	vectors = []
+	alto_notes = alto.flat.notes
+	tenor_notes = tenor.flat.notes
+	bass_notes =bass.flat.notes
+	for i in range(len(alto_notes)):
+		vectors.append(vectorizeHarmonyNotes(alto_notes[i], tenor_notes[i], bass_notes[i]))
+	return vectors
+
+
+def indexSoprano(soprano):
+	s_range = range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1)
+	return map(lambda n: s_range.index(n.midi), soprano)
+
+def quantizeScore(score):
+	for voice in PARTS:
+		print voice
+		quantize(score, voice)
 
 
 def wrangleChorale(score):
 	# Preprocessing
-	for voice in PARTS:
-		quantize(score, voice)
-	#soprano = score.parts[0].notes
-	#alto = score.parts[1].notes
-	#tenor = score.parts[2].notes
-	#bass = score.parts[3].notes
-	#assert len(soprano) == len(alto) == len(tenor) == len(bass)
+	quantizeScore(score)
+	
+	# Check quantizing worked
+	soprano = score.parts[0]
+	alto = score.parts[1]
+	tenor = score.parts[2]
+	bass = score.parts[3]
+	assert len(getNotes(soprano)) == len(getNotes(alto)) == len(getNotes(tenor)) == len(getNotes(bass))
 
-# iterator = corpus.chorales.Iterator()
-# bwv269 = iterator.next()
+	X = generateChoraleInputVectors(soprano)
+	y = generateChoraleOutputVectors(alto, tenor, bass)
+
+	filename = score.metadata.movementName
+	f = filename[:filename.index(".")]
+
+	with open(f+"_X.txt", 'w') as outfile:
+		for vector in X:
+			outfile.write("%s\n" % vector)
+
+	with open(f+"_y.txt", 'w') as outfile:
+		for vector in y:
+			outfile.write("%s\n" % vector)
+
+
+def wrangleChorale2(score):
+	# Preprocessing
+	quantizeScore(score)
+
+	# Check quantizing worked
+	soprano = score.parts[0]
+	alto = score.parts[1]
+	tenor = score.parts[2]
+	bass = score.parts[3]
+	assert len(getNotes(soprano)) == len(getNotes(alto)) == len(getNotes(tenor)) == len(getNotes(bass))
+
+	# Represent pitch as a binary vector [22 units] (range of soprano)
+	pitch_idx = indexSoprano(getNotes(soprano))
+	npy_pitch_idx = npy.array(pitch_idx)
+	print npy_pitch_idx
+
+	# TODO: make feature indices for beat strength and other features
+
+
+iterator = corpus.chorales.Iterator()
+bwv269 = iterator.next()
+n1 = iterator.next()
+n2 = iterator.next()
+#wrangleChorale2(bwv269)
+# quantizeScore(bwv269)
+# print "done"
+# n1.show()
+quantizeScore(n1)
+print "done"
+n1.show()
+quantizeScore(n2)
+print "done"
+n2.show()
 
 # PREPROCESSING
 # print "Preprocessing..."
