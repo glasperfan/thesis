@@ -9,11 +9,12 @@ import numpy as npy
 #
 # wrangle1.py
 #
-# Goal: create a data representation of the Bach chorale "Aus meines Herzens Grunde" (Riemenschneider 1, BWV 269) in
-# order to build a training set for harmonizing the soprano voice.
-# In other words, INPUT = soprano melody, OUTPUT = the 3 other voices
+# Goal: create a data representation of the entire Bach chorale set - that is, the 371 chorales 
+# contained in the Riemenschieder edition.
+# 
+# Each chorale is quantiized to quarter notes, and then each beat reprsents a training example.
 #
-# For each INPUT note of the soprano melody, we extract the following features:
+# INPUT Features:
 # Local: [30 units]
 # 	1) pitch -- represented as the distance from the tonic [22 units (range of soprano)]
 # 	2) beat strength [1 unit (4, 2, 3, 1)] ASK ABOUT THIS
@@ -26,22 +27,67 @@ import numpy as npy
 #	9) major/minor [1 unit (1 - major, 2 - minor)]
 #
 #
-# The OUTPUT units are as follows: [3 units]
-#	1) Alto note - distance from soprano tonic [1 unit]
-#	2) Tenor note - distance from soprano tonic [1 unit]
-#	3) Bass note - distance from soprano tonic [1 unit]
+# OUTPUT Features:
+#	A vector of length len(VOICINGS), where each entry I is a probability (0 < p < 1) that 
+# 	the harmony should be VOICINGS[I].
 #
-# TOTAL: 16 input units, 3 output units
+# TOTAL: 16 input units, len(VOICINGS) output units
 #
-# In the event that we don't have prior information (i.e. we are examining the first note), we set the previous 2 outputs to be all 0's.
+# The length of the VOICINGS dictionary mapping IDs to chords is determined by the function findUniqueATBs.
+# This is run before extracting features to determine the VOICING mapping space.
 #
-# The goal is to provide accurate harmonization on each quarter note.
+# The goal is to provide accurate harmonization for each beat of the chorale.
+#
 #####
 
 
+#########
+# Globals
+#########
+
 # The 4 voices (and Part IDs) in a Bach chorale
 PARTS = ['Soprano', 'Alto', 'Tenor', 'Bass']
+# A dictionary
+VOICINGS = {}
 
+# The total range (measured in half-steps) of the chorales
+TOTAL_RANGE = 95 # inclusive
+
+# Since Torch is 1-based(?)
+VECTOR_OFF = 0
+VECTOR_ON = 1
+
+# Range of each voice over all chorales 
+RANGE = {
+	'Soprano': {
+		'max': 81,
+		'min': 60
+	},
+	'Alto': {
+		'max': 74,
+		'min': 53,
+	},
+	'Tenor': {
+		'max': 69,
+		'min': 48
+	},
+	'Bass': {
+		'max': 64,
+		'min': 36
+	}
+}
+
+# Set of Chorales to work on
+#WORK_SET_MIN = 0
+WORK_SET_MAX = 30
+
+# Preprocessed scores
+QUANTIZED = []
+
+
+#########
+# HELPERS
+#########
 
 def getTimeSignature(_stream):
 	return _stream.flat.getElementsByClass('TimeSignature')[0]
@@ -70,8 +116,12 @@ def length(n):
 def hasFermata(n):
 	return any(type(x) is expressions.Fermata for x in n.expressions)
 
-def parse(_score):
-	return corpus.parse(_score)
+
+
+
+###############
+# Preprocessing
+###############
 
 def removeTies(_score, _partID):
 	part = getPart(_score, _partID)
@@ -83,7 +133,17 @@ def removeTies(_score, _partID):
 				if n.tie is not None:
 					n.tie = None
 
+# Remove rests from a stream by lengthening the previous note
+def removeRests(_stream):
+	nar = _stream.notesAndRests
+	for nr in nar:
+		if isinstance(nr, note.Rest):
+			prev_note = nar[nar.index(nr) - 1]
+			prev_note.quarterLength += nr.quarterLength
+			_stream.remove(nr)
+	return _stream
 
+# Transforms the specified part in the score into uniform quarter notes
 def quantize(_score, _partID):
 	part = getPart(_score, _partID)
 	ts = getTimeSignature(part)
@@ -91,7 +151,7 @@ def quantize(_score, _partID):
 
 	# TODO: catch the 12/8 case
 	if ts.ratioString is '12/8':
-		return None
+		raise Exception("12/8 chorale")
 
 	# first, remove any ties
 	removeTies(_score, _partID)
@@ -99,7 +159,7 @@ def quantize(_score, _partID):
 	# iterate over each measure
 	for ms in measures:
 		index = 0
-		notes = getNotes(ms)
+		notes = getNotes(removeRests(ms))
 		note_num = len(notes)
 		# iterate over each note
 		while index < note_num:
@@ -110,18 +170,24 @@ def quantize(_score, _partID):
 
 			# combine notes that add up to one beat
 			# 1/8G + 1/16A + 1/16B --> 1/4G
-			elif length(n) < 1 and index < len(notes) - 1:
+			elif length(n) < 1:# and index < len(notes) - 1:
 				context = [n]
 				context_duration = length(n)
-				while context_duration < 1:
+				while context_duration % 1 != 0:
 					next_note = notes[index + len(context)]
 					context.append(next_note)
 					context_duration += length(next_note)
-				if context_duration == 1:
+				if context_duration == 1.0:
 					n.duration.quarterLength = 1.0
 					for other_note in context[1:]:
 						ms.remove(other_note)
-				index += 1
+				# keep the 1st and last note
+				elif context_duration == 2.0:
+					n.duration.quarterLength = 1.0
+					context[-1].duration.quarterLength = 1.0
+					map(lambda x : ms.remove(x), context[1:-1])
+				else:
+					print "Weird syncopation"
 
 			# break down half notes, dotted halves, whole notes (keeping fermatas)
 			elif length(n) > 1 and length(n) % 1 == 0:
@@ -134,7 +200,6 @@ def quantize(_score, _partID):
 					if n.accidental != None:
 						new_note.accidental = None
 					ms.insert(n.offset + beat, new_note)
-				index += total_beats
 
 			# dotted quarter and eighth (or 2 sixteenths) case
 			elif length(n) > 1:
@@ -149,19 +214,17 @@ def quantize(_score, _partID):
 				context[1].offset = n.offset + 1.0
 				for other_note in context[2:]:
 					ms.remove(other_note)
-				index += 2
 
 			else:
 				print "Error occurred in quanitization."
 				print ms
 				print n
+				_score.show()
 				raise Exception(part, ms, n, n.offset)
 
 			# Reset these values since notes may have been added/deleted
 			notes = getNotes(ms)
 			note_num = len(notes)
-
-	# part.show()
 
 
 ## Helper function: find the global minimum and maximum pitch for each voice over the entire set of chorales
@@ -185,15 +248,23 @@ def choraleRange(scores, partID):
 			print "new max of %d found at index %d" % (globalMax.midi, scores.index(score))
 	return globalMin, globalMax
 
-
-def showIndex(index):
-	s = corpus.parse()
+def allChoralesRange(chorales):
+	global PARTS
+	ranges = {}
+	for part in PARTS:
+		ranges[part] = dict()
+		print "analyzing %s" % part
+		gmin, gmax = choraleRange(chorales, part)
+		ranges[part]['min'] = gmin
+		ranges[part]['min_midi'] = gmin.midi
+		ranges[part]['max'] = gmax
+		ranges[part]['max_midi'] = gmax.midi
+	print pp(ranges)
 
 ### Wrapper function: calls choraleRange on all chorales for all voices
-### Results from http://www.ofai.at/~soren.madsen/daimi/harmreport.pdf CORRELATE
+### Correlated results with http://www.ofai.at/~soren.madsen/daimi/harmreport.pdf
 
-
-# Soprano: 		[60; 81]	range: 22 (inclusive)
+# Soprano: 		[60; 81]	range: 22 		--all ranges inclusive
 # Alto: 		[53; 74]	range: 22
 # Tenor: 		[48; 69]	range: 22
 # Bass: 		[36; 64]	range: 29
@@ -218,64 +289,6 @@ def showIndex(index):
 #            'min': <music21.pitch.Pitch C3>,
 #            'min_midi': 48}}
 
-
-def allChoralesRange(chorales):
-	global PARTS
-	ranges = {}
-	for part in PARTS:
-		ranges[part] = dict()
-		print "analyzing %s" % part
-		gmin, gmax = choraleRange(chorales, part)
-		ranges[part]['min'] = gmin
-		ranges[part]['min_midi'] = gmin.midi
-		ranges[part]['max'] = gmax
-		ranges[part]['max_midi'] = gmax.midi
-	print pp(ranges)
-
-
-# Loads into memory all 4-voice chorales as score objects
-def loadChoraleScore():
-	choralePaths = corpus.getBachChorales()
-	chorales = []
-	for path in choralePaths:
-		s = corpus.parse(path)
-		if len(s.parts) == 4:
-			chorales.append(s)
-	return chorales
-
-##
-#
-# Data format:
-# 
-# Input units:
-#	- previous chords
-#	- soprano input (note + 3 previous + 3 next)
-#
-##
-RANGE = {
-	'Soprano': {
-		'max': 81,
-		'min': 60
-	},
-	'Alto': {
-		'max': 74,
-		'min': 53,
-	},
-	'Tenor': {
-		'max': 69,
-		'min': 48
-	},
-	'Bass': {
-		'max': 64,
-		'min': 36
-	}
-}
-TOTAL_RANGE = 95 # the sum of these ranges, inclusive
-
-
-# Since Torch is one-based(?)
-VECTOR_OFF = 0
-VECTOR_ON = 1
 
 # Create a binary vector to represent a MIDI note for a given voice range
 # <n>: a midi note, where m_min <= n.midi <= m_max
@@ -310,35 +323,44 @@ def generateChoraleInputVectors(soprano):
 
 	for n in notes_lst:
 		index = notes_lst.index(n)
+		v = []
 
 		# Represent pitch as a binary vector [22 units] (range of soprano)
-		pitch_v = vectorizeMIDI(n, RANGE['Soprano']['min'], RANGE['Soprano']['max'])
+		pitch_v = indexSoprano([n])
+		v += pitch_v
 
 		# Represent beat strength as 1-based beat position [1 unit]
 		beat_strength_v = [ math.floor(n.beat) ]
 		assert beat_strength_v[0] % 1 == 0
+		v += beat_strength_v
 
 		# Represent cadence (contains a fermata) as a boolean [1 unit]
 		cadence_v = [ VECTOR_ON if hasFermata(n) else VECTOR_OFF ]
+		v += cadence_v
 
 		# Represent distance to the next fermata [1 unit] (1 = on fermata)
 		if index == len(notes_lst) - 1 or hasFermata(n):
 			cadence_dist_v = [ VECTOR_OFF ]
 		else:
 			cadence_dist_v = [ fermata_locations[index + 1:].index(True) + VECTOR_ON ]
+		v += cadence_dist_v
 
 		# Represent offset from the beginning of the work [1 unit]
 		# TODO: should be adjusted for pickups
 		offset_start_v = [ math.floor(n.offset) ]
+		v += offset_start_v
 
 		# Represent offset from the end of the work [1 unit]
 		offset_end_v = [ len(notes_lst) - 1 - math.floor(n.offset) ]
+		v += offset_end_v
 
 		# Represent time signature [2 units]
 		time_sig_v = [ time_signature.numerator, time_signature.denominator ]
+		v += time_sig_v
 
 		# Represent key signature (sharps/flats, major/minor) [2 units]
 		key_sig_v = [ key_signature.sharps, VECTOR_ON if key_signature.mode == 'major' else VECTOR_OFF ]
+		v += key_sig_v
 		
 		# Total: 31 input units
 		#print pitch_v
@@ -349,7 +371,6 @@ def generateChoraleInputVectors(soprano):
 		#print offset_end_v
 		#print time_sig_v
 		#print key_sig_v
-		v = pitch_v + beat_strength_v + cadence_v + cadence_dist_v + offset_start_v + offset_end_v + time_sig_v + key_sig_v
 		vectors.append(v)
 	return vectors
 
@@ -358,7 +379,7 @@ def generateChoraleOutputVectors(alto, tenor, bass):
 	vectors = []
 	alto_notes = alto.flat.notes
 	tenor_notes = tenor.flat.notes
-	bass_notes =bass.flat.notes
+	bass_notes = bass.flat.notes
 	for i in range(len(alto_notes)):
 		vectors.append(vectorizeHarmonyNotes(alto_notes[i], tenor_notes[i], bass_notes[i]))
 	return vectors
@@ -368,42 +389,52 @@ def indexSoprano(soprano):
 	s_range = range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1)
 	return map(lambda n: s_range.index(n.midi), soprano)
 
-def quantizeScore(score):
-	for voice in PARTS:
-		print voice
-		quantize(score, voice)
+# Returns a list of unique numbers, each representing a tuple of an alto, tenor, and bass note
+def indexAltoTenorBass(a, t, b):
+	a_range = RANGE['Alto']['max'] - RANGE['Alto']['min'] + 1
+	t_range = RANGE['Tenor']['max'] - RANGE['Tenor']['min'] + 1
+	b_range = RANGE['Bass']['max'] - RANGE['Bass']['min'] + 1
+	base = max(a_range, t_range, b_range) # luckily, the base is a prime (29)
+	return map(lambda i: a[i].midi * (base**2) + t[i].midi * base + b[i].midi, range(len(a)))
 
 
-def wrangleChorale(score):
-	# Preprocessing
-	quantizeScore(score)
-	
-	# Check quantizing worked
-	soprano = score.parts[0]
-	alto = score.parts[1]
-	tenor = score.parts[2]
-	bass = score.parts[3]
-	assert len(getNotes(soprano)) == len(getNotes(alto)) == len(getNotes(tenor)) == len(getNotes(bass))
+def findUniqueATB():
+	global QUANTIZED
+	voicing_dict = {}
+	iterator = corpus.chorales.Iterator(1, 371, numberingSystem = 'riemenschneider')
+	index = 1
+	for score in iterator[:20]:
+		# TODO: find a better solution to this? (#11, 38, etc.)
+		if len(score.parts) != 4:
+			print "#%d: %s - TOO MANY PARTS (%s)" % (index, score.metadata.title, len(score.parts))
+			index += 1
+			continue
+		# quantize
+		print "#" + str(index) + ": Quantizing score " + score.metadata.title + ": ",
+		for voice in PARTS:
+			print voice[0],
+			quantize(score, voice)
+		print
+		QUANTIZED.append(score)
 
-	X = generateChoraleInputVectors(soprano)
-	y = generateChoraleOutputVectors(alto, tenor, bass)
+		# gather voicings
+		a = getNotes(score.parts[1])
+		t = getNotes(score.parts[2])
+		b = getNotes(score.parts[3])
+		voicing_lst = indexAltoTenorBass(a, t, b) # returns an "ID"
+		for i in range(len(a)):
+			if voicing_lst[i] not in voicing_dict:
+				voicing_dict[voicing_lst[i]] = a[i].midi, t[i].midi, b[i].midi
+			# Check that no duplicate ID occurs for a different chord
+			# This ensures every chord has a unique ID
+			else:
+				assert voicing_dict[voicing_lst[i]] == (a[i].midi, t[i].midi, b[i].midi)
+		index += 1
+	return voicing_dict
 
-	filename = score.metadata.movementName
-	f = filename[:filename.index(".")]
 
-	with open(f+"_X.txt", 'w') as outfile:
-		for vector in X:
-			outfile.write("%s\n" % vector)
-
-	with open(f+"_y.txt", 'w') as outfile:
-		for vector in y:
-			outfile.write("%s\n" % vector)
-
-
-def wrangleChorale2(score):
-	# Preprocessing
-	quantizeScore(score)
-
+# Returns input matrix and output vector
+def wrangleChorale(score, keys):
 	# Check quantizing worked
 	soprano = score.parts[0]
 	alto = score.parts[1]
@@ -412,37 +443,44 @@ def wrangleChorale2(score):
 	assert len(getNotes(soprano)) == len(getNotes(alto)) == len(getNotes(tenor)) == len(getNotes(bass))
 
 	# Represent pitch as a binary vector [22 units] (range of soprano)
-	pitch_idx = indexSoprano(getNotes(soprano))
-	npy_pitch_idx = npy.array(pitch_idx)
-	print npy_pitch_idx
+	# pitch_idx = indexSoprano(getNotes(soprano))
+	# npy_pitch_idx = npy.array(pitch_idx)
+	# print npy_pitch_idx
+	vectors = generateChoraleInputVectors(soprano)
+	npy_input_matrix = npy.matrix(vectors)
 
-	# TODO: make feature indices for beat strength and other features
+	# Represent output values (using primes)
+	output_idx = indexAltoTenorBass(getNotes(alto), getNotes(tenor), getNotes(bass))
+	output_idx = map(lambda n: keys.index(n), output_idx)
+	npy_output_vec = npy.array(output_idx)
 
-
-iterator = corpus.chorales.Iterator()
-bwv269 = iterator.next()
-n1 = iterator.next()
-n2 = iterator.next()
-#wrangleChorale2(bwv269)
-# quantizeScore(bwv269)
-# print "done"
-# n1.show()
-quantizeScore(n1)
-print "done"
-n1.show()
-quantizeScore(n2)
-print "done"
-n2.show()
-
-# PREPROCESSING
-# print "Preprocessing..."
-# for voice in PARTS:
-# 	quantize(bwv269, voice)
-
-# Determine the global range
-#allChoralesRange()
+	return npy_input_matrix, npy_output_vec
 
 
+def run():
+	# Preprocess and determine possible voicings
+	print "Finding voicings"
+	VOICINGS = findUniqueATB()
+	keys = VOICINGS.keys()
+	print "VOICINGS size: %d" % len(VOICINGS)
+	X = None # final input matrix
+	y = None # final output vector
+	for score in QUANTIZED:
+		input_matrix, output_vector = wrangleChorale(score, keys)
+		X = input_matrix if X is None else npy.vstack((X, input_matrix))
+		y = output_vector if y is None else npy.hstack((y, output_vector))
+
+	print X.shape
+	print y.shape
+
+
+#run()
+
+iterator = corpus.chorales.Iterator(1, 371, numberingSystem = 'riemenschneider')
+index = 1
+for chorale in iterator[:30]:
+	print index, chorale.metadata.title
+	index += 1
 
 	
 

@@ -1,0 +1,216 @@
+\begin{thebibliography}{10}
+
+\bibitem{chilvers2008chorale}
+Alex Chilvers and Menno van Zaanen.
+\newblock Chorale harmonization in the style of js bach a machine learning
+  approach.
+\newblock {\em Proceedings of the MML 2008 International Workshop on Machine
+  Learning and Music held in conjunction with ICML/COLT/UAI 2008, Helsinki,
+  Finland}, 2008.
+ \begin{quotation}\noindent In this report, the authors employ a feed-forward
+  neural network from the SNNS 4.2 package to attempt harmonize the 4-voice
+  Bach Chorale. They experiment with different data representations for the
+  chorale to determine the most effective one. They had little success with
+  training the neural net to recognize good chord pairs, but later saw a
+  significant increase in success training it on chord prediction. The report
+  by Chilvers and van Zaanen is by far the most "scientific", in that the
+  authors experiment with different input features and tasks and at each step
+  evaluate the reasons for success or failure. However, this report was
+  evidently written by non-musicians, and their approaches to the task of
+  harmonization demonstrate only a partial understanding of tonal harmony.
+  \end{quotation}
+
+\bibitem{eck2002structure}
+Douglas Eck and Juergen Schmidhuber.
+\newblock A first look at music composition using lstm recurrent neural
+  networks.
+\newblock {\em Istituto Dalle Molle Di Studi Sull Intelligenza Artificiale},
+  2002.
+ \begin{quotation}\noindent Upon examining attempts at automated composition
+  using standard recurrent neural networks (RNNs), the authors Eck and
+  Schmidhuber conclude that these models alone fail to grasp larger musical
+  structures, and therefore are unsuccessful at generating convincing musical
+  compositions. However, a subset of RNNs labeled LSTMs (Long Short-Term
+  Memory) have shown much greater promise due to their ability to retain
+  information about decisions in previous time frames. With respect to music
+  generation, the authors demonstrate its ability to successfully learn a
+  12-bar blues form and improvise melodies over those harmonies.
+  \end{quotation}
+
+\bibitem{eck2002blues}
+Douglas Eck and Jurgen Schmidhuber.
+\newblock Finding temporal structure in music: Blues improvisation with lstm
+  recurrent networks.
+\newblock In {\em Neural Networks for Signal Processing, 2002. Proceedings of
+  the 2002 12th IEEE Workshop on}, pages 747--756. IEEE, 2002.
+ \begin{quotation}\noindent This article is a further development of the ideas
+  Eck proposes in his other 2002 paper (cite-key: eck2002structure), where he
+  demonstrates the ability of LSTMs to develop an understanding of larger
+  musical structures, such as the 12-bar blues form. Here, Eck argues that
+  LSTMs are also highly effective at learning to compose music by analyzing
+  examples of a machine that is able to produce blues melodies. Eck is one of
+  the few researchers to explore the realm of computational harmonic analysis
+  in jazz, and he loves many topics untouched where others could explore.
+  \end{quotation}
+\bibitem{hild1992harmonet}
+Hermann Hild, Johannes Feulner, and Wolfram Menzel.
+\newblock Harmonet: A neural net for harmonizing chorales in the style of js
+  bach.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  267--274, 1992.
+ \begin{quotation}\noindent HARMONET is a neural network designed to harmonized
+  a chorale melody, taking as the soprano part. The authors proposed a
+  multi-step process, using different classifiers to compose a bass line, to
+  compose inner voices and to insert eighth note to ehance voice leading. Its
+  results have been impressive, and the author claims that HARMONET's output is
+  comparable to an "improvising organist." \end{quotation}
+\bibitem{menzel1998structure}
+Dominik H{\"o}rnel and Wolfram Menzel.
+\newblock Learning musical structure and style with neural networks.
+\newblock {\em Computer Music Journal}, 22(4):pp. 44--62, 1998.
+ \begin{quotation}\noindent Building on the HARMONET program they implemented
+  six years before, Menzel et. al. analyze the potential for neural networks to
+  adapt to new corpuses and learn musical strucutre. They provide additional
+  mathematical background on HARMONET, which will be useful for implementing
+  new RNNs. They also try to define basic (if not simplistic) formulas for
+  attributes like accuracy of style (HSV, or Harmonic Style Value).
+  \end{quotation}
+
+\bibitem{jacob1996creativity}
+Bruce~L. Jacob.
+\newblock Algorithmic composition as a model of creativity.
+\newblock {\em Organised Sound}, 1(3):157--165, 1996.
+ \begin{quotation}\noindent Bruce's article provides context on the debate over
+  the automation of musical processes. Fundamentally, he argues for the use of
+  algorithmic composition as a "compositional tool", but somewhat subjectively
+  states that it is "often considered a cheat" when the composer feels
+  uninspired. He asks who is responsible for the music produced, and then
+  questions how a composer's increasing ability to reproduce a compositional
+  process is affecting the value of creativity. Notably, this article was
+  written by a member of the Univeristy of Michigan's Advanced Computer
+  Architecture Laboratory, rather than a musician. It nevertheless provides a
+  critical perspective on the role of automatic composition, which remains a
+  hot debate today among musicians - and evidently computer scientists, too.
+  \end{quotation}
+
+\bibitem{madsen2002}
+Martin~Elmer Jorgensen and Soren~Tjagvad Madsen.
+\newblock Harmonisation of bach chorales: Kbs project report.
+\newblock Technical report, University of Aarhus, August 2002.
+ \begin{quotation}\noindent This report represents a fairly standard approach
+  to the task of automatic harmonization of Bach chorales. Given the melody of
+  a chorale, the authors developed a neural network to provide harmonic support
+  for each note in the melody, which has been abstracted to series a quarter
+  notes for the sake of evenly distributed time frames. Input features include
+  past and previous elements of the melody, previously determined harmonies,
+  and contextual elements of the current soprano note, such as beat strength.
+  After experimenting with several different data representations for the
+  feature vectors, they discovered a relatively effective solution when they
+  represented the output vector as a range of MIDI notes from which the alto,
+  tenor, and bass voices were selected. This paper is also somewhat dated and
+  doesn't provide an adequate explanation of their neural network construction.
+  However, their method is preprocessing (that is, abstracting chorales into
+  quarter-note time frames) is intruiging and likely to be used in my initial
+  experiments with RNNs. \end{quotation}
+\bibitem{karpathy2015rnn}
+Andrej Karpathy.
+\newblock The unreasonable effectiveness of recurrent neural networks.
+\newblock Blog, May 2015.
+ \begin{quotation}\noindent Karpathy's popular blog post is meant as an
+  introduction to recurrent neural networks for an audience familiar with
+  machine learning vocabulary but interested in a less technical overview. He
+  explains the fundamental advance made with RNNs over "vanilla" neural
+  networks: they are able to remember recent examples. As a result, these
+  networks are able to make decisions with an intuition for hierarchy and
+  structure in its ouput. He provides some undoubtedly mind-boggling examples
+  of the power of RNNs, demonstrating their ability to essentially learn valid
+  English, LaTeX, or C syntax while also providing phrase structure.
+  \end{quotation}
+\bibitem{nagler2014schubot}
+Dylan~Jeremy Nagler.
+\newblock Schubot: Machine learning tools for the automated analysis of
+  schubert{\^a}s lieder.
+\newblock Honors thesis, Harvard University, March 2014.
+ \begin{quotation}\noindent Dylan Nagler's undergraduate represents one of the
+  most recent attempts to apply a variety of machine learning models to musical
+  tasks. This demonstrates how the basic questions about automatic
+  harmonization continue to be asked many years later, although the author here
+  applies them to a less common data set - Schubert lieder. He first describes
+  a number of supervised learning methods which might be applied, including
+  hidden Markov models and PCFGs (grammars). He then describes a program he
+  wrote to harmonically analyze Schubert lieder and the metholodogy behind his
+  approach. Nagler is very descriptive in explaining his methodology, which
+  will be additionally useful because of his use of the music21 musicology
+  library to preprocess his data. \end{quotation}
+\bibitem{colah2015lstms}
+Chris Olah.
+\newblock Understanding lstm networks, August 2015.
+ \begin{quotation}\noindent In his recent blog post, Chris Olah describe a
+  special model of recurrent neural networks known as LSTM Networks, or Long
+  Short-Term Memory Networks. He describes the significant advances that
+  recurrent neural networks made over "vanilla" (or non-recurrent) neural
+  networks by allowing information to persist within the model. Theoretically,
+  RNNs should be able to draw on information from previous decisions to make
+  its current one, but in practice they have only proven effective when the
+  distance between the relevant past information and the time frame in which it
+  is required is small. LSTMs solved this problem by altering the structure of
+  the network's hidden activation layers to create a pipeline of persisting
+  information and a series of control gates for allowing new information to
+  enter the pipeline. This blog post is aimed at machine learning researching
+  with a general understanding of neural networks and are seeking a more visual
+  and approachable introduction to LSTMs. While a young author, Chris is a
+  highly accomplished researcher and engineer in the field, and his
+  explanations are concise, descriptive, and well-researched, citing several
+  relevant papers. \end{quotation}
+\bibitem{papadopoulos1999ai}
+George Papadopoulos and Geraint Wiggins.
+\newblock Ai methods for algorithmic composition: A survey, a critical view and
+  future prospects.
+\newblock {\em AISB Symposium on Musical Creativity}, pages 110--117, 1999.
+ \begin{quotation}\noindent This paper examines a variety of methods for
+  algorithmic composition. For each method (i.e. systems that learn, grammars,
+  etc.), the major attempts using this methodology are examined, and then the
+  authors provide a list of advantages and disvantages to exploring the
+  approach further. They mention several past approaches taken to the task of
+  harmonization - as a satisfaction constraint problem, as a generative
+  grammar, or as a learn-by-example approach using machine learning. This paper
+  was written at the turn of the century and therefore lacks some of the more
+  recent research on harmonization using sophisticated neural networks.
+  However, it remains useful as a well-sourced appendix of attempts at
+  automatic harmonization using a variety of computational models. The
+  extensive bibliography will also come in handy for future research.
+  \end{quotation}
+
+\bibitem{thorpe1998bach}
+Christopher~A. Thorpe.
+\newblock C.p.u. bach : using markov models for chorale harmonization.
+\newblock Honors thesis, Harvard University, March 1998.
+ \begin{quotation}\noindent Unlike many past and future attempts, Chris
+  Thorpe's A.B. thesis explores the task of harmonizing Bach chorales with a
+  bass line rather than a complete set of voices. He uses Markov chains to
+  model the harmonization task, representating a harmony at time T as a given
+  "state" that can transition to any one of a set of other harmonies, in each
+  case with a pre-determined probability of that transition occurring. Thorpe
+  models harmonization in this form as a "completive" rather than generative
+  task, in that the produced bass line is one of a set of valid options. This
+  paper is one of the most notable Harvard undergraduate theses in Computer
+  Science and Music. Thorpe is forthcoming about his methodology and the
+  reasoning behind it, while also acknowledging the limitations of a
+  Markov-based approach. \end{quotation}
+\bibitem{petri1995bebop}
+Petri Toiviainen.
+\newblock Modeling the target-note technique of bebop-style jazz improvisation:
+  An artificial neural network approach.
+\newblock {\em Music Perception: An Interdisciplinary Journal}, 12(4):pp.
+  399--413, 1995.
+ \begin{quotation}\noindent Petri Toivainen presents an artificial neural
+  network (ANN) that given a series of chord changes is able to improvise over
+  them in a jazz bebop style. The target-note technique describes provides
+  signposts at the beginning of each chord change, giving the ANN targets with
+  which to arrive at using a series of melodic patterns. The result is a
+  suprisingly decent melodic improvisation given a small training set -
+  consisting of Clifford Brown's solos on "All the Things You Are" and
+  "Getrude's Bounce".Toivainen's paper is an early example of a computational
+  approach to jazz composition. \end{quotation}
+
+\end{thebibliography}

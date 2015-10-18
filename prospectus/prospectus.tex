@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage{basecommon}
+\usepackage{hyperref}
+\usepackage[margin=1.5in, top=1in]{geometry}
+\title{Prospectus}
+\author{Hugh Zabriskie}
+\date{2 October 2015}
+\begin{document}
+\maketitle{}
+\section{Introduction}
+
+The year 1959 saw the first serious application of computers to the task of music composition with The \textit{Illiac Suite} for string quartet. Written by Lejaren Hiller and Leonard Isaacson at the University of Illinois, Urbana-Champaign (and named for the ILLIAC supercomputer built on their campus), the suite was composed by generating a series of random values and using them to determine different properties of the work, such as pitch, duration, and dynamics. Since then, more sophisticated models have been developed to automate musical processes - in particular, for the task of automatic harmonization. This task is defined as follows: given a melody and a set of works as input, produce a suitable harmonic counterpoint to the melody, either in the form of harmonic representations (i.e. chord symbols) or as additional voices. Menzel et. al. (1992) developed an artificial neural network (ANN) called HARMONET that was trained on numerical representation of multiple chorales and able to learn \textit{by example} how to produce its own chorales - harmonizations so accurate that they were judged "on the level of an improvising organist" \cite{hild1992harmonet}. And interestingly, one of the first undergraduate theses in Computer Science and Music was written by Chris Thorpe (A.B. '98), who used Markov chains to generate bass lines for melodies extracted from Bach's Chorales. \cite{thorpe1998bach}. Many others have explored the automation of this task across different corpuses, and the results have been astonishingly "correct". \\
+
+However, the notable successes - as much as the evident failures - in automating musical processes have led some to question the utility and purpose of these algorithms. Neural networks are limited by the input that they are trained on. They are able to reproduce based on examples, but unable to be highly original in their compositions. Indeed, algorithmic composition is most successful when the harmonic and melodic space is well-defined by a series of training examples. But there \textit{are} many instances where this context is well-defined, and therefore an important place exists for computers in the process of composition - given a complex but highly patterned musical process, a machine is able to reproduce it with exceptional speed and accuracy. Ultimately, these machines should be an aide to the composer with a well-defined purpose, rather than becoming a "compositional crutch" \cite{jacob1996creativity}.
+
+
+
+
+\section{Goals and Questions}
+
+\subsection{Objective}
+
+This paper will examine the application of recurrent neural networks to the task of automatic harmonization. The network will be applied to three sets of musical works. 
+
+\begin{enumerate}
+\item The task of harmonizing the soprano line in Bach's Four-Voice Chorales with a bass line and inner voices.
+\item Harmonic analysis of Bach's 6 Unaccompanied Cello Suites.
+\item As a final consideration, harmonic analysis of jazz bebop solos.
+\end{enumerate}
+
+\subsection{Goals}
+
+The goal is to be a scientist, rather than merely model the process of harmonization. Experiments will be constructed such that either a successful or failed harmonization leads to interesting conclusions. In this spirit, the network will be trained on different corpuses with different feature representations to determine which features are most indicative of harmony, phrase structure, and so on. Ideally, the machine learns to output harmony a sense of \textit{hierarchy} and that accelerates towards cadences.
+
+\section{Proposed Table of Contents}
+
+\begin{enumerate}
+\item Introduction for Musicians
+\item Introduction for Computer Scientists
+\item Multi-Voice Harmonic Analysis
+\item Harmonic Classification in Melodies
+\item Application to Jazz
+\item Appendix
+	\begin{enumerate}
+	\item[A.] Musical Examples and Sources
+	\item[B.] Code Listing \\
+	\end{enumerate}
+\end{enumerate}
+
+This proposed outline is intended to make the thesis readable for musicians and computer scientists alike. For the musician, the greatest challenge is to grasp the concept of a neural network and learn enough vocabulary to understand the statistical computations being applied. For the computer scientist, their challenge is to understand, in brief, the nature of tonal harmony. Given that both challenges are overcome, the reader will understand the conversion of a musical work into a numerical representation that can be fed into a neural net.
+
+\section{Methodology}
+
+\subsection{Music21}
+
+The computation models presented in this paper will rely on the \textsc{music21} Python library, developed by Professor Michael Scott Cuthbert at MIT. \textsc{music21} provides a data structure called a \textit{stream} that can represent a musical score, part, or measure in memory. Scores are input as MIDI files, which music21 parses into its own Python representation that can be altered for preprocessing before being converted into a numerical representation. Professor Cuthbert is also a non-faculty advisor for this thesis, and I will be able to leverage his expertise in music data representation to build flexible and efficient programs for processing large volumes of scores.
+
+\subsection{Torch and Odyssey}
+
+Torch is a scientific computing framework with wide support for machine learning algorithms. It is built on top of Lua, which is a powerful, but lightweight embeddable scripting language with a similar high-level focus as Python. I will use the HDF5 binary data format to transfer the preprocessed scores in Python over to Lua for training the neural network. To run models, I will execute scripts on the Harvard FAS Odyssey Computing Cluster. The account was provided by the Harvard Natural Language Processing research team, led by thesis advisor Prof. Sasha Rush.
+
+\subsection{Data Collection}
+
+All scores are initially stored as MIDI files. For this paper, I selected Bach's 371 harmonized chorales printed in the Riemenschneider collection, for which all of the scores are provided and indexed in the music21 corpus module. MIDI files for Bach's 6 Unaccompanied Cello Suites were found online at \url{http://www.jsbach.net/midi/midi_solo_cello.html}, which will be cross-checked with a known printed edition. And while MIDI files for jazz solo transcriptions are more sparse, there are an abundance of PDFs available and a number of programs for converting digital scores into MIDI and musicXML formats. \\
+
+\noindent As an appendix, a listing of MIDI scores will be provided, as well as segments of code from the more crucial programs used to process scores and propagate the network. 
+
+\newpage
+
+\nocite{*}
+\bibliographystyle{annotation} 
+\bibliography{citations}
+
+\end{document}

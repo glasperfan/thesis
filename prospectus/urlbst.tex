@@ -1,0 +1,282 @@
+\documentclass[a4paper]{article}
+
+\title{The \texttt{urlbst} package}
+\author{Norman Gray\\\texttt{<http://nxg.me.uk>}}
+\date{Version 0.7, 2011 July 20}
+
+%\usepackage{times}
+\usepackage{url}
+\usepackage{hyperref}
+
+% Not long enough to make it useful to number sections
+\setcounter{secnumdepth}{0}
+
+% Squeeze a bit more on to the page
+%\addtolength\textwidth{1cm}
+%\addtolength\oddsidemargin{-0.5cm}
+
+\makeatletter
+% Easy verbatim mode
+\catcode`\|=\active
+\def|{\begingroup \let\do\@makeother \dospecials \verbatim@font \doverb}
+\def\doverb#1|{#1\endgroup}
+
+\renewcommand{\verbatim@font}{\normalfont\small\ttfamily}
+\makeatother
+
+\newcommand{\ub}{\package{urlbst}}
+\newcommand{\BibTeX}{Bib\TeX}
+\newcommand{\package}[1]{\texttt{#1}}
+\newcommand{\btfield}[1]{\textsf{#1}}
+
+\begin{document}
+\maketitle
+
+The \ub\ package consists of a Perl script which edits \BibTeX\ style
+files (|.bst|) to add a \btfield{webpage} entry type, and which adds a
+few new fields -- notably including \btfield{url} --
+to all other entry types.  The distribution includes preconverted
+versions of the four standard \BibTeX\ |.bst| style files.
+
+It has a different goal from Patrick Daly's \package{custom-bib}
+package~\cite{url:daly} -- that is intended to create a \BibTeX\ style
+|.bst| file from scratch, and supports \btfield{url} and
+\btfield{eprint} fields.  This package, on the other hand, is intended
+for the case where you already have a style file that works (or at
+least, which you cannot or will not change), and edits it to add the
+new \btfield{webpage} entry type, plus the new fields.
+
+The added fields are:
+\begin{itemize}
+\item \btfield{url} and \btfield{lastchecked}, to associate a URL with
+  a reference, along with the date at which the URL was last checked
+  to exist;
+\item \btfield{doi}, for a reference's DOI
+  (see \url{http://doi.org});
+\item \btfield{eprint}, for an arXiv eprint reference
+  (see \url{http://arxiv.org}); and
+\item \btfield{pubmed} for a reference's PubMed identifier
+  (\textsc{PMID}, see \url{http://pubmed.gov}).
+\end{itemize}
+
+Usage is simple:
+\begin{verbatim}
+% urlbst [--eprint] [--doi] [--pubmed]
+    [--nohyperlinks] [--inlinelinks] [--hypertex] [--hyperref] 
+    [input-file [output-file]]
+\end{verbatim}
+where the |input-file| is an existing |.bst| file, and
+the |output-file| is the name of the new style file to be
+created.  If either file name is missing, the default is the
+standard input or standard output respectively.
+For example:
+\begin{verbatim}
+% urlbst --eprint bibstyle.bst
+\end{verbatim}
+would convert the style file \texttt{bibstyle.bst}, including support
+for e-prints, and sending the result to the standard output (ie, the
+screen, so it would more useful if you were to either redirect this to
+a file or supply the output-file argument).
+
+If the option |--eprint| is present, then we switch on support for
+\texttt{eprint} fields in the modified .bst file, with a citation
+format matching that recommended in
+\url{http://arxiv.org/help/faq/references}.  If the option
+|--doi| is present, we include support for a |doi| field, referring
+to a Digital Object Identifier (DOI) as standardised by
+\url{http://www.doi.org/}.  And if |--pubmed| is present, we include
+support for a |pubmed| field, referring to a PubMed identifier as
+supported at \url{http://www.pubmed.gov}.
+
+If either of the |--hypertex| or |--hyperref| options is present, then
+the generated .bst file includes support for hyperlinks in the
+generated eprint entries in the bibliography, with the format being
+either Hyper\TeX\ (see
+\url{http://arxiv.org/hypertex/#implementation}), supported by xdvi,
+dvips and others, or using the support available from the
+\package{hyperref} package.  These options have no effect unless one
+of the |--eprint|, |--doi|, |--pubmed| or |--inlinelinks| options is given:
+when URLs are included
+in the bibliography, they are written out using the |\url{...}|
+command.  The \package{hyperref} support is more generic, and more
+generally supported, and so you should choose this unless you have a
+particular need for the Hyper\TeX\ support.  The |--nohyperlinks|
+option, which is present by default, suppresses all hyperlinking.
+
+By default, any URL field is displayed as part of the bibliography
+entry, linked to the corresponding URL via the mechanism managed by
+the |--hypertex| and |--hyperref| options.  If the |--inlinelinks|
+option is present, however, then the URL is not displayed in the
+printed entry, but instead a hyperlink is created, linked to suitable
+text within the bibliography entry, such as the citation title.  This
+option does not affect the display of eprints, DOI or PubMed fields.  It makes
+no sense to specify |--inlinelinks| with |--nohyperlinks|, and the
+script warns you if you do that, for example by failing to specify one
+of the link-style options.  This option is (primarily) useful if
+you're preparing a version of a document which will be read on-screen;
+the point of it is that the resulting bibliography is substantially
+more compact than it would otherwise be.
+
+The support for all the above behaviours is always included in the
+output file.  The options instead control only whether the various
+behaviours are enabled or disabled, and if you need to alter these,
+you may do so by editing the generated |.bst| file and adjusting
+values in the |{init.urlbst.variables}| function, where indicated.
+
+The generated references have URLs inside |\url{...}|.  The best
+way to format this this is with the \package{url} package
+(see~\cite{texfaq} for pointers), but as a poor alternative, you can
+try |\newcommand{\url}[1]{\texttt{#1}}|.  The \package{hyperref}
+package automatically processes |\url{...}| in the correct way to
+include a hyperlink, and if you have selected \package{hyperref}
+output, then nothing more need be done.  If you selected Hyper\TeX\
+output, however, then the script encloses the |\url| command in an
+appropriate Hyper\TeX\ special.
+
+When the style file generates a link for DOIs, it does so by
+prepending the string \texttt{http://dx.doi.org/} to the DOI.  This is
+generally reasonable, but some DOIs have characters in them which are
+illegal in URLs, with the result that the resulting
+\texttt{dx.doi.org} URL doesn't work.  The only real way of resolving
+this is to write a URL-encoding function in the style-file
+implementation language, but while that would doubtless be feasible in
+principle, it would be hard and very, very, ugly.  The only advice I
+can offer in this case is to rely on the fact that the DOI will still
+appear in the typeset bibliography, and that users who would want to
+take advantage of the DOI will frequently (or usually?) know how to
+resolve the DOI when then need to.  As a workaround, you could include
+a URL-encoded DOI URL in the \btfield{url} field of the entry (thanks
+to Eric Chamberland for this suggestion).
+
+The \ub\ script works by spotting patterns and characteristic function
+names in the input |.bst| file.  It works as-is in the case of the
+four standard \BibTeX\ style files |plain.bst|, |unsrt.bst|,
+|alpha.bst| and |abbrv.bst|.  It also works straightforwardly for
+many other style files -- since many of these are derived from, or at
+least closely inspired by, the standard ones -- but it does not
+pretend that it can do so for all of them.  In some cases, such as the
+style files for the \package{refer} or \package{koma-script} packages,
+the style files are not intended to be used for formatting; others are
+sufficiently different from the standard files that a meaningful edit
+becomes impossible.  For the large remainder, however, the result of
+this script should need only relatively minor edits before being
+perfectly usable.
+
+\section{New \texttt{.bib} entry and field types}
+
+The new entry type \btfield{webpage} has required fields
+\btfield{title} and \btfield{url}, and optional fields
+\btfield{author}, \btfield{editor}, \btfield{note}, \btfield{year},
+\btfield{month} and \btfield{lastchecked}.  The \btfield{url} and
+\btfield{lastchecked} fields are new, and are
+valid in other entry types as well: the first, obviously, is the URL
+which is being cited, or which is being quoted as an auxiliary source
+for an article perhaps; the second is the date when you last checked
+that the URL was there, in the state you quoted it; this is necessary
+since some people, heedless of the archival importance of preserving
+the validity of URLs, indulge in the vicious practice of reorganising
+web pages and destroying links.  For the case of the \btfield{webpage} entry
+type, the \btfield{editor} field should be used for the `maintainer'
+of a web page.
+
+For example, in Figure~\ref{f:ex} we illustrate two potential |.bib|
+file entries.  The \texttt{@webpage} entry type is the new type
+provided by this package, and provides reference information for a
+webpage; it includes the new \texttt{url} and \texttt{lastchecked}
+fields.  There is also an example of the standard \texttt{@book} entry
+type, which now includes the \texttt{url} and \texttt{lastchecked}
+fields as well.  The difference between the two references is that in
+the \texttt{@book} case it is the book being cited, so that the
+\texttt{url} provides extra information; in the \texttt{@webpage} case
+it is the page itself which is of interest.  You use the new |eprint|,
+|doi| and |pubmed| fields similarly, if the bibliographic item in
+question has an e-print, DOI or PubMed reference.
+\begin{figure}
+\begin{verbatim}
+@Manual{w3chome,
+  url =          {http://www.w3.org},
+  title =        {The World Wide Web Consortium},
+  year =         2009,
+  lastchecked =  {26 August 2009}}
+
+@Book{schutz,
+  author =      {Bernard Schutz},
+  title =       {Gravity from the GroundUp},
+  publisher =   {Cambridge University Press},
+  year =        {2003},
+  url =         {http://www.gravityfromthegroundup.org/},
+  lastchecked = {2008 June 16}}
+\end{verbatim}
+\caption{\label{f:ex}The new \texttt{@webpage} entry type, and the \texttt{url}
+  field in action}
+\end{figure}
+
+How do you use this in a document?  To use the the
+\texttt{alphaurl.bst} style -- which is a pre-converted version of the
+standard \texttt{alpha.bst} style, included in the \texttt{urlbst}
+distribution -- you simply make sure that \texttt{alphaurl.bst} is in
+your BibTeX search path (use the command \texttt{kpsepath bst} to find
+this path and \texttt{kpsewhich alphaurl.bst} to confirm that BibTeX
+can find it) and add |\bibliographystyle{alphaurl}| to your \LaTeX\ document.
+
+\section{Sources}
+
+There are various sources which suggest how to format references to
+web pages.  I have followed none specifically, but fortunately they do
+not appear to materially disagree.
+
+ISO-690~\cite{url:iso690} is a formal standard for this stuff.  Walker
+and Taylor's \emph{Columbia Guide to Online Style}~\cite{walker06}
+provides extensive coverage (but is only available on dead trees).
+There are two style guides associated with the APA, namely 
+the published APA style
+guide~\cite{apastyle} (a paper-only publication, so should be
+ignored by all, if there's any justice in the world), and what appears
+to be the 1998 web-citation proposal for that~\cite{url:weapas}, which
+also includes some useful links.
+The TeX FAQ~\cite{texfaq} has both practical advice and pointers to other sources.%
+\footnote{Emory University's Goizueta Business Library once had a collection of
+useful links on this topic, but they've whimsically changed the URL at least twice
+since I first distributed \ub, and I've got fed up fixing their broken link.}
+
+\section{Hints}
+
+If you use Emacs' \BibTeX\ mode, you can insert the following in your
+|.emacs| file to add knowledge of the new \btfield{webpage} entry:
+\begin{verbatim}
+(defun my-bibtex-hook ()
+  (setq bibtex-mode-user-optional-fields '("location" "issn")) ; e.g.
+  (setq bibtex-entry-field-alist
+        (cons
+         '("Webpage"
+           ((("url" "The URL of the page")
+             ("title" "The title of the resource"))
+            (("author" "The author of the webpage")
+             ("editor" "The editor/maintainer of the webpage")
+             ("year" "Year of publication of the page")
+             ("month" "Month of publication of the page")
+             ("lastchecked" "Date when you last verified the page was there")
+             ("note" "Remarks to be put at the end of the entry"))))
+         bibtex-entry-field-alist)))
+(add-hook 'bibtex-mode-hook 'my-bibtex-hook)
+\end{verbatim}
+After that, you can add a \btfield{webpage} entry by typing |C-c C-b webpage|
+(or |M-x bibtex-entry|).
+
+It is a \emph{very} good idea to use the \package{url} package: it deals with
+the problem of line-breaking long URLs, and with the problem that
+\BibTeX{} creates, of occasionally inserting \%-signs into URLs in
+generated bibliographies.
+
+See also the URL entry in the UK \TeX\ FAQ~\cite{texfaq}, and
+references therein.
+
+\textbf{Acknowledgements:} Thanks to Jason Eisner for suggesting
+the |--inlinelinks| option, to Pawe\l{} Widera for the
+suggestion to use |\path| when formatting DOIs and to Michael Giffin
+for the suggestion to include PubMed URLs.
+
+\bibliography{urlbst}
+\bibliographystyle{plainurl}
+
+\end{document}

@@ -2,38 +2,19 @@
 %% http://bibdesk.sourceforge.net/
 
 
-%% Created for hzabriskie at 2015-10-01 23:45:38 -0400 
+%% Created for hzabriskie at 2015-09-30 20:19:17 -0400 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
 
-@article{jacob1996creativity,
-	Annote = {Bruce's article provides context on the debate over the automation of musical processes. Fundamentally, he argues for the use of algorithmic composition as a "compositional tool", but somewhat subjectively states that it is "often considered a cheat" when the composer feels uninspired. He asks who is responsible for the music produced, and then questions how a composer's increasing ability to reproduce a compositional process is affecting the value of creativity. Notably, this article was written by a member of the Univeristy of Michigan's Advanced Computer Architecture Laboratory, rather than a musician. It nevertheless provides a critical perspective on the role of automatic composition, which remains a hot debate today among musicians - and evidently computer scientists, too.},
-	Author = {Jacob, Bruce L. },
-	Booktitle = {Org. Sound},
-	Date-Added = {2015-10-01 01:56:50 +0000},
-	Date-Modified = {2015-10-02 03:11:22 +0000},
-	Isbn = {1355-7718},
-	Journal = {Organised Sound},
-	Keywords = {machine learning, creativity},
-	N2 = {There are two distinct types of creativity: the flash out of the blue (inspiration? genius?), and the process of incremental revisions (hard work). Not only are we years away from modelling the former, we do not even begin to understand it. The latter is algorithmic in nature and has been modelled in many systems both musical and nonmusical. Algorithmic composition is as old as music composition. It is often considered a cheat, a way out when the composer needs material and/or inspiration. It can also be thought of as a compositional tool that simply makes the composers work go faster. This article makes a case for algorithmic composition as such a tool. The hard work type of creativity often involves trying many different combinations and choosing one over the others. It seems natural to express this iterative task as a computer algorithm. The implementation issues can be reduced to two components: how to understand ones own creative process well enough to reproduce it as an algorithm, and how to program a computer to differentiate between good and bad music. The philosophical issues reduce to the question},
-	Number = {3},
-	Pages = {157--165},
-	Title = {Algorithmic composition as a model of creativity},
-	Ty = {JOUR},
-	Volume = {1},
-	Year = {1996},
-	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QRC4uLy4uL2FydGljbGVzL0FsZ29yaXRobWljIENvbXBvc2l0aW9uIGFzIGEgTW9kZWwgZm9yIENyZWF0aXZpdHkucGRm0hcLGBlXTlMuZGF0YU8RAjAAAAAAAjAAAgAADE1hY2ludG9zaCBIRAAAAAAAAAAAAAAAAAAAAM1k0ppIKwAAA013wx9BbGdvcml0aG1pYyBDb21wb3NpIzM1MThFODAucGRmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADUY6A0jH/iAAAAAAAAAAAAAIAAgAACSAAAAAAAAAAAAAAAAAAAAAIYXJ0aWNsZXMAEAAIAADNZQraAAAAEQAIAADSMjfIAAAAAQAUA013wwJksJoABfFjAAXEaQACEOkAAgBaTWFjaW50b3NoIEhEOlVzZXJzOgBoemFicmlza2llOgBEcm9wYm94OgBUaGVzaXM6AGFydGljbGVzOgBBbGdvcml0aG1pYyBDb21wb3NpIzM1MThFODAucGRmAA4AbAA1AEEAbABnAG8AcgBpAHQAaABtAGkAYwAgAEMAbwBtAHAAbwBzAGkAdABpAG8AbgAgAGEAcwAgAGEAIABNAG8AZABlAGwAIABmAG8AcgAgAEMAcgBlAGEAdABpAHYAaQB0AHkALgBwAGQAZgAPABoADABNAGEAYwBpAG4AdABvAHMAaAAgAEgARAASAF5Vc2Vycy9oemFicmlza2llL0Ryb3Bib3gvVGhlc2lzL2FydGljbGVzL0FsZ29yaXRobWljIENvbXBvc2l0aW9uIGFzIGEgTW9kZWwgZm9yIENyZWF0aXZpdHkucGRmABMAAS8AABUAAgAR//8AAIAG0hscHR5aJGNsYXNzbmFtZVgkY2xhc3Nlc11OU011dGFibGVEYXRhox0fIFZOU0RhdGFYTlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVkQXJjaGl2ZXLRJidUcm9vdIABAAgAEQAaACMALQAyADcAQABGAE0AVQBgAGcAagBsAG4AcQBzAHUAdwCEAI4A1QDaAOIDFgMYAx0DKAMxAz8DQwNKA1MDWANlA2gDegN9A4IAAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAADhA==}}
-
-@misc{colah2015lstms,
+@webpage{colah2015lstms,
 	Annote = {In his recent blog post, Chris Olah describe a special model of recurrent neural networks known as LSTM Networks, or Long Short-Term Memory Networks. He describes the significant advances that recurrent neural networks made over "vanilla" (or non-recurrent) neural networks by allowing information to persist within the model. Theoretically, RNNs should be able to draw on information from previous decisions to make its current one, but in practice they have only proven effective when the distance between the relevant past information and the time frame in which it is required is small. LSTMs solved this problem by altering the structure of the network's hidden activation layers to create a pipeline of persisting information and a series of control gates for allowing new information to enter the pipeline.
 
 This blog post is aimed at machine learning researching with a general understanding of neural networks and are seeking a more visual and approachable introduction to LSTMs. While a young author, Chris is a highly accomplished researcher and engineer in the field, and his explanations are concise, descriptive, and well-researched, citing several relevant papers. },
-	Author = {Chris Olah},
 	Date-Added = {2015-09-30 04:52:04 +0000},
-	Date-Modified = {2015-10-01 05:45:19 +0000},
+	Date-Modified = {2015-09-30 05:12:48 +0000},
 	Keywords = {LSTM, neural networks},
 	Month = {August},
 	Rating = {5},
@@ -43,17 +24,17 @@ This blog post is aimed at machine learning researching with a general understan
 	Year = {2015},
 	Bdsk-Url-1 = {http://colah.github.io/posts/2015-08-Understanding-LSTMs/}}
 
-@techreport{madsen2002,
+@article{madsen2002,
 	Annote = {This report represents a fairly standard approach to the task of automatic harmonization of Bach chorales. Given the melody of a chorale, the authors developed a neural network to provide harmonic support for each note in the melody, which has been abstracted to series a quarter notes for the sake of evenly distributed time frames. Input features include past and previous elements of the melody, previously determined harmonies, and contextual elements of the current soprano note, such as beat strength. After experimenting with several different data representations for the feature vectors, they discovered a relatively effective solution when they represented the output vector as a range of MIDI notes from which the alto, tenor, and bass voices were selected.
 
 This paper is also somewhat dated and doesn't provide an adequate explanation of their neural network construction. However, their method is preprocessing (that is, abstracting chorales into quarter-note time frames) is intruiging and likely to be used in my initial experiments with RNNs.  },
-	Author = {Martin Elmer Jorgensen and Soren Tjagvad Madsen},
+	Author = {Jorgensen, Martin Elmer, and Madsen, Soren Tjagvad},
 	Date-Added = {2015-09-29 18:33:45 +0000},
-	Date-Modified = {2015-10-01 05:46:40 +0000},
-	Institution = {University of Aarhus},
+	Date-Modified = {2015-09-30 05:41:17 +0000},
 	Keywords = {chorales, neural networks},
 	Month = {August},
 	Pages = {31},
+	School = {University of Aarhus},
 	Title = {Harmonisation of Bach chorales: KBS project report},
 	Year = {2002}}
 
@@ -73,24 +54,19 @@ This paper was written at the turn of the century and therefore lacks some of th
 	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QNS4uLy4uL2FydGljbGVzL0FsZ29yaXRobWljIENvbXBvc2l0aW9uIC0gQSBTdXJ2ZXkucGRm0hcLGBlXTlMuZGF0YU8RAgQAAAAAAgQAAgAADE1hY2ludG9zaCBIRAAAAAAAAAAAAAAAAAAAAM1k0ppIKwAAA013wx9BbGdvcml0aG1pYyBDb21wb3NpIzM0RkExQjkucGRmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADT6G50jBIuAAAAAAAAAAAAAIAAgAACSAAAAAAAAAAAAAAAAAAAAAIYXJ0aWNsZXMAEAAIAADNZQraAAAAEQAIAADSMID4AAAAAQAUA013wwJksJoABfFjAAXEaQACEOkAAgBaTWFjaW50b3NoIEhEOlVzZXJzOgBoemFicmlza2llOgBEcm9wYm94OgBUaGVzaXM6AGFydGljbGVzOgBBbGdvcml0aG1pYyBDb21wb3NpIzM0RkExQjkucGRmAA4ATgAmAEEAbABnAG8AcgBpAHQAaABtAGkAYwAgAEMAbwBtAHAAbwBzAGkAdABpAG8AbgAgAC0AIABBACAAUwB1AHIAdgBlAHkALgBwAGQAZgAPABoADABNAGEAYwBpAG4AdABvAHMAaAAgAEgARAASAE9Vc2Vycy9oemFicmlza2llL0Ryb3Bib3gvVGhlc2lzL2FydGljbGVzL0FsZ29yaXRobWljIENvbXBvc2l0aW9uIC0gQSBTdXJ2ZXkucGRmAAATAAEvAAAVAAIAEf//AACABtIbHB0eWiRjbGFzc25hbWVYJGNsYXNzZXNdTlNNdXRhYmxlRGF0YaMdHyBWTlNEYXRhWE5TT2JqZWN00hscIiNcTlNEaWN0aW9uYXJ5oiIgXxAPTlNLZXllZEFyY2hpdmVy0SYnVHJvb3SAAQAIABEAGgAjAC0AMgA3AEAARgBNAFUAYABnAGoAbABuAHEAcwB1AHcAhACOAMYAywDTAtsC3QLiAu0C9gMEAwgDDwMYAx0DKgMtAz8DQgNHAAAAAAAAAgEAAAAAAAAAKAAAAAAAAAAAAAAAAAAAA0k=}}
 
 @article{chilvers2008chorale,
-	Annote = {In this report, the authors employ a feed-forward neural network from the SNNS 4.2 package to attempt harmonize the 4-voice Bach Chorale. They experiment with different data representations for the chorale to determine the most effective one. They had little success with training the neural net to recognize good chord pairs, but later saw a significant increase in success training it on chord prediction.
-
-The report by Chilvers and van Zaanen is by far the most "scientific", in that the authors experiment with different input features and tasks and at each step evaluate the reasons for success or failure. However, this report was evidently written by non-musicians, and their approaches to the task of harmonization demonstrate only a partial understanding of tonal harmony. },
 	Author = {Chilvers, Alex and van Zaanen, Menno},
 	Date-Added = {2015-09-29 17:54:31 +0000},
-	Date-Modified = {2015-10-02 02:49:04 +0000},
+	Date-Modified = {2015-09-29 17:54:55 +0000},
 	Journal = {Proceedings of the MML 2008 International Workshop on Machine Learning and Music held in conjunction with ICML/COLT/UAI 2008, Helsinki, Finland},
 	Keywords = {chorales, machine learning, neural networks},
 	Title = {Chorale Harmonization in the Style of JS Bach A Machine Learning Approach},
-	Year = {2008},
-	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QOC4uLy4uL2FydGljbGVzL0tCUyBSZXBvcnQgQmFjaCBDaG9yYWxlIEhhcm1vbml6YXRpb24ucGRm0hcLGBlXTlMuZGF0YU8RAgwAAAAAAgwAAgAADE1hY2ludG9zaCBIRAAAAAAAAAAAAAAAAAAAAM1k0ppIKwAAA013wx9LQlMgUmVwb3J0IEJhY2ggQ2hvIzM1MUI0MDUucGRmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADUbQF0jIJdgAAAAAAAAAAAAIAAgAACSAAAAAAAAAAAAAAAAAAAAAIYXJ0aWNsZXMAEAAIAADNZQraAAAAEQAIAADSMkG2AAAAAQAUA013wwJksJoABfFjAAXEaQACEOkAAgBaTWFjaW50b3NoIEhEOlVzZXJzOgBoemFicmlza2llOgBEcm9wYm94OgBUaGVzaXM6AGFydGljbGVzOgBLQlMgUmVwb3J0IEJhY2ggQ2hvIzM1MUI0MDUucGRmAA4AVAApAEsAQgBTACAAUgBlAHAAbwByAHQAIABCAGEAYwBoACAAQwBoAG8AcgBhAGwAZQAgAEgAYQByAG0AbwBuAGkAegBhAHQAaQBvAG4ALgBwAGQAZgAPABoADABNAGEAYwBpAG4AdABvAHMAaAAgAEgARAASAFJVc2Vycy9oemFicmlza2llL0Ryb3Bib3gvVGhlc2lzL2FydGljbGVzL0tCUyBSZXBvcnQgQmFjaCBDaG9yYWxlIEhhcm1vbml6YXRpb24ucGRmABMAAS8AABUAAgAR//8AAIAG0hscHR5aJGNsYXNzbmFtZVgkY2xhc3Nlc11OU011dGFibGVEYXRhox0fIFZOU0RhdGFYTlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVkQXJjaGl2ZXLRJidUcm9vdIABAAgAEQAaACMALQAyADcAQABGAE0AVQBgAGcAagBsAG4AcQBzAHUAdwCEAI4AyQDOANYC5gLoAu0C+AMBAw8DEwMaAyMDKAM1AzgDSgNNA1IAAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAADVA==}}
+	Year = {2008}}
 
 @article{menzel1998structure,
-	Annote = {Building on the HARMONET program they implemented six years before, Menzel et. al. analyze the potential for neural networks to adapt to new corpuses and learn musical strucutre. They provide additional mathematical background on HARMONET, which will be useful for implementing new RNNs. They also try to define basic (if not simplistic) formulas for attributes like accuracy of style (HSV, or Harmonic Style Value).},
 	Author = {H{\"o}rnel, Dominik and Menzel, Wolfram},
 	Copyright = {Copyright {\copyright} 1998 The MIT Press},
 	Date-Added = {2015-09-29 15:21:26 +0000},
-	Date-Modified = {2015-10-02 03:30:56 +0000},
+	Date-Modified = {2015-09-29 18:14:32 +0000},
 	Issn = {01489267},
 	Journal = {Computer Music Journal},
 	Jstor_Articletype = {research-article},
@@ -172,10 +148,9 @@ This paper is one of the most notable Harvard undergraduate theses in Computer S
 	Year = {2002}}
 
 @misc{karpathy2015rnn,
-	Annote = {Karpathy's popular blog post is meant as an introduction to recurrent neural networks for an audience familiar with machine learning vocabulary but interested in a less technical overview. He explains the fundamental advance made with RNNs over "vanilla" neural networks: they are able to remember recent examples. As a result, these networks are able to make decisions with an intuition for hierarchy and structure in its ouput. He provides some undoubtedly mind-boggling examples of the power of RNNs, demonstrating their ability to essentially learn valid English, LaTeX, or C syntax while also providing phrase structure.   },
 	Author = {Andrej Karpathy},
 	Date-Added = {2015-09-29 14:28:38 +0000},
-	Date-Modified = {2015-10-02 03:18:13 +0000},
+	Date-Modified = {2015-09-29 14:31:38 +0000},
 	Howpublished = {Blog},
 	Keywords = {RNN, neural networks},
 	Month = {May},
@@ -185,16 +160,14 @@ This paper is one of the most notable Harvard undergraduate theses in Computer S
 	Bdsk-Url-1 = {http://karpathy.github.io/2015/05/21/rnn-effectiveness/}}
 
 @inproceedings{hild1992harmonet,
-	Annote = {HARMONET is a neural network designed to harmonized a chorale melody, taking as the soprano part. The authors proposed a multi-step process, using different classifiers to compose a bass line, to compose inner voices and to insert eighth note to ehance voice leading. Its results have been impressive, and the author claims that HARMONET's output is comparable to an "improvising organist."},
 	Author = {Hild, Hermann and Feulner, Johannes and Menzel, Wolfram},
 	Booktitle = {Advances in Neural Information Processing Systems},
 	Date-Added = {2015-09-29 14:24:20 +0000},
-	Date-Modified = {2015-10-02 03:07:46 +0000},
+	Date-Modified = {2015-09-29 14:32:54 +0000},
 	Keywords = {neural networks, chorales, harmonization},
 	Pages = {267--274},
 	Title = {HARMONET: A neural net for harmonizing chorales in the style of JS Bach},
-	Year = {1992},
-	Bdsk-File-1 = {YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAFgAdccmVsYXRpdmVQYXRoWWFsaWFzRGF0YV8QJC4uLy4uL0hBUk1PTkVUIGZvciBCYWNoIENob3JhbGVzLnBkZtIXCxgZV05TLmRhdGFPEQHSAAAAAAHSAAIAAAxNYWNpbnRvc2ggSEQAAAAAAAAAAAAAAAAAAADNZNKaSCsAAAJksJoeSEFSTU9ORVQgZm9yIEJhY2ggQ2hvcmFsZXMucGRmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzBce9IfvQAAAAAAAAAAAAACAAEAAAkgAAAAAAAAAAAAAAAAAAAABlRoZXNpcwAQAAgAAM1lCtoAAAARAAgAANIf9UAAAAABABACZLCaAAXxYwAFxGkAAhDpAAIAT01hY2ludG9zaCBIRDpVc2VyczoAaHphYnJpc2tpZToARHJvcGJveDoAVGhlc2lzOgBIQVJNT05FVCBmb3IgQmFjaCBDaG9yYWxlcy5wZGYAAA4APgAeAEgAQQBSAE0ATwBOAEUAVAAgAGYAbwByACAAQgBhAGMAaAAgAEMAaABvAHIAYQBsAGUAcwAuAHAAZABmAA8AGgAMAE0AYQBjAGkAbgB0AG8AcwBoACAASABEABIAPlVzZXJzL2h6YWJyaXNraWUvRHJvcGJveC9UaGVzaXMvSEFSTU9ORVQgZm9yIEJhY2ggQ2hvcmFsZXMucGRmABMAAS8AABUAAgAR//8AAIAG0hscHR5aJGNsYXNzbmFtZVgkY2xhc3Nlc11OU011dGFibGVEYXRhox0fIFZOU0RhdGFYTlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVkQXJjaGl2ZXLRJidUcm9vdIABAAgAEQAaACMALQAyADcAQABGAE0AVQBgAGcAagBsAG4AcQBzAHUAdwCEAI4AtQC6AMICmAKaAp8CqgKzAsECxQLMAtUC2gLnAuoC/AL/AwQAAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAADBg==}}
+	Year = {1992}}
 
 @article{eck2002structure,
 	Annote = {Upon examining attempts at automated composition using standard recurrent neural networks (RNNs), the authors Eck and Schmidhuber conclude that these models alone fail to grasp larger musical structures, and therefore are unsuccessful at generating convincing musical compositions. However, a subset of RNNs labeled LSTMs (Long Short-Term Memory) have shown much greater promise due to their ability to retain information about decisions in previous time frames. With respect to music generation, the authors demonstrate its ability to successfully learn a 12-bar blues form and improvise melodies over those harmonies.},
