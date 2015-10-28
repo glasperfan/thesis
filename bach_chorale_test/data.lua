@@ -1,22 +1,10 @@
 require 'hdf5'
 
-
-local X_file = hdf5.open("X.hdf5", 'r')
-local X = X_file:read('chorale_X'):all()
-local y_file = hdf5.open("y.hdf5", 'r')
-local y = y_file:read('chorale_y'):all()
-
 local data = torch.class("data")
 
--- What is this for?
-function data.opt_params(cmd)
-end
-
 -- Adapted from /group/torch/rnn_lm/data.lua
-function data:__init(opt, data_file)
+function data:__init(data_file)
    local f = hdf5.open(data_file, 'r')
-   -- local data = myFile:read('/path/to/data'):all()
-   -- f = hdf5.File(opt.data_dir, 'r')
    self.target  = f:read('y'):all()
    self.source  = f:read('X'):all()
    self.shapes = f:read('shapes'):all()

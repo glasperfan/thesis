@@ -326,6 +326,7 @@ class SopranoFeaturizer(object):
 		self.cadence_dists = OrderedSet()
 		self.cadences = OrderedSet(['cadence', 'no cadence'])
 		self.indices = {}
+		self.max_index = 0
 		self.ordering = {}
 		self.quantized = [] # quantized scores deposited here
 		self.analyzed = False	# stage 1
@@ -393,10 +394,11 @@ class SopranoFeaturizer(object):
 				self.chords.add(self.get_chord(index, alto, tenor, bass))
 
 			# Set feature indices
-			i_max = 0
+			i_max = 1
 			for feature in self.ordering.keys():
 				self.indices[feature] = (i_max, i_max + len(self.ordering[feature]))
 				i_max += len(self.ordering[feature]) + 1
+			self.max_index = i_max # record the highest index
 
 		# Now we can featurize
 		self.analyzed = True
@@ -436,7 +438,8 @@ class SopranoFeaturizer(object):
 				input_vec.append(self.keys.index(key_sig.sharps) + self.indices['key'][0])
 				input_vec.append(self.key_modes.index(key_sig.mode) + self.indices['mode'][0])
 
-				output_val = self.chords.index(self.get_chord(index, alto, tenor, bass))
+				# +1 since Torch must be 1-indexed
+				output_val = self.chords.index(self.get_chord(index, alto, tenor, bass)) + 1
 
 				self.X.append(input_vec)
 				self.y.append(output_val)
@@ -470,11 +473,12 @@ class SopranoFeaturizer(object):
 
 		X_matrix = npy.matrix(self.X)
 		y_vec = npy.array(self.y)
-		shapes = [X_matrix.shape[0], X_matrix.shape[1], y_vec.shape[0]]
+		indices = [0, self.max_index, len(self.chords)]
+		print indices
 		with h5py.File("chorales.hdf5", "w", libver='latest') as f:
 			f.create_dataset("X", (X_matrix.shape[0], X_matrix.shape[1]), dtype='i', data=self.X)
 			f.create_dataset("y", (y_vec.shape[0],), dtype='i', data=self.y)
-			f.create_dataset("shapes", (3, 1), dtype='i', data=shapes)
+			f.create_dataset("indices", (1, 3), dtype='i', data=indices)
 
 
 	# Quantize a score
@@ -514,6 +518,7 @@ class SopranoFeaturizer(object):
 		for feature, lst in self.ordering.iteritems():
 			s += feature + ": " + str(lst) + "\n"
 		s += "INDICES: %s\n" % str(self.indices)
+		s += "CHORD INDICES: 1 to %d [example chord: %s]\n" % (len(self.chords), str(list(self.chords)[0]))
 		s += "X SHAPE: %d examples, %d features\n" % (len(self.X), len(self.X[0]) if len(self.X) > 0 else 0)
 		s += "Y SHAPE: %d\n" % len(self.y)
 		s += "---------------------------------------\n"
@@ -524,7 +529,7 @@ class SopranoFeaturizer(object):
 	
 
 #from wrangle1 import *
-sf = SopranoFeaturizer(1)
+sf = SopranoFeaturizer(10)
 sf.analyze()
 sf.featurize()
 sf.verify()
