@@ -3,7 +3,9 @@ import math
 import os
 from sys import maxsize
 from pprint import pprint as pp
+from ordered_set import OrderedSet
 import numpy as npy
+import h5py
 
 #####
 #
@@ -77,6 +79,10 @@ RANGE = {
 	}
 }
 
+# returns true if l <= v <= h
+def in_range(v, l, h):
+	return l <= v and v <= h
+
 # Set of Chorales to work on
 #WORK_SET_MIN = 0
 WORK_SET_MAX = 30
@@ -109,6 +115,9 @@ def isMeasure(ms):
 
 def isNote(n):
 	return isinstance(n, note.Note)
+
+def isChord(c):
+	return isinstance(c, chord.Chord)
 
 def length(n):
 	return n.duration.quarterLength
@@ -290,215 +299,236 @@ def allChoralesRange(chorales):
 #            'min_midi': 48}}
 
 
-# Create a binary vector to represent a MIDI note for a given voice range
-# <n>: a midi note, where m_min <= n.midi <= m_max
-# <m_min>: the lowest midi note for the given part
-# <m_max>: the highest midi note for the given part
-def vectorizeMIDI(n, m_min, m_max):
-	vector = [VECTOR_OFF for i in range(m_max - m_min + 1)]
-	vector[n.midi - m_min] = VECTOR_ON
-	assert any(x == VECTOR_ON for x in vector)
-	return vector
-
-# Create a vector for the harmony voices(Alto, Tenor, and Bass)
-# <alto>: the Alto note in MIDI
-# <tenor>: the Tenor note in MIDI
-# <bass>: the Bass note in MIDI
-def vectorizeHarmonyNotes(alto, tenor, bass):
-	alto_v = vectorizeMIDI(alto, RANGE['Alto']['min'], RANGE['Alto']['max'])
-	tenor_v = vectorizeMIDI(tenor, RANGE['Tenor']['min'], RANGE['Tenor']['max'])
-	bass_v = vectorizeMIDI(bass, RANGE['Bass']['min'], RANGE['Bass']['max'])
-	return alto_v + tenor_v + bass_v
 
 
-# Iterates over each example in the chorale and return a list of lists, where 
-# each list represents the input features of a single soprano note.
-# <soprano>: the soprano music21.stream.Part
-def generateChoraleInputVectors(soprano):
-	vectors = []
-	time_signature = getTimeSignature(soprano)
-	key_signature = getKeySignature(soprano)
-	notes_lst = getNotes(soprano)
-	fermata_locations = map(hasFermata, notes_lst)
+class SopranoFeaturizer(object):
 
-	for n in notes_lst:
-		index = notes_lst.index(n)
-		v = []
+	#
+	#  1  pitch  22 23 beat str  26 27  cadence?  28 29  cadence_dist   59 60  off_end  160 161 time  162 163  key  174 175 mode 176
+	# |------------|----------------|---------------|---------------------|----------------|-------------|-------------|-------------|
+	#
+	# We represent a single note as a list of features with their own ranges of indices.
+	# [1, 24, 27, 30, 100, 161, 163, 176] --> lowest pitch, beat 2, no cadence, one beat from next cadence, 40 beats from end, 3/4, 6 flats, minor 
+	#
+	# NOTE: the indices above are simply examples. The correct indices are computed in analyze().
+	# NOTE: indices are 1-based to comply with Torch
 
-		# Represent pitch as a binary vector [22 units] (range of soprano)
-		pitch_v = indexSoprano([n])
-		v += pitch_v
+	# Initialize with the number of scores to analyze
+	def __init__(self, num_scores=371):
+		self.num_scores = num_scores
+		self.keys = OrderedSet() # sets must be ordered to ensure accurate indexing
+		self.key_modes = OrderedSet()
+		self.time_sigs = OrderedSet()
+		self.beats = OrderedSet()
+		self.offset_ends = OrderedSet()
+		self.pitches = OrderedSet()
+		self.chords = OrderedSet()
+		self.cadence_dists = OrderedSet()
+		self.cadences = OrderedSet(['cadence', 'no cadence'])
+		self.indices = {}
+		self.ordering = {}
+		self.quantized = [] # quantized scores deposited here
+		self.analyzed = False	# stage 1
+		self.featurized = False	# stage 2
+		self.verified = False	# stage 3
 
-		# Represent beat strength as 1-based beat position [1 unit]
-		beat_strength_v = [ math.floor(n.beat) ]
-		assert beat_strength_v[0] % 1 == 0
-		v += beat_strength_v
+		# Training examples created by featurize()
+		self.X = []
+		self.y = []
 
-		# Represent cadence (contains a fermata) as a boolean [1 unit]
-		cadence_v = [ VECTOR_ON if hasFermata(n) else VECTOR_OFF ]
-		v += cadence_v
+		# NOTE: this should allow for flexibility in the ordering of feature indices
+		self.ordering['pitch'] = self.pitches
+		self.ordering['beat_str'] = self.beats
+		self.ordering['cadence?'] = self.cadences
+		self.ordering['cadence_dist'] = self.cadence_dists
+		self.ordering['offset_end'] = self.offset_ends
+		self.ordering['time'] = self.time_sigs
+		self.ordering['key'] = self.keys
+		self.ordering['mode'] = self.key_modes
 
-		# Represent distance to the next fermata [1 unit] (1 = on fermata)
-		if index == len(notes_lst) - 1 or hasFermata(n):
-			cadence_dist_v = [ VECTOR_OFF ]
-		else:
-			cadence_dist_v = [ fermata_locations[index + 1:].index(True) + VECTOR_ON ]
-		v += cadence_dist_v
+	# Analyze the chorales and determine the possible values for each feature
+	def analyze(self):
+		iterator = corpus.chorales.Iterator(1, self.num_scores, numberingSystem = 'riemenschneider')
+		for score in iterator:
+			if len(score.parts) != 4:
+				continue
+			
+			# quantize
+			self.quantize_score(score)
 
-		# Represent offset from the beginning of the work [1 unit]
-		# TODO: should be adjusted for pickups
-		offset_start_v = [ math.floor(n.offset) ]
-		v += offset_start_v
+			# score-wide features
+			soprano = score.parts[0]
+			alto = getNotes(score.parts[1])
+			tenor = getNotes(score.parts[2])
+			bass = getNotes(score.parts[3])
+			time_signature = getTimeSignature(soprano)
+			key_signature = getKeySignature(soprano)
+			notes_lst = getNotes(soprano)
+			last_note = notes_lst[-1]
+			fermata_locations = map(hasFermata, notes_lst)
 
-		# Represent offset from the end of the work [1 unit]
-		offset_end_v = [ len(notes_lst) - 1 - math.floor(n.offset) ]
-		v += offset_end_v
+			# Key
+			self.keys.add(key_signature.sharps)
+			self.key_modes.add(key_signature.mode)
 
-		# Represent time signature [2 units]
-		time_sig_v = [ time_signature.numerator, time_signature.denominator ]
-		v += time_sig_v
+			# Time - as a tuple (num, denom)
+			self.time_sigs.add((time_signature.numerator, time_signature.denominator))
 
-		# Represent key signature (sharps/flats, major/minor) [2 units]
-		key_sig_v = [ key_signature.sharps, VECTOR_ON if key_signature.mode == 'major' else VECTOR_OFF ]
-		v += key_sig_v
+			# Note-specific data
+			for index, n in enumerate(notes_lst):
+
+				# Beat strength
+				self.beats.add(self.get_beat_str(n))
+
+				# Offset from the end
+				self.offset_ends.add(self.get_offset_end(n, last_note))
+
+				# Distance to next cadence
+				self.cadence_dists.add(self.get_cadence_dist(n, index, notes_lst, fermata_locations))
+
+				# Pitch
+				self.pitches.add(self.get_pitch(n))
+
+				# Harmony
+				self.chords.add(self.get_chord(index, alto, tenor, bass))
+
+			# Set feature indices
+			i_max = 0
+			for feature in self.ordering.keys():
+				self.indices[feature] = (i_max, i_max + len(self.ordering[feature]))
+				i_max += len(self.ordering[feature]) + 1
+
+		# Now we can featurize
+		self.analyzed = True
+
+	# After analysis, this generates the training examples (input vectors, output vectors)
+	# As scores are examined, the indices of output chords are generated.
+	def featurize(self):
+		if not self.analyzed:
+			raise Exception("Must call analyze first.")
 		
-		# Total: 31 input units
-		#print pitch_v
-		#print beat_strength_v
-		#print cadence_v
-		#print cadence_dist_v
-		#print offset_start_v
-		#print offset_end_v
-		#print time_sig_v
-		#print key_sig_v
-		vectors.append(v)
-	return vectors
+		for score in self.quantized:
+			# voices
+			soprano = score.parts[0]
+			alto = getNotes(score.parts[1])
+			tenor = getNotes(score.parts[2])
+			bass = getNotes(score.parts[3])
+
+			# score-wide features
+			soprano_notes = getNotes(soprano)
+			time_sig = getTimeSignature(soprano)
+			key_sig = getKeySignature(soprano)
+			last_note = soprano_notes[-1]
+			fermata_locations = map(hasFermata, soprano_notes)
+
+			# Note-specific data
+			for index, n in enumerate(soprano_notes):
+
+				# input vector
+				# NOTE: changing the order here will affect verify
+				input_vec = []
+				input_vec.append(self.pitches.index(self.get_pitch(n)) + self.indices['pitch'][0])
+				input_vec.append(self.beats.index(self.get_beat_str(n)) + self.indices['beat_str'][0])
+				input_vec.append(self.get_iscadence(n) + self.indices['cadence?'][0])
+				input_vec.append(self.cadence_dists.index(self.get_cadence_dist(n, index, soprano_notes, fermata_locations)) + self.indices['cadence_dist'][0])
+				input_vec.append(self.offset_ends.index(self.get_offset_end(n, last_note)) + self.indices['offset_end'][0])
+				input_vec.append(self.time_sigs.index( (time_sig.numerator, time_sig.denominator) ) + self.indices['time'][0])
+				input_vec.append(self.keys.index(key_sig.sharps) + self.indices['key'][0])
+				input_vec.append(self.key_modes.index(key_sig.mode) + self.indices['mode'][0])
+
+				output_val = self.chords.index(self.get_chord(index, alto, tenor, bass))
+
+				self.X.append(input_vec)
+				self.y.append(output_val)
+
+		self.featurized = True
+
+	# Verify that the feature indices are all in the right ranges
+	def verify(self):
+		if not self.analyzed or not self.featurized:
+			raise Exception("Analyze and featurize first.")
+
+		for index, example in enumerate(self.X):
+			output = self.y[index]
+
+			# Note the order here corresponds with the order in which the example features were added
+			assert in_range(example[0], self.indices['pitch'][0], self.indices['pitch'][1])
+			assert in_range(example[1], self.indices['beat_str'][0], self.indices['beat_str'][1])
+			assert in_range(example[2], self.indices['cadence?'][0], self.indices['cadence?'][1])
+			assert in_range(example[3], self.indices['cadence_dist'][0], self.indices['cadence_dist'][1])
+			assert in_range(example[4], self.indices['offset_end'][0], self.indices['offset_end'][1])
+			assert in_range(example[5], self.indices['time'][0], self.indices['time'][1])
+			assert in_range(example[6], self.indices['key'][0], self.indices['key'][1])
+			assert in_range(example[7], self.indices['mode'][0], self.indices['mode'][1])
+			assert in_range(output, 0, len(self.chords))
+
+		self.verified = True
+
+	def write(self):
+		if not self.analyzed or not self.featurized or not self.verified:
+			raise Exception("Analyze, featurize, and verify first.")
+
+		X_matrix = npy.matrix(self.X)
+		y_vec = npy.array(self.y)
+		shapes = [X_matrix.shape[0], X_matrix.shape[1], y_vec.shape[0]]
+		with h5py.File("chorales.hdf5", "w", libver='latest') as f:
+			f.create_dataset("X", (X_matrix.shape[0], X_matrix.shape[1]), dtype='i', data=self.X)
+			f.create_dataset("y", (y_vec.shape[0],), dtype='i', data=self.y)
+			f.create_dataset("shapes", (3, 1), dtype='i', data=shapes)
 
 
-def generateChoraleOutputVectors(alto, tenor, bass):
-	vectors = []
-	alto_notes = alto.flat.notes
-	tenor_notes = tenor.flat.notes
-	bass_notes = bass.flat.notes
-	for i in range(len(alto_notes)):
-		vectors.append(vectorizeHarmonyNotes(alto_notes[i], tenor_notes[i], bass_notes[i]))
-	return vectors
-
-
-def indexSoprano(soprano):
-	s_range = range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1)
-	return map(lambda n: s_range.index(n.midi), soprano)
-
-# Returns a list of unique numbers, each representing a tuple of an alto, tenor, and bass note
-def indexAltoTenorBass(a, t, b):
-	a_range = RANGE['Alto']['max'] - RANGE['Alto']['min'] + 1
-	t_range = RANGE['Tenor']['max'] - RANGE['Tenor']['min'] + 1
-	b_range = RANGE['Bass']['max'] - RANGE['Bass']['min'] + 1
-	base = max(a_range, t_range, b_range) # luckily, the base is a prime (29)
-	return map(lambda i: a[i].midi * (base**2) + t[i].midi * base + b[i].midi, range(len(a)))
-
-
-def findUniqueATB():
-	global QUANTIZED
-	voicing_dict = {}
-	iterator = corpus.chorales.Iterator(1, 371, numberingSystem = 'riemenschneider')
-	index = 1
-	for score in iterator[:20]:
-		# TODO: find a better solution to this? (#11, 38, etc.)
-		if len(score.parts) != 4:
-			print "#%d: %s - TOO MANY PARTS (%s)" % (index, score.metadata.title, len(score.parts))
-			index += 1
-			continue
-		# quantize
-		print "#" + str(index) + ": Quantizing score " + score.metadata.title + ": ",
+	# Quantize a score
+	def quantize_score(self, score):
 		for voice in PARTS:
-			print voice[0],
 			quantize(score, voice)
-		print
-		QUANTIZED.append(score)
+		self.quantized.append(score)
 
-		# gather voicings
-		a = getNotes(score.parts[1])
-		t = getNotes(score.parts[2])
-		b = getNotes(score.parts[3])
-		voicing_lst = indexAltoTenorBass(a, t, b) # returns an "ID"
-		for i in range(len(a)):
-			if voicing_lst[i] not in voicing_dict:
-				voicing_dict[voicing_lst[i]] = a[i].midi, t[i].midi, b[i].midi
-			# Check that no duplicate ID occurs for a different chord
-			# This ensures every chord has a unique ID
-			else:
-				assert voicing_dict[voicing_lst[i]] == (a[i].midi, t[i].midi, b[i].midi)
-		index += 1
-	return voicing_dict
+	# Returns the pitch value for the input note
+	def get_pitch(self, n):
+		return n.midi
 
+	# Return the beat strength value for the input note
+	def get_beat_str(self, n):
+		return int(math.floor(n.beat))
 
-# Returns input matrix and output vector
-def wrangleChorale(score, keys):
-	# Check quantizing worked
-	soprano = score.parts[0]
-	alto = score.parts[1]
-	tenor = score.parts[2]
-	bass = score.parts[3]
-	assert len(getNotes(soprano)) == len(getNotes(alto)) == len(getNotes(tenor)) == len(getNotes(bass))
+	# Returns 1 if the input note is at a cadence, else 0
+	def get_iscadence(self, n):
+		return 1 if hasFermata(n) else 0
 
-	# Represent pitch as a binary vector [22 units] (range of soprano)
-	# pitch_idx = indexSoprano(getNotes(soprano))
-	# npy_pitch_idx = npy.array(pitch_idx)
-	# print npy_pitch_idx
-	vectors = generateChoraleInputVectors(soprano)
-	npy_input_matrix = npy.matrix(vectors)
+	# Returns the input note's distance to the next cadence
+	def get_cadence_dist(self, n, index, notes_lst, fermata_locations):
+		if index == len(notes_lst) - 1 or hasFermata(n):
+			return 0
+		return fermata_locations[index:].index(True)
 
-	# Represent output values (using primes)
-	output_idx = indexAltoTenorBass(getNotes(alto), getNotes(tenor), getNotes(bass))
-	output_idx = map(lambda n: keys.index(n), output_idx)
-	npy_output_vec = npy.array(output_idx)
+	# Returns the input note's distance to the end of the chorale 
+	def get_offset_end(self, n, last_note):
+		return math.floor(last_note.offset) - math.floor(n.offset)
 
-	return npy_input_matrix, npy_output_vec
+	# Returns a tuple of midi values representing the harmony for the soprano note at index i
+	def get_chord(self, i, a, t, b):
+		return a[i].midi, t[i].midi, b[i].midi
 
+	def __str__(self):
+		s = "\n---------- FEATURIZER RESULTS ----------\n"
+		for feature, lst in self.ordering.iteritems():
+			s += feature + ": " + str(lst) + "\n"
+		s += "INDICES: %s\n" % str(self.indices)
+		s += "X SHAPE: %d examples, %d features\n" % (len(self.X), len(self.X[0]) if len(self.X) > 0 else 0)
+		s += "Y SHAPE: %d\n" % len(self.y)
+		s += "---------------------------------------\n"
+		return s
 
-def run():
-	# Preprocess and determine possible voicings
-	print "Finding voicings"
-	VOICINGS = findUniqueATB()
-	keys = VOICINGS.keys()
-	print "VOICINGS size: %d" % len(VOICINGS)
-	X = None # final input matrix
-	y = None # final output vector
-	for score in QUANTIZED:
-		input_matrix, output_vector = wrangleChorale(score, keys)
-		X = input_matrix if X is None else npy.vstack((X, input_matrix))
-		y = output_vector if y is None else npy.hstack((y, output_vector))
-
-	print X.shape
-	print y.shape
-
-
-#run()
-
-iterator = corpus.chorales.Iterator(1, 371, numberingSystem = 'riemenschneider')
-index = 1
-for chorale in iterator[:30]:
-	print index, chorale.metadata.title
-	index += 1
+	__repr__ = __str__
 
 	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#from wrangle1 import *
+sf = SopranoFeaturizer(1)
+sf.analyze()
+sf.featurize()
+sf.verify()
+sf.write()
+print sf
 
 
