@@ -1,9 +1,7 @@
 from music21 import *
 import math
-import os
-from sys import maxsize
-from pprint import pprint as pp
 from ordered_set import OrderedSet
+from random import shuffle
 import numpy as npy
 import h5py
 
@@ -19,7 +17,7 @@ import h5py
 # INPUT Features:
 # Local: [30 units]
 # 	1) pitch -- represented as the distance from the tonic [22 units (range of soprano)]
-# 	2) beat strength [1 unit (4, 2, 3, 1)] ASK ABOUT THIS
+# 	2) beat strength [1 unit (4, 2, 3, 1)]
 # 	3) cadence? -- 1 for fermata, 0 otherwise [1 unit]
 #	4) distance to next fermata (>= 0) [1 unit]
 #	5) offset from beginning of the work [1 unit]
@@ -173,6 +171,11 @@ def quantize(_score, _partID):
 		# iterate over each note
 		while index < note_num:
 			n = notes[index]
+			if isChord(n):
+				top_note = note.Note(n[-1].pitch.nameWithOctave, quarterLength=n[-1].quarterLength)
+				ms.insert(n.offset, top_note)
+				ms.remove(n)
+
 			# skip quarter notes
 			if length(n) == 1:
 				index += 1
@@ -328,14 +331,19 @@ class SopranoFeaturizer(object):
 		self.indices = {}
 		self.max_index = 0
 		self.ordering = {}
-		self.quantized = [] # quantized scores deposited here
-		self.analyzed = False	# stage 1
-		self.featurized = False	# stage 2
-		self.verified = False	# stage 3
+		self.quantized = [] 		# quantized scores deposited here
+		self.training_split = [] 	# training scores
+		self.test_split = []		# test scores
+		self.percentage_test = 0.1 	# percentage of scores to be in the test split
+		self.analyzed = False		# stage 1
+		self.featurized = False		# stage 2
+		self.verified = False		# stage 3
 
 		# Training examples created by featurize()
-		self.X = []
-		self.y = []
+		self.X_train = []
+		self.y_train = []
+		self.X_test = []
+		self.y_test = []
 
 		# NOTE: this should allow for flexibility in the ordering of feature indices
 		self.ordering['pitch'] = self.pitches
@@ -347,15 +355,22 @@ class SopranoFeaturizer(object):
 		self.ordering['key'] = self.keys
 		self.ordering['mode'] = self.key_modes
 
+	# Collect all scores and preprocess them
+	def gather_scores(self):
+		iterator = corpus.chorales.Iterator(1, self.num_scores, numberingSystem = 'riemenschneider')
+		self.quantized = []
+		for score in iterator:
+			if len(score.parts) == 4:
+				# quantize
+				self.quantize_score(score)
+				self.quantized.append(score)
+
 	# Analyze the chorales and determine the possible values for each feature
 	def analyze(self):
-		iterator = corpus.chorales.Iterator(1, self.num_scores, numberingSystem = 'riemenschneider')
-		for score in iterator:
+		self.gather_scores()
+		for score in self.quantized:
 			if len(score.parts) != 4:
-				continue
-			
-			# quantize
-			self.quantize_score(score)
+				continue		
 
 			# score-wide features
 			soprano = score.parts[0]
@@ -403,13 +418,32 @@ class SopranoFeaturizer(object):
 		# Now we can featurize
 		self.analyzed = True
 
-	# After analysis, this generates the training examples (input vectors, output vectors)
-	# As scores are examined, the indices of output chords are generated.
+	# Wrapper function for featurize_set():
 	def featurize(self):
 		if not self.analyzed:
 			raise Exception("Must call analyze first.")
+
+		# Create train-test split
+		training, test = self.training_test_split(self.quantized)
+
+		# Create training examples
+		self.X_train, self.y_train = self.featurize_set(training)
 		
-		for score in self.quantized:
+		# Create test examples
+		self.X_test, self.y_test = self.featurize_set(test)
+		
+		print "Training examples size: %d" % len(self.X_train)
+		print "Test examples size: %d" % len(self.X_test)
+
+		
+	# After analysis, this generates the training examples (input vectors, output vectors)
+	# As scores are examined, the indices of output chords are generated.
+	def featurize_set(self, scores):
+		if not self.analyzed:
+			raise Exception("Must call analyze first.")
+		
+		X, y = [], []
+		for score in scores:
 			# voices
 			soprano = score.parts[0]
 			alto = getNotes(score.parts[1])
@@ -441,18 +475,21 @@ class SopranoFeaturizer(object):
 				# +1 since Torch must be 1-indexed
 				output_val = self.chords.index(self.get_chord(index, alto, tenor, bass)) + 1
 
-				self.X.append(input_vec)
-				self.y.append(output_val)
+				X.append(input_vec)
+				y.append(output_val)
 
 		self.featurized = True
+		return X, y
 
 	# Verify that the feature indices are all in the right ranges
 	def verify(self):
 		if not self.analyzed or not self.featurized:
 			raise Exception("Analyze and featurize first.")
 
-		for index, example in enumerate(self.X):
-			output = self.y[index]
+		inputs = self.X_train + self.X_test
+		outputs = self.y_train + self.y_test
+		for index, example in enumerate(inputs):
+			output = outputs[index]
 
 			# Note the order here corresponds with the order in which the example features were added
 			assert in_range(example[0], self.indices['pitch'][0], self.indices['pitch'][1])
@@ -471,15 +508,34 @@ class SopranoFeaturizer(object):
 		if not self.analyzed or not self.featurized or not self.verified:
 			raise Exception("Analyze, featurize, and verify first.")
 
-		X_matrix = npy.matrix(self.X)
-		y_vec = npy.array(self.y)
+		X_train_npy = npy.matrix(self.X_train)
+		y_train_npy = npy.array(self.y_train)
+		X_test_npy = npy.matrix(self.X_test)
+		y_test_npy = npy.array(self.y_test)
 		indices = [0, self.max_index, len(self.chords)]
 		print indices
 		with h5py.File("chorales.hdf5", "w", libver='latest') as f:
-			f.create_dataset("X", (X_matrix.shape[0], X_matrix.shape[1]), dtype='i', data=self.X)
-			f.create_dataset("y", (y_vec.shape[0],), dtype='i', data=self.y)
+			f.create_dataset("X_train", (X_train_npy.shape[0], X_train_npy.shape[1]), dtype='i', data=X_train_npy)
+			f.create_dataset("y_train", (y_train_npy.shape[0],), dtype='i', data=y_train_npy)
+			f.create_dataset("X_test", (X_test_npy.shape[0], X_test_npy.shape[1]), dtype='i', data=X_test_npy)
+			f.create_dataset("y_test", (y_test_npy.shape[0],), dtype='i', data=y_test_npy)
 			f.create_dataset("indices", (1, 3), dtype='i', data=indices)
 
+
+	# Split the quantized scores into a training and test split
+	def training_test_split(self, score_list):
+		if not self.analyzed:
+			raise Exception("Call analyze() first to get the quanitzed scores.")
+
+		shuffle(score_list)
+		num_scores = len(score_list)
+		split_point = int(num_scores * self.percentage_test)
+		self.training_split = score_list[split_point:]
+		self.test_split = score_list[:split_point]
+		print "Total scores: %d" % len(score_list)
+		print "Training split size: %d" % len(self.training_split)
+		print "Test split size: %d" % len(self.test_split)
+		return self.training_split, self.test_split
 
 	# Quantize a score
 	def quantize_score(self, score):
@@ -519,8 +575,8 @@ class SopranoFeaturizer(object):
 			s += feature + ": " + str(lst) + "\n"
 		s += "INDICES: %s\n" % str(self.indices)
 		s += "CHORD INDICES: 1 to %d [example chord: %s]\n" % (len(self.chords), str(list(self.chords)[0]))
-		s += "X SHAPE: %d examples, %d features\n" % (len(self.X), len(self.X[0]) if len(self.X) > 0 else 0)
-		s += "Y SHAPE: %d\n" % len(self.y)
+		s += "Test-training split: %d training chorales, %d test chorales\n" % (len(self.training_split), len(self.test_split))
+		s += "Test-training examples: %d for training, %d for test\n" % (len(self.X_train), len(self.X_test))
 		s += "---------------------------------------\n"
 		return s
 
@@ -529,7 +585,7 @@ class SopranoFeaturizer(object):
 	
 
 #from wrangle1 import *
-sf = SopranoFeaturizer(10)
+sf = SopranoFeaturizer(40)
 sf.analyze()
 sf.featurize()
 sf.verify()

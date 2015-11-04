@@ -67,7 +67,7 @@ function make_model(data)
    local model = nn.Sequential()
 
    model:add(nn.LookupTable(data.target_size, opt.word_vec_size))
-   --model:add(nn.Dropout(opt.dropoutProb))
+   model:add(nn.Dropout(opt.dropoutProb))
    model:add(nn.SplitTable(1, 2))
    
    model:add(nn.Sequencer(nn.LSTM(opt.word_vec_size, opt.rnn_size)))
