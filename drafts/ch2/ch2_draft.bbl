@@ -1,0 +1,320 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{allan2005harmonising}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Allan}{A.}%
+     {Moray}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Williams}{W.}%
+     {Christopher~KI}{C.~K.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{chorales, machine learning, harmonization}
+  \strng{namehash}{AMWCK1}
+  \strng{fullhash}{AMWCK1}
+  \field{labelyear}{2005}
+  \field{sortinit}{A}
+  \field{pages}{25\bibrangedash 32}
+  \field{title}{Harmonising chorales by probabilistic inference}
+  \field{volume}{17}
+  \field{journaltitle}{Advances in neural information processing systems}
+  \field{year}{2005}
+\endentry
+
+\entry{eck2002structure}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Eck}{E.}%
+     {Douglas}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schmidhuber}{S.}%
+     {Juergen}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{LSTM, RNN, neural networks, jazz}
+  \strng{namehash}{EDSJ1}
+  \strng{fullhash}{EDSJ1}
+  \field{labelyear}{2002}
+  \field{sortinit}{E}
+  \field{title}{A first look at music composition using lstm recurrent neural
+  networks}
+  \field{journaltitle}{Istituto Dalle Molle Di Studi Sull Intelligenza
+  Artificiale}
+  \field{annotation}{%
+  Upon examining attempts at automated composition using standard recurrent
+  neural networks (RNNs), the authors Eck and Schmidhuber conclude that these
+  models alone fail to grasp larger musical structures, and therefore are
+  unsuccessful at generating convincing musical compositions. However, a subset
+  of RNNs labeled LSTMs (Long Short-Term Memory) have shown much greater
+  promise due to their ability to retain information about decisions in
+  previous time frames. With respect to music generation, the authors
+  demonstrate its ability to successfully learn a 12-bar blues form and
+  improvise melodies over those harmonies.%
+  }
+  \field{year}{2002}
+\endentry
+
+\entry{franklin2006jazz}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Franklin}{F.}%
+     {Judy~A}{J.~A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {World Scientific}%
+  }
+  \keyw{jazz, neural networks, RNN}
+  \strng{namehash}{FJA1}
+  \strng{fullhash}{FJA1}
+  \field{labelyear}{2006}
+  \field{sortinit}{F}
+  \field{number}{04}
+  \field{pages}{623\bibrangedash 650}
+  \field{title}{Jazz melody generation using recurrent networks and
+  reinforcement learning}
+  \field{volume}{15}
+  \field{journaltitle}{International Journal on Artificial Intelligence Tools}
+  \field{year}{2006}
+\endentry
+
+\entry{goel2014polyphonic}{incollection}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Goel}{G.}%
+     {Kratarth}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vohra}{V.}%
+     {Raunaq}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sahoo}{S.}%
+     {JK}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Springer}%
+  }
+  \keyw{machine learning, chorales, neural networks, LSTM}
+  \strng{namehash}{GKVRSJ1}
+  \strng{fullhash}{GKVRSJ1}
+  \field{labelyear}{2014}
+  \field{sortinit}{G}
+  \field{booktitle}{Artificial Neural Networks and Machine Learning--ICANN
+  2014}
+  \field{pages}{217\bibrangedash 224}
+  \field{title}{Polyphonic Music Generation by Modeling Temporal Dependencies
+  Using a RNN-DBN}
+  \field{year}{2014}
+\endentry
+
+\entry{greff2015lstm}{article}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Greff}{G.}%
+     {Klaus}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Srivastava}{S.}%
+     {Rupesh~Kumar}{R.~K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Koutnik}{K.}%
+     {Jan}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Steunebrink}{S.}%
+     {Bas~R.}{B.~R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schmidhuber}{S.}%
+     {Jurgen}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{LSTM, neural networks, chorales}
+  \strng{namehash}{GK+1}
+  \strng{fullhash}{GKSRKKJSBRSJ1}
+  \field{labelyear}{2015}
+  \field{sortinit}{G}
+  \field{abstract}{%
+  Several variants of the Long Short-Term Memory (LSTM) architecture for
+  recurrent neural networks have been proposed since its inception in 1995. In
+  recent years, these networks have become the state-of-the-art models for a
+  variety of machine learning problems. This has led to a renewed interest in
+  understanding the role and utility of various computational components of
+  typical LSTM variants. In this paper, we present the first large-scale
+  analysis of eight LSTM variants on three representative tasks: speech
+  recognition, handwriting recognition, and polyphonic music modeling. The
+  hyperparameters of all LSTM variants for each task were optimized separately
+  using random search and their importance was assessed using the powerful
+  fANOVA framework. In total, we summarize the results of 5400 experimental
+  runs (about 15 years of CPU time), which makes our study the largest of its
+  kind on LSTM networks. Our results show that none of the variants can improve
+  upon the standard LSTM architecture significantly, and demonstrate the forget
+  gate and the output activation function to be its most critical components.
+  We further observe that the studied hyperparameters are virtually independent
+  and derive guidelines for their efficient adjustment.%
+  }
+  \field{title}{LSTM: A Search Space Odyssey}
+  \verb{url}
+  \verb http://adsabs.harvard.edu/abs/2015arXiv150304069G
+  \endverb
+  \field{journaltitle}{arXiv preprint arXiv:1503.04069}
+  \field{year}{2015}
+\endentry
+
+\entry{hild1992harmonet}{inproceedings}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Hild}{H.}%
+     {Hermann}{H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Feulner}{F.}%
+     {Johannes}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Menzel}{M.}%
+     {Wolfram}{W.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{neural networks, chorales, harmonization}
+  \strng{namehash}{HHFJMW1}
+  \strng{fullhash}{HHFJMW1}
+  \field{labelyear}{1992}
+  \field{sortinit}{H}
+  \field{booktitle}{Advances in Neural Information Processing Systems}
+  \field{pages}{267\bibrangedash 274}
+  \field{title}{HARMONET: A neural net for harmonizing chorales in the style of
+  JS Bach}
+  \field{year}{1992}
+\endentry
+
+\entry{mozer1994neural}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Mozer}{M.}%
+     {Michael~C}{M.~C.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Taylor \& Francis}%
+  }
+  \keyw{harmonization, chorales, neural networks}
+  \strng{namehash}{MMC1}
+  \strng{fullhash}{MMC1}
+  \field{labelyear}{1994}
+  \field{sortinit}{M}
+  \field{number}{2-3}
+  \field{pages}{247\bibrangedash 280}
+  \field{title}{Neural network music composition by prediction: Exploring the
+  benefits of psychoacoustic constraints and multi-scale processing}
+  \field{volume}{6}
+  \field{journaltitle}{Connection Science}
+  \field{year}{1994}
+\endentry
+
+\entry{petri1995bebop}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Toiviainen}{T.}%
+     {Petri}{P.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{language}{1}{%
+    {English}%
+  }
+  \list{publisher}{1}{%
+    {University of California Press}%
+  }
+  \keyw{jazz, bebop, neural networks}
+  \strng{namehash}{TP1}
+  \strng{fullhash}{TP1}
+  \field{labelyear}{1995}
+  \field{sortinit}{T}
+  \field{abstract}{%
+  In cognitive science and research on artificial intelligence, there are two
+  central paradigms: symbolic and analogical. Within the analogical paradigm,
+  artificial neural networks (ANNs) have recently been successfully used to
+  model and simulate cognitive phenomena. One of the most prominent features of
+  ANNs is their ability to learn by example and, to a certain extent,
+  generalize what they have learned. Improvisation, the art of spontaneously
+  creating music while playing or singing, fundamentally has an imitative
+  nature. Regardless of how much one studies and analyzes, the art of
+  improvisation is learned mostly by example. Instead of memorizing explicit
+  rules, the student mimics the playing of other musicians. This kind of
+  learning procedure cannot be easily modeled with rule- based symbolic
+  systems. ANNs, on the other hand, provide an effective means of modeling and
+  simulating this kind of imitative learning. In this article, a model of jazz
+  improvisation that is based on supervised learning ANNs is described. Some
+  results, achieved by simulations with the model, are presented. The
+  simulations show that the model is able to apply the material it has learned
+  in a new context. It can even create new melodic patterns based on the
+  learned patterns. This kind of adaptability is a direct consequence of the
+  fact that the knowledge resides in a distributed form in the network.%
+  }
+  \field{issn}{07307829}
+  \field{number}{4}
+  \field{pages}{pp. 399\bibrangedash 413}
+  \field{title}{Modeling the Target-Note Technique of Bebop-Style Jazz
+  Improvisation: An Artificial Neural Network Approach}
+  \verb{url}
+  \verb http://www.jstor.org/stable/40285674
+  \endverb
+  \field{volume}{12}
+  \field{journaltitle}{Music Perception: An Interdisciplinary Journal}
+  \field{annotation}{%
+  Petri Toivainen presents an artificial neural network (ANN) that given a
+  series of chord changes is able to improvise over them in a jazz bebop style.
+  The target-note technique describes provides signposts at the beginning of
+  each chord change, giving the ANN targets with which to arrive at using a
+  series of melodic patterns. The result is a suprisingly decent melodic
+  improvisation given a small training set - consisting of Clifford Brown's
+  solos on "All the Things You Are" and "Getrude's Bounce".Toivainen's paper is
+  an early example of a computational approach to jazz composition.%
+  }
+  \field{year}{1995}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

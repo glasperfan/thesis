@@ -1,0 +1,69 @@
+\documentclass[11pt]{article}
+\usepackage{basecommon}
+\usepackage[margin=1.5in, top=1in]{geometry}
+\usepackage[backend=bibtex, natbib=true, autocite=superscript, style=authoryear-ibid]{biblatex}
+\usepackage{hyperref}
+\usepackage{url}
+\addbibresource{../ch1/citations_annotated.bib}
+\usepackage{setspace}
+\doublespacing
+\title{Chapter 2 (DRAFT)}
+\author{Hugh Zabriskie}
+\date{3 December 2015}
+\begin{document}
+\maketitle{}
+
+\section{Literature Review}
+
+\subsection{Purpose of the lit review}
+
+\begin{enumerate}
+\item To inform the reader of the most important research needed to understand the research question.
+\item To give me credibility as someone who knows what they are talking about. 
+\item To be organized so that the the review leads the reader to a ``gap`` or ``conflict`` in the literature.
+\end{enumerate}
+
+\subsection{Previous Work}
+
+\citet{hild1992harmonet} presented the first effective neural network approach for harmonizing chorales, generation harmonizations on the level of an "improvising organist" (p. 272). The task decomposed into three subtasks, each learned by a neural net. A harmonic skeleton is first created by sweeping through the chorale melody and determining a harmony for each beat, where harmony is represented by a unique figured bass notation. For each time step $t$, the network takes an input a window of information, including the harmonies chosen in the interval$[t-3, t-1]$ and the melody pitches in the interval $[t-1, t+1]$. The resulting harmonic skeleton is passed to another network to generate a chord skeleton, which selects the inner voices based on the input figured bass, and a final network adds ornamental eighth notes to restore passing tones between chords. A weakness in HARMONET is the addition of external "chorale constraints" \citep[p.~271]{hild1992harmonet} that are used to construct the chord skeleton, introducing a potential distortion in the network's learning process. Allan and Williams (2005) removed these constraints when they implemented this approach using Hidden Markov Models (HMMs). \\
+
+Substantial work has been done in the field of music generation using RNNs and LSTMs that demonstrates their ability to learn complicated musical structures and relate temporally distant events. \citet{petri1995bebop} presents a neural network that generates a jazz bebop melody over series of chord changes. The network achieves melodic continuity by using a "target-note technique", where the end of the melodic pattern (the target notes) over the previous harmony is used to generate the melody over the current harmony. \citet{eck2002structure} used LSTMs to compose chords and a suitable melody over a 12-bar blues form. The authors improved on the results of \citet{mozer1994neural}, who used RNNs to compose melodies with chordal accompaniment but found the resulting music lacked larger thematic and phrase structure. They attribute the cause of Mozer's concern to the "vanishing gradients" problem (described briefly in chapter 1) and use LSTMs to first generate the chordal structure and use that as a input to the LSTMs that generates a melody. \citet{franklin2006jazz} uses two inter-recurrent LSTMs to compose jazz melodies over a chord progression, training on a dataset of well-known jazz standard melodies. \citet{goel2014polyphonic} demonstrated the successful application of their modified LSTM architecture to the task of polyphonic music generation over a collection of musical datasets that includes Bach's chorale harmonizations. \\
+
+Work has also been done to determine with network are most favorable to the task of harmonization.  A large-scale analysis of eight LSTM networks on the task of chorale harmonization was conducted by \citet{greff2015lstm} to determine which modifications represent a significant improvement in architecture. The chorale dataset was the popular MIDI dataset created by \citet{allan2005harmonising}, and the evaluation metric was negative log likelihood. Each modification was simple enough to be isolated, such as the removal of a gate in the LSTM memory cell or full gate recurrence (FGR), which adds a recurrent connection at each gate. Interestingly, they discovered that the none of the modified architecture represented significant improvements over the "vanilla", unmodified LSTM \citep[p.~7]{greff2015lstm}. Instead, the choice of hyperparameters, such as learning rate and hidden layer size, were determined to be the most crucial factors. Moreover, each hyperparameter could be adjusted independently since the interactions between them was measured to be relatively small. \citet{goel2014polyphonic}, however, did find a substantial improvement in their LSTM architecture that incorporates a Deep Belief Network (DBN), which learns to extract a deep hierarchical representation of the music data. \\
+
+
+\section{Precursor: Chorale Harmonization Implementation}
+
+I will first replicate results on recent chorale harmonization using LSTMs to create a baseline model for the harmonization task.
+The chorale data used in this paper comes from the corpus provided with \textsc{music21}, maintained by Professor Michael Scott Cuthbert at MIDI and originally obtained from the MIDI archive at Yale University. Recent papers (\cite{greff2015lstm}; \cite{allan2005harmonising}; \cite{goel2014polyphonic}) have depended on a chorale data set encoded in MIDI, but this representation fails to distinguish between the melody and the harmonization beneath. The data used here correctly isolates each voice within the chorale, restoring information about the linearity of the voices and events such as voice crossing.
+
+\subsection{Preprocessing}
+
+In order to create a numerical representation of the chorale data, I used iterated over the 348 four-voice chorales and generated a feature space for each of the following features.
+
+\begin{enumerate}
+\item Pitch, encoded in MIDI values. A search across all chorales indicated that each voice had a well-defined pitch range, verified by Madsen (2002): 
+\begin{itemize}
+\item \textit{soprano}: [60, 81]
+\item \textit{alto}: [53, 74]
+\item \textit{tenor}: [48, 69]
+\item \textit{bass}: [36, 64]
+\end{itemize}
+\item Beat strength, where 1 represents the downbeat within a measure.
+\item Fermata present - a binary feature to indicate points of cadential resolution.
+\item Number of quarter-note beats until the next fermata.
+\item Number of beats until the end of the chorale.
+\item Time signature (almost exclusively '3/4' and '4/4').
+\item Key signature, represented the number of sharps or flats.
+\item Key mode, either major or minor.
+\end{enumerate}
+
+The Python script used to preprocess the chorales (see wrangle.py in Appendix B) \footnote{There will be an Appendix B that contains the most important code for the project.} extracts the above features from each time step of each chorale, and stores the generated training and tests in an HDF5 file. The output is then fed to a Lua script that uses Torch, a scientific computing framework with machine learning libraries, to construct the network and performed classified learning.  
+
+
+
+\printbibliography
+
+
+
+\end{document}

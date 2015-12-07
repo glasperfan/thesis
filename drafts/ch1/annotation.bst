@@ -223,15 +223,15 @@ FUNCTION {format.authors}
 }
 
 %annotation addition
-%FUNCTION {format.annotate}
-%{ annote empty$
-%        { "" }
-%        { " \begin{quotation}\noindent "
-%          annote
-%          * " \end{quotation} " *
-%        }
-%      if$
-%}
+FUNCTION {format.annotate}
+{ annote empty$
+        { "" }
+        { " \begin{quotation}\noindent "
+          annote
+          * " \end{quotation} " *
+        }
+      if$
+}
 
 
 FUNCTION {format.editors}
@@ -570,8 +570,8 @@ FUNCTION {article}
   note output
   fin.entry
 %added for annotation
-%  format.annotate write$
-%  newline$
+  format.annotate write$
+  newline$
 }
 
 FUNCTION {book}

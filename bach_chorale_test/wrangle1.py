@@ -1,5 +1,6 @@
 from music21 import *
 import math
+import sys
 from ordered_set import OrderedSet
 from random import shuffle
 import numpy as npy
@@ -150,6 +151,37 @@ def removeRests(_stream):
 			_stream.remove(nr)
 	return _stream
 
+# If a chord n is found in a measure ms, replace it with the top note in the chord
+def replaceChordWithNote(n, ms):
+	top_note = note.Note(n[-1].pitch.nameWithOctave, quarterLength=n[-1].quarterLength)
+	ms.insert(n.offset, top_note)
+	ms.remove(n)
+
+
+# If there is no fermata in the last measure, add one to the last beat (and any
+# previous beats that have the same harmony - to cover where the last note was longer than 1 beat)
+def ensureFermatas(score):
+	s, a, t, b = [getPart(score, x) for x in PARTS] # get parts
+	sn, an, tn, bn = [getNotes(x) for x in [s, a, t, b]]
+	last_measure_notes = [getMeasures(x)[-1].notes for x in [s, a, t, b]] # get last measures
+	
+	# Ensure fermatas occur in all parts
+	for idx, n in enumerate(sn):
+		if hasFermata(n):
+			for h in [sn[idx], tn[idx], bn[idx]]:
+				if not hasFermata(h):
+					h.expressions.append(expressions.Fermata())
+
+	# Ensure fermata occurs in the last measure (lm = last measure)
+	for lmn in last_measure_notes:
+		lmn[-1].expressions.append(expressions.Fermata())
+
+
+
+
+
+
+
 # Transforms the specified part in the score into uniform quarter notes
 def quantize(_score, _partID):
 	part = getPart(_score, _partID)
@@ -172,9 +204,7 @@ def quantize(_score, _partID):
 		while index < note_num:
 			n = notes[index]
 			if isChord(n):
-				top_note = note.Note(n[-1].pitch.nameWithOctave, quarterLength=n[-1].quarterLength)
-				ms.insert(n.offset, top_note)
-				ms.remove(n)
+				replaceChordWithNote(n, ms)
 
 			# skip quarter notes
 			if length(n) == 1:
@@ -187,6 +217,8 @@ def quantize(_score, _partID):
 				context_duration = length(n)
 				while context_duration % 1 != 0:
 					next_note = notes[index + len(context)]
+					if isChord(next_note):
+						replaceChordWithNote(next_note, ms)
 					context.append(next_note)
 					context_duration += length(next_note)
 				if context_duration == 1.0:
@@ -194,12 +226,12 @@ def quantize(_score, _partID):
 					for other_note in context[1:]:
 						ms.remove(other_note)
 				# keep the 1st and last note
-				elif context_duration == 2.0:
-					n.duration.quarterLength = 1.0
-					context[-1].duration.quarterLength = 1.0
-					map(lambda x : ms.remove(x), context[1:-1])
-				else:
-					print "Weird syncopation"
+				elif context_duration >= 2.0:
+					# make the last k notes into quarter notes
+					for n in context[-int(context_duration):]:
+						n.duration.quarterLength = 1.0
+					map(lambda x : ms.remove(x), context[:-int(context_duration)])
+
 
 			# break down half notes, dotted halves, whole notes (keeping fermatas)
 			elif length(n) > 1 and length(n) % 1 == 0:
@@ -357,17 +389,20 @@ class SopranoFeaturizer(object):
 
 	# Collect all scores and preprocess them
 	def gather_scores(self):
-		iterator = corpus.chorales.Iterator(1, self.num_scores, numberingSystem = 'riemenschneider')
-		self.quantized = []
+		iterator = corpus.chorales.Iterator(numberingSystem = 'riemenschneider')
+		quantized = []
 		for score in iterator:
 			if len(score.parts) == 4:
-				# quantize
-				self.quantize_score(score)
-				self.quantized.append(score)
+				quantized.append(self.quantize_score(score))
+			if len(quantized) == self.num_scores:
+				break
+		assert len(quantized) == self.num_scores
+		print "Gathered %d 4-part chorales" % len(quantized)
+		return quantized
 
 	# Analyze the chorales and determine the possible values for each feature
 	def analyze(self):
-		self.gather_scores()
+		self.quantized = self.gather_scores()
 		for score in self.quantized:
 			if len(score.parts) != 4:
 				continue		
@@ -400,7 +435,7 @@ class SopranoFeaturizer(object):
 				self.offset_ends.add(self.get_offset_end(n, last_note))
 
 				# Distance to next cadence
-				self.cadence_dists.add(self.get_cadence_dist(n, index, notes_lst, fermata_locations))
+				self.cadence_dists.add(self.get_cadence_dist(n, index, notes_lst, fermata_locations, score))
 
 				# Pitch
 				self.pitches.add(self.get_pitch(n))
@@ -466,10 +501,10 @@ class SopranoFeaturizer(object):
 				input_vec.append(self.pitches.index(self.get_pitch(n)) + self.indices['pitch'][0])
 				input_vec.append(self.beats.index(self.get_beat_str(n)) + self.indices['beat_str'][0])
 				input_vec.append(self.get_iscadence(n) + self.indices['cadence?'][0])
-				input_vec.append(self.cadence_dists.index(self.get_cadence_dist(n, index, soprano_notes, fermata_locations)) + self.indices['cadence_dist'][0])
+				input_vec.append(self.cadence_dists.index(self.get_cadence_dist(n, index, soprano_notes, fermata_locations, score)) + self.indices['cadence_dist'][0])
 				input_vec.append(self.offset_ends.index(self.get_offset_end(n, last_note)) + self.indices['offset_end'][0])
 				input_vec.append(self.time_sigs.index( (time_sig.numerator, time_sig.denominator) ) + self.indices['time'][0])
-				input_vec.append(self.keys.index(key_sig.sharps) + self.indices['key'][0])
+				input_vec.append(self.keys.index(key_sig.sharps) + self.indices['key'][0]) # TODO: fix for negative values (flats)
 				input_vec.append(self.key_modes.index(key_sig.mode) + self.indices['mode'][0])
 
 				# +1 since Torch must be 1-indexed
@@ -513,7 +548,7 @@ class SopranoFeaturizer(object):
 		X_test_npy = npy.matrix(self.X_test)
 		y_test_npy = npy.array(self.y_test)
 		indices = [0, self.max_index, len(self.chords)]
-		print indices
+
 		with h5py.File("chorales.hdf5", "w", libver='latest') as f:
 			f.create_dataset("X_train", (X_train_npy.shape[0], X_train_npy.shape[1]), dtype='i', data=X_train_npy)
 			f.create_dataset("y_train", (y_train_npy.shape[0],), dtype='i', data=y_train_npy)
@@ -532,6 +567,12 @@ class SopranoFeaturizer(object):
 		split_point = int(num_scores * self.percentage_test)
 		self.training_split = score_list[split_point:]
 		self.test_split = score_list[:split_point]
+
+		# Make sure there is no training, test_split overlap
+		for s in self.training_split:
+			for t in self.test_split:
+				assert s != t
+
 		print "Total scores: %d" % len(score_list)
 		print "Training split size: %d" % len(self.training_split)
 		print "Test split size: %d" % len(self.test_split)
@@ -539,9 +580,12 @@ class SopranoFeaturizer(object):
 
 	# Quantize a score
 	def quantize_score(self, score):
+		# Quarter-note quantization
 		for voice in PARTS:
 			quantize(score, voice)
-		self.quantized.append(score)
+		# Ensure fermatas at the end of the piece
+		ensureFermatas(score)
+		return score
 
 	# Returns the pitch value for the input note
 	def get_pitch(self, n):
@@ -556,10 +600,19 @@ class SopranoFeaturizer(object):
 		return 1 if hasFermata(n) else 0
 
 	# Returns the input note's distance to the next cadence
-	def get_cadence_dist(self, n, index, notes_lst, fermata_locations):
-		if index == len(notes_lst) - 1 or hasFermata(n):
-			return 0
-		return fermata_locations[index:].index(True)
+	def get_cadence_dist(self, n, index, notes_lst, fermata_locations, score):
+		try:
+			if index == len(notes_lst) - 1 or hasFermata(n):
+				return 0
+			return fermata_locations[index:].index(True)
+		except Exception as e:
+			print fermata_locations
+			print index
+			print n
+			print score.metadata.title
+			score.show()
+			print e
+			raise Exception()
 
 	# Returns the input note's distance to the end of the chorale 
 	def get_offset_end(self, n, last_note):
@@ -584,8 +637,8 @@ class SopranoFeaturizer(object):
 
 	
 
-#from wrangle1 import *
-sf = SopranoFeaturizer(40)
+from wrangle1 import *
+sf = SopranoFeaturizer(80) #int(sys.argv[1]))
 sf.analyze()
 sf.featurize()
 sf.verify()

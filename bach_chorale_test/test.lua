@@ -56,7 +56,7 @@ function trainer(X, y, model, criterion)
 		dataset[j] = {X[j], y[j]}
 	end
 	trainer = nn.StochasticGradient(model, criterion)
-	trainer.learningRate = 0.003
+	trainer.learningRate = 0.004  -- best was 0.003
 	trainer.maxIteration = 20
 	trainer:train(dataset)
 
