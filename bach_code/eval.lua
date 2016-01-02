@@ -135,8 +135,8 @@ end
 
 function main() 
 	-- Contants
-	local embedding_size = 20
-	local hidden_size = 75
+	local embedding_size = 100
+	local hidden_size = 100
 	local epochs = 200
 	local learning_rate = 0.00001
 

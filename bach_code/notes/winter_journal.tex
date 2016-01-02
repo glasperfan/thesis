@@ -59,9 +59,27 @@ indices $\to$ MIDI tuple $\to$ note tuple $\to$ musical score (via music21)
 \textbf{Result:} 
 \begin{itemize}
 \item Mostly a thinking day. While HARMONET is an old model, it is remarkably well thought-out, and papers within the last five year that make use of the chorales either do not discuss harmonization in any detail or do not use harmonization as a machine learning task. I think using the general approach of HARMONET along with the improvement of LSTMs, will represent a strong baseline for moving forward with the inventions.
+\item Emailed Sasha - haven't heard back.
 \end{itemize}
 
 \subsection{1/1}
-\textbf{Goal:} 
+\textbf{Goal:} The goal today is to get the first experiment up and running, that being a harmonization task using the basic neural network (non-recurrent). \\ \\
+\textbf{Result:}
+\begin{itemize}
+\item \texttt{featurize.py} was completely re-done to be oriented towards the task of learning harmonization by way of roman numeral analysis. The whole script runs in about an hour. It's a big improvement, considering that the original approach had 1500 possibilities for chords, and it's been reduced to 57. This approach also recognizes the similarity between chords by identifying the harmony before the voicing. 
+\item Currently, this only uses a 3-layer non-recurrent neural network. After playing around with parameters, I found some success with a learning rate of 0.00001, an embedding size of 20, and a hidden layer of size 75. The minimum error rate on the test set was around 86. A validation set is needed to test parameters, but that should only be done for the recurrent models. This is merely preliminary.
+\item This model will be saved so that it can be compared against once results are gathered for recurrent models.
+\item \textbf{Experiment 1 results:} Due to the lack of context in making decisions, the network is unable to develop well-structured harmonizations. It does, however, immediately note the importance of the tonic and dominant chords, and the vast majority of each produced harmonization is simply a combination of I and V. Occasionally, the minor i is chosen. There is also a snapshot of where it manages to exactly identify a few dominant harmonies (but misses several others). Generally, the machine learns to spot moments of \textit{development} - that is, more complicated harmonic passages - which it typically labels as a dominant chord. Thus, an emerging recognition of tonic-dominant motion is emerging with very little context! 
+\item See \texttt{results/experiment1b.txt} for an example of a more successful test.
+\item After this task is working properly, I'll move on to learning how to select the inner voices.
+\end{itemize}
 
+
+\subsection{1/2}
+\textbf{Goal:} The goal today is get an LSTM working \textit{well} for the harmonization task. If this succeeds, we should see similar success on the task of inner voices. \\ \\
+\textbf{Result:}
+\begin{itemize}
+\item
+\item
+\end{itemize}
 \end{document}
