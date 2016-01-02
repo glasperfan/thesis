@@ -2,6 +2,9 @@ require 'hdf5'
 
 local data = torch.class("data")
 
+function data.opt_params(cmd)
+end
+
 -- Adapted from /group/torch/rnn_lm/data.lua
 function data:__init(data_file)
    local f = hdf5.open(data_file, 'r')

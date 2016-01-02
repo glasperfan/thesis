@@ -5,7 +5,7 @@
 ## Description: Useful constants and functions for manipulating music21 objects.
 #
 #########
-
+import os
 from music21 import *
 
 ## CONSTANTS ##
@@ -42,6 +42,9 @@ def getTimeSignature(_stream):
 def getKeySignature(_stream):
 	return _stream.flat.getElementsByClass('KeySignature')[0]
 
+def getKeyFromSignature(key_sig):
+	return key.Key(key_sig.getScale().getTonic(), key_sig.mode)
+
 def getMeasures(_stream):
 	return _stream.getElementsByClass(stream.Measure)
 
@@ -72,3 +75,15 @@ def hasFermata(n):
 def addFermata(notes):
 	for n in notes:
 		n.expressions = [expressions.Fermata()]
+
+# Freeze objects for later use (especially in case one step crashes)
+def freezeObject(obj, filename):
+	if not os.path.exists("_frozen"):
+		os.makedirs("_frozen")
+	with open('_frozen/%s.txt' % filename, 'w') as f:
+		f.write(str(obj))
+
+# Thaw an object
+def thawObject(filename):
+	with open('_frozen/%s.txt' % filename, 'r') as f:
+		return eval(f.read())

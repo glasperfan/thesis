@@ -1,0 +1,64 @@
+\title{Winter Break Journal}
+\author{Hugh Zabriskie}
+\documentclass[12pt]{article}
+\begin{document}
+\maketitle
+
+
+\section{Initial Experiments}
+
+\subsection{1/28}
+The initial data cleaning and feature scraping is complete. The corpus consists of 326 4-voice chorales, each with very consistent formatting. Only chorales in '4/4' and '3/4' time were found. Each beat contains four notes. Currently, the features selected from each beat are as follows:
+\begin{enumerate}
+\item The melody pitch
+\item The beat strength, appropriately weighted. In '4/4' for example, the beat weights are (1.0, 0.25, 0.5, 0.25).
+\item The presence of a fermata, a binary feature. Indicates a cadence.
+\item The distance until the next fermata (or cadence). This is 0 if there is a cadence on this beat.
+\item The offset (in beats) from the beginning of the piece.
+\item The offset (in beats) from the end of the piece.
+\item The time signature.
+\item The number of accidentals in the key signature (C major = 0, sharps are 1-7, flats are 8-14).
+\item The mode of the key signature (i.e. 'major', 'minor').
+\end{enumerate}
+
+The chorales were divided into training and test sets, initially with a 90/10 test split. In further experiments, a cross-validation set should be included. Each chorale is then written to a \textit{separate} HDF5 file to be processed in torch. The isolation of data points into chorales is meant to facilitate the evaluation of results later on, so that the results might be re-converted to a musical score. \\
+
+One question is: in order to convert from the results (an array of chord indices) into actual chords, the dictionary mapping indices to chords will need to be stored...not sure if this happens yet. Check metadata.md. From there the process is:
+\begin{center}
+indices $\to$ MIDI tuple $\to$ note tuple $\to$ musical score (via music21)
+\end{center}
+
+\subsection{1/29}
+\textbf{Goal:} The goal is build a vanilla neural network using \textsc{torch} that can accept the batch of chorale files, evaluate them and update its parameters, and then output a final evaluation metric (even a rudimentary one, like overall chord accuracy). Also, to set up the process journal. \\
+\textbf{Result: } The process journal (this journal) is up and running!
+\begin{itemize}
+\item \texttt{load.lua} created to consolidate the training chorales into one dataset, stored in \texttt{data/train.hdf5}.
+\item \texttt{eval.lua} created to create the model and criterion for the first experiment. 
+\item I tried a range of parameters to see which improved performance. The parameters were epoch, embedding, hidden size, and learning rate, and they were evaluated based on negative log likelihood error. The best parameter set from the below options was $\{10, 10, 199.34527809156, 15, 0.001\}$.
+\begin{itemize}
+\item embedding sizes = $\{10, 20, 30, 40, 80\}$
+\item hidden sizes = $\{5, 15, 30, 60\}$
+\item epochs = $\{10, 30\}$
+\item learning rates = $\{0.1, 0.01, 0.001, 0.0001, 0.00001\}$
+\end{itemize}
+\item The results were disappointing. While the training error converged, test error continued to increase. This suggests high variance, which could be adjusted by reducing the feature set (maybe eliminating \texttt{offset-start} as a feature?) or adding regularization.
+\item See \texttt{bach\_code/experiment1.txt} for more results from initial tests.
+\end{itemize}
+
+\subsection{1/30}
+\textbf{Goal:} The goal today is to see improve if we can improve on the results from the initial experiment performed yesterday. Potential methods are altering or deleting features, as well as adding regularization. A secondary goal is consider better methods for evaluation.
+\textbf{Result: }
+\begin{itemize}
+\item Based on some sense of success from the first trial I did about a month ago, I tried deleting the offset-start feature to see if that was causing some redundancy due to the offset-end feature. This showed no significant improvements.
+\item The next step was to play around with other means of dealing with high variance. I introduced dropout to add regularization. I also introduced a second hidden layer and experimented with several different hidden layer sizes. Again, no significant improvement was seen.
+\item I believe that the largest problem is that either the model needs to be segmented into sequential nets, or there needs to be a better representation for chords.
+\end{itemize}
+
+\subsection{1/31}
+\textbf{Goal:} The goal today is to develop a new model that more closely models how chorales are composed today as 4-voice counterpoint exercises. This approach is based on both HARMONET (1992) and Schmidhuber (2015). There will be two LSTMs
+\textbf{Result:} 
+\begin{itemize}
+\item Mostly a thinking day. While HARMONET is an old model, it is remarkably well thought-out, and papers within the last five year that make use of the chorales either do not discuss harmonization in any detail or do not use harmonization as a machine learning task. I think using the general approach of HARMONET along with the improvement of LSTMs, will represent a strong baseline for moving forward with the inventions.
+\end{itemize}
+
+\end{document}

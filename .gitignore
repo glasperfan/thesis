@@ -30,4 +30,5 @@ var/
 *.spec
 
 # MY exclusions
-
+bach_code/torch-hdf5/
+bach_code/torch-totem/

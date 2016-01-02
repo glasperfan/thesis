@@ -35,7 +35,8 @@
       <attributes>
         <divisions>10080</divisions>
         <key>
-          <fifths>0</fifths>
+          <fifths>-1</fifths>
+          <mode>minor</mode>
         </key>
         <time>
           <beats>4</beats>
@@ -245,14 +246,6 @@
         </notations>
       </note>
       <barline location="right">
-        <bar-style>light-heavy</bar-style>
-      </barline>
-    </measure>
-    <measure number="0">
-      <attributes>
-        <divisions>10080</divisions>
-      </attributes>
-      <barline location="right">
         <bar-style>regular</bar-style>
       </barline>
     </measure>
@@ -302,9 +295,9 @@
         <beam number="1">begin</beam>
         <notations/>
       </note>
-      <barline location="right">
+<!--       <barline location="right">
         <bar-style>regular</bar-style>
-      </barline>
+      </barline> -->
     </measure>
     <measure number="6">
       <attributes>
@@ -666,7 +659,8 @@
       <attributes>
         <divisions>10080</divisions>
         <key>
-          <fifths>0</fifths>
+          <fifths>-1</fifths>
+          <mode>minor</mode>
         </key>
         <time>
           <beats>4</beats>
@@ -880,14 +874,6 @@
           <fermata type="inverted"/>
         </notations>
       </note>
-      <barline location="right">
-        <bar-style>light-heavy</bar-style>
-      </barline>
-    </measure>
-    <measure number="0">
-      <attributes>
-        <divisions>10080</divisions>
-      </attributes>
       <barline location="right">
         <bar-style>regular</bar-style>
       </barline>
@@ -1310,7 +1296,8 @@
       <attributes>
         <divisions>10080</divisions>
         <key>
-          <fifths>0</fifths>
+          <fifths>-1</fifths>
+          <mode>minor</mode>
         </key>
         <time>
           <beats>4</beats>
@@ -1528,14 +1515,6 @@
           <fermata type="inverted"/>
         </notations>
       </note>
-      <barline location="right">
-        <bar-style>light-heavy</bar-style>
-      </barline>
-    </measure>
-    <measure number="0">
-      <attributes>
-        <divisions>10080</divisions>
-      </attributes>
       <barline location="right">
         <bar-style>regular</bar-style>
       </barline>
@@ -1970,7 +1949,8 @@
       <attributes>
         <divisions>10080</divisions>
         <key>
-          <fifths>0</fifths>
+          <fifths>-1</fifths>
+          <mode>minor</mode>
         </key>
         <time>
           <beats>4</beats>
@@ -2186,14 +2166,6 @@
           <fermata type="inverted"/>
         </notations>
       </note>
-      <barline location="right">
-        <bar-style>light-heavy</bar-style>
-      </barline>
-    </measure>
-    <measure number="0">
-      <attributes>
-        <divisions>10080</divisions>
-      </attributes>
       <barline location="right">
         <bar-style>regular</bar-style>
       </barline>

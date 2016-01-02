@@ -1,0 +1,1 @@
+{'beatstr': (15, 17), 'pitch': (156, 177), 'time': (12, 14), 'pbefore': (178, 199), 'cadence_dists': (125, 153), 'mode': (10, 11), 'key': (1, 9), 'offset': (18, 124), 'pafter': (200, 221), 'cadence?': (154, 155)}

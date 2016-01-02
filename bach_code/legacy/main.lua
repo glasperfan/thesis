@@ -63,22 +63,26 @@ function eval(data)
    print(nll)
 end
 
-function make_model(data)
+function make_model(train_data)
    local model = nn.Sequential()
+   model.lookups_zero = {}
 
-   model:add(nn.LookupTable(data.target_size, opt.word_vec_size))
-   model:add(nn.Dropout(opt.dropoutProb))
-   model:add(nn.SplitTable(1, 2))
-   
-   model:add(nn.Sequencer(nn.LSTM(opt.word_vec_size, opt.rnn_size)))
+   model:add(nn.LookupTable(train_data.target_size, opt.word_vec_size))
+   model:add(nn.SplitTable(1, 3))
+
+   model:add(nn.Sequencer(nn.FastLSTM(opt.rnn_size, opt.rnn_size)))   
    for j = 2, opt.num_layers do
-      model:add(nn.Sequencer(nn.LSTM(opt.rnn_size, opt.rnn_size)))
       model:add(nn.Sequencer(nn.Dropout(opt.dropoutProb)))
+      model:add(nn.Sequencer(nn.FastLSTM(opt.rnn_size, opt.rnn_size)))
    end
-   
-   model:add(nn.Sequencer(nn.Linear(opt.rnn_size, data.target_size)))
+
+   model:add(nn.Sequencer(nn.Dropout(opt.dropoutProb)))
+   model:add(nn.Sequencer(nn.Linear(opt.rnn_size, train_data.target_size)))
    model:add(nn.Sequencer(nn.LogSoftMax()))
+
+   model:remember('both') 
    criterion = nn.SequencerCriterion(nn.ClassNLLCriterion())
+   
    return model, criterion
 end
 

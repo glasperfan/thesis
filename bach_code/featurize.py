@@ -1,6 +1,7 @@
 from helpers import * # includes music21
 import math
 import time
+import sys
 from ordered_set import OrderedSet
 from random import shuffle
 import numpy as npy
@@ -127,17 +128,30 @@ def feat_cadence(n):
 def feat_cadence_dist(n, index, fermata_locations):
 	return 0 if hasFermata(n) else fermata_locations[index:].index(True)
 
-# Featurize distance from the start of the chorale
-def feat_offset_start(index):
-	return index
-
-# Featurize distance from the end of the chorale
+# Featurize distance from the end of the chorale (approximately measured in measures)
 def feat_offset_end(index, score_length):
-	return score_length - index
+	return int(math.floor((score_length - index) / 4.))
 
 # Featurize the harmony as a tuple (ATB) at time i
 def feat_chord(i, a, t, b):
 	return a[i].midi, t[i].midi, b[i].midi
+
+# Featurize harmony (s, a, t, and b are notes, while 'key_sig' is a key signature object)
+def feat_harmony(s, a, t, b, key_obj):
+	voicing = [s,a,t,b]
+	rn = roman.romanNumeralFromChord(chord.Chord([s,a,t,b]), key_obj, True)
+	rn_fig = simplify_harmony(rn)
+	return rn_fig
+
+# Converts all unknown harmonies to either a triad or a seventh chord
+def simplify_harmony(rn):
+	numeral = rn.romanNumeral
+	if '7' in rn.figure:
+		return numeral + '7'
+	return numeral
+
+
+
 
 
 
@@ -158,19 +172,10 @@ class Featurizer(object):
 	# Initialize with the number of scores to analyze
 	def __init__(self, num_scores=20):
 		self.num_scores = num_scores
-		self.keys = OrderedSet() # sets must be ordered to ensure accurate indexing
-		self.key_modes = OrderedSet()
-		self.time_sigs = OrderedSet()
-		self.beats = OrderedSet()
-		self.offset_starts = OrderedSet()
-		self.offset_ends = OrderedSet()
-		self.pitches = OrderedSet()
-		self.chords = OrderedSet()
-		self.cadence_dists = OrderedSet()
-		self.cadences = OrderedSet(['cadence', 'no cadence'])
 		self.indices = {}
+		self.features = []
+		self.harmonies = []
 		self.max_index = 0
-		self.ordering = {}
 		self.original = [] 			# original, cleaned scores deposited here
 		self.training_split = [] 	# training scores
 		self.test_split = []		# test scores
@@ -201,127 +206,141 @@ class Featurizer(object):
 	# Analyze the chorales and determine the possible values for each feature
 	@timing
 	def analyze(self):
-		if len(self.original) == 0:
-			self.gather_scores()	
+		self.analyzed = [] # to save time, we store the related objects to a score for featurizing
 
 		# Reset feature sets
-		self.keys, self.key_modes, self.times = OrderedSet(), OrderedSet(), OrderedSet()
-		self.beats, self.offset_starts, self.offset_ends = OrderedSet(), OrderedSet(), OrderedSet()
-		self.cadence_dists, self.pitches, self.chords = OrderedSet(), OrderedSet(), OrderedSet()
-		self.ordering['pitch'] = self.pitches
-		self.ordering['beat_str'] = self.beats
-		self.ordering['cadence?'] = self.cadences
-		self.ordering['cadence_dist'] = self.cadence_dists
-		self.ordering['offset_start'] = self.offset_starts
-		self.ordering['offset_end'] = self.offset_ends
-		self.ordering['time'] = self.time_sigs
-		self.ordering['key'] = self.keys
-		self.ordering['mode'] = self.key_modes
+		self.keys = OrderedSet()
+		self.key_modes = OrderedSet()
+		self.times = OrderedSet()
+		self.beats = OrderedSet()
+		self.offset_ends = OrderedSet()
+		self.cadence_dists = OrderedSet()
+		self.cadences = OrderedSet(['cadence', 'no cadence'])
+		self.harmonies = OrderedSet() # not a feature, this is the space of output classes
+		# We don't need to check for any pitch feature space since we
+		# already know the range of each voice.
+		self.pitch = OrderedSet(range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1))
+		self.pbefore = OrderedSet([0] + range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1)) # 0 is a dummy value
+		self.pafter = OrderedSet([0] + range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1))
+		self.harmonies = OrderedSet()
+		# THIS ORDER MATTERS
+		self.features = [('key', self.keys), ('mode', self.key_modes), ('time', self.times), \
+						('beatstr', self.beats), ('offset', self.offset_ends), ('cadence_dists', self.cadence_dists), \
+						('cadence?', self.cadences), ('pitch', self.pitch), ('pbefore', self.pitch), \
+						('pafter', self.pitch)]
 
-		for score in self.original:
+		for idx, score in enumerate(self.original):
+			print idx
 			# score-wide features
 			S, A, T, B = getNotes(score.parts[0]), getNotes(score.parts[1]), getNotes(score.parts[2]), getNotes(score.parts[3])
-			try:
-				assert len(S) == len(A)
-				assert len(A) == len(T)
-				assert len(T) == len(B)
-			except:
-				score.show()
-				print score.metadata.title
-				print score.metadata
-				raise Exception()
+			assert len(S) == len(A)
+			assert len(A) == len(T)
+			assert len(T) == len(B)
 			time_sig, key_sig = getTimeSignature(score.parts[0]), getKeySignature(score.parts[0])
+			key_obj = getKeyFromSignature(key_sig)
 			fermata_locations = map(hasFermata, S)
 
 			# Score-wide: Key (sharps, mode) and Time (num, denom)
 			self.keys.add(feat_key(key_sig))
 			self.key_modes.add(key_sig.mode)
-			self.time_sigs.add((time_sig.numerator, time_sig.denominator))
+			self.times.add((time_sig.numerator, time_sig.denominator))
 
 			# Note-specific data
 			for index, n in enumerate(S):
 				# Beat strength
 				self.beats.add(feat_beat(n))
-				# Offset from the start
-				self.offset_starts.add(feat_offset_start(index))
 				# Offset from the end
 				self.offset_ends.add(feat_offset_end(index, len(S)))
 				# Distance to next cadence
 				self.cadence_dists.add(feat_cadence_dist(n, index, fermata_locations))
-				# Pitch
-				self.pitches.add(feat_pitch(n))
 				# Harmony
-				self.chords.add(feat_chord(index, A, T, B))
-				# Note 'cadence?' is a binary feature
+				self.harmonies.add(feat_harmony(S[index], A[index], T[index], B[index], key_obj))
 
-			# Set feature indices
-			i_max = 1
-			for feature in self.ordering.keys():
-				feat_size = len(self.ordering[feature])
-				self.indices[feature] = (i_max, i_max + feat_size)
-				i_max += feat_size + 1
-			self.max_index = i_max # record the highest index
+			# Store objects for featurizing
+			self.analyzed.append((score, S, A, T, B, time_sig, key_sig, key_obj, fermata_locations))
+
+		# Set feature indices
+		i_max = 1
+		for name, values in self.features:
+			self.indices[name] = (i_max, i_max + len(values) - 1)
+			i_max += len(values)
+		self.max_index = i_max # record the highest index
 
 	# Wrapper function for featurize_set():
 	@timing
 	def featurize(self):
 		# Create train-test split
-		training, test = self.training_test_split(self.original)
+		training, test = self.training_test_split(self.analyzed)
 
-		# Create training examples
-		for score in training:
+		# Create training examples (note: score is a collection of objects)
+		for idx, score in enumerate(training):
+			sys.stdout.write("Featurizing #%d 	\r" % idx)
+			sys.stdout.flush()
 			X, y = self.featurize_score(score)
 			self.X_train.append(X)
 			self.y_train.append(y)
+		print "Featurized training set."
 		
 		# Create test examples
-		for score in test:
+		for idx, score in enumerate(test):
+			sys.stdout.write("Featurizing #%d 	\r" % idx)
+			sys.stdout.flush()
 			X, y = self.featurize_score(score)
 			self.X_test.append(X)
 			self.y_test.append(y)
+		print "Featurized training set."
 		
 		print "Training examples size: %d" % len(self.X_train)
 		print "Test examples size: %d" % len(self.X_test)
 
+		# Freeze for future use
+		freezeObject(self.X_train, "X_train")
+		freezeObject(self.y_train, "y_train")
+		freezeObject(self.X_test, "X_test")
+		freezeObject(self.y_test, "y_test")
+		freezeObject(list(self.harmonies), "harmonies")
+		freezeObject(self.indices, "indices")
+
 		
 	# After analysis, this generates the training examples (input vectors, output vectors)
 	# As scores are examined, the indices of output chords are generated.
-	def featurize_score(self, score):
+	def featurize_score(self, score_packet):
+		# feature vectors
 		X, y = [], []
-		# score-wide features
-		S, A, T, B = getNotes(score.parts[0]), getNotes(score.parts[1]), getNotes(score.parts[2]), getNotes(score.parts[3])
-		assert len(S) == len(A)
-		assert len(A) == len(T)
-		assert len(T) == len(B)
-		time_sig, key_sig = getTimeSignature(score.parts[0]), getKeySignature(score.parts[0])
-		fermata_locations = map(hasFermata, S)
+		
+		# unpack score objects
+		score, S, A, T, B, time_sig, key_sig, key_obj, fermata_locations = score_packet
 
 		# Create X vector and y output
 		for index, n in enumerate(S):
-			# Pitch
-			f_pitch = self.pitches.index(feat_pitch(n)) + self.indices['pitch'][0]
-			# Beat
-			f_beat = self.beats.index(feat_beat(n)) + self.indices['beat_str'][0]
-			# Has cadence?
-			f_cadence = feat_cadence(n) + self.indices['cadence?'][0]
-			# Cadence distance
-			f_cadence_dist = self.cadence_dists.index(feat_cadence_dist(n, index, fermata_locations)) + self.indices['cadence_dist'][0]
-			# Offset start
-			f_off_start = self.offset_starts.index(feat_offset_start(index)) + self.indices['offset_start'][0]
-			# Offset end
-			f_off_end = self.offset_ends.index(feat_offset_end(index, len(S))) + self.indices['offset_end'][0]
-			# Time
-			f_time = self.time_sigs.index((time_sig.numerator, time_sig.denominator)) + self.indices['time'][0]
 			# Key
 			f_key = self.keys.index(feat_key(key_sig)) + self.indices['key'][0]
 			# Key mode
 			f_mode = self.key_modes.index(key_sig.mode) + self.indices['mode'][0]
-
-			# Input vector
-			input_vec = [f_pitch, f_beat, f_cadence, f_cadence_dist, f_off_start, f_off_end, f_time, f_key, f_mode]
+			# Time
+			f_time = self.times.index((time_sig.numerator, time_sig.denominator)) + self.indices['time'][0]
+			# Beat
+			f_beat = self.beats.index(feat_beat(n)) + self.indices['beatstr'][0]
+			# Offset end
+			f_off_end = self.offset_ends.index(feat_offset_end(index, len(S))) + self.indices['offset'][0]
+			# Cadence distance
+			f_cadence_dist = self.cadence_dists.index(feat_cadence_dist(n, index, fermata_locations)) + self.indices['cadence_dists'][0]
+			# Has cadence?
+			f_cadence = feat_cadence(n) + self.indices['cadence?'][0]
+			# Pitch
+			f_pitch = self.pitch.index(feat_pitch(n)) + self.indices['pitch'][0]
+			# Pitch before
+			pitch_before = S[index - 1].midi if index > 0 else 0
+			f_pbefore = self.pbefore.index(pitch_before) + self.indices['pbefore'][0]
+			# Pitch after
+			pitch_after = S[index + 1].midi if index + 1 < len(S) else 0
+			f_pafter = self.pafter.index(pitch_after) + self.indices['pafter'][0]
+ 
+			# Input vector (f_off_start deleted)
+			input_vec = [f_key, f_mode, f_time, f_beat, f_off_end, f_cadence_dist, f_cadence, f_pitch, f_pbefore, f_pafter]
 
 			# Output class, 1-indexed for Torch
-			output_val = self.chords.index(feat_chord(index, A, T, B)) + 1
+			output_val = self.harmonies.index(feat_harmony(S[index], A[index], T[index], B[index], key_obj)) + 1
 
 			X.append(input_vec)
 			y.append(output_val)
@@ -330,25 +349,26 @@ class Featurizer(object):
 
 	# Verify that the feature indices are all in the right ranges
 	def verify(self):
+		self.X_train, self.y_train = thawObject("X_train"), thawObject("y_train")
+		self.X_test, self.y_test = thawObject("X_test"), thawObject("y_test")
+		self.indices = thawObject('indices')
+		self.harmonies = thawObject('harmonies')
 		inputs = self.X_train + self.X_test
 		outputs = self.y_train + self.y_test
-		for idx, score in enumerate(inputs):
+		for i, score in enumerate(inputs):
 			s_in = score
-			s_out = outputs[idx]
-			for idx2, example in enumerate(s_in):
-				output = s_out[idx2]
+			s_out = outputs[i]
+			for j, example in enumerate(s_in):
+				output = s_out[j]
 
 				# Note the order here corresponds with the order in which the example features were added
-				assert in_range(example[0], self.indices['pitch'][0], self.indices['pitch'][1])
-				assert in_range(example[1], self.indices['beat_str'][0], self.indices['beat_str'][1])
-				assert in_range(example[2], self.indices['cadence?'][0], self.indices['cadence?'][1])
-				assert in_range(example[3], self.indices['cadence_dist'][0], self.indices['cadence_dist'][1])
-				assert in_range(example[4], self.indices['offset_start'][0], self.indices['offset_start'][1])
-				assert in_range(example[5], self.indices['offset_end'][0], self.indices['offset_end'][1])
-				assert in_range(example[6], self.indices['time'][0], self.indices['time'][1])
-				assert in_range(example[7], self.indices['key'][0], self.indices['key'][1])
-				assert in_range(example[8], self.indices['mode'][0], self.indices['mode'][1])
-				assert in_range(output, 1, len(self.chords))
+				features = ['key', 'mode', 'time', 'beatstr', 'offset', 'cadence_dists', 'cadence?', 'pitch', 'pbefore', 'pafter']
+				for f_idx, feature in enumerate(features):
+					try:
+						assert in_range(example[f_idx], self.indices[feature][0], self.indices[feature][1])
+					except:
+						pass
+				assert in_range(output, 1, len(self.harmonies))
 
 	# Write 
 	def write(self):
@@ -366,12 +386,8 @@ class Featurizer(object):
 				y_vector = npy.array(self.y_test[idx])
 				f.create_dataset("y", y_vector.shape, dtype='i', data=y_vector)
 
-		with h5py.File(self.output_dir + "metadata.hdf5", "w", libver='latest') as f:
-			chord_matrix = npy.matrix(map(lambda x: [x[0],x[1],x[2]], list(self.chords)))
-			f.create_dataset("chords", chord_matrix.shape, dtype='i', data=chord_matrix)
-			for k, (l, h) in self.indices.items():
-				index_array = npy.array([l, h])
-				f.create_dataset("index_%s" % k, index_array.shape, dtype='i', data=index_array)
+		# Freeze features for evaluation later on
+		freezeObject(self.harmonies, "harmonies")
 
 	# Split the quantized scores into a training and test split
 	def training_test_split(self, score_list):
@@ -397,10 +413,14 @@ class Featurizer(object):
 
 	def __str__(self):
 		s = "\n---------- FEATURIZER RESULTS ----------\n"
-		for feature, lst in self.ordering.iteritems():
-			s += feature + ": " + str(lst) + "\n"
-		s += "INDICES: %s\n" % str(self.indices)
-		s += "CHORD INDICES: 1 to %d [example chord: %s]\n" % (len(self.chords), str(list(self.chords)[0]))
+		for name, values in self.features:
+			s += name + ": " + str(values) + "\n"
+		s += "\n"
+		s += "Indices:\n"
+		for name, values in self.features:
+			s+= "'%s': %s\n" % (name, str(self.indices[name]))
+		s += "\n"
+		s += "Harmonies (%d total)\n%s\n" % (len(self.harmonies), self.harmonies)
 		s += "Test-training split: %d training chorales, %d test chorales\n" % (len(self.training_split), len(self.test_split))
 		s += "Test-training examples: %d for training, %d for test\n" % (len(self.X_train), len(self.X_test))
 		s += "---------------------------------------\n"
