@@ -7,7 +7,7 @@
 
 \section{Initial Experiments}
 
-\subsection{1/28}
+\subsection{12/28}
 The initial data cleaning and feature scraping is complete. The corpus consists of 326 4-voice chorales, each with very consistent formatting. Only chorales in '4/4' and '3/4' time were found. Each beat contains four notes. Currently, the features selected from each beat are as follows:
 \begin{enumerate}
 \item The melody pitch
@@ -28,7 +28,7 @@ One question is: in order to convert from the results (an array of chord indices
 indices $\to$ MIDI tuple $\to$ note tuple $\to$ musical score (via music21)
 \end{center}
 
-\subsection{1/29}
+\subsection{12/29}
 \textbf{Goal:} The goal is build a vanilla neural network using \textsc{torch} that can accept the batch of chorale files, evaluate them and update its parameters, and then output a final evaluation metric (even a rudimentary one, like overall chord accuracy). Also, to set up the process journal. \\
 \textbf{Result: } The process journal (this journal) is up and running!
 \begin{itemize}
@@ -45,7 +45,7 @@ indices $\to$ MIDI tuple $\to$ note tuple $\to$ musical score (via music21)
 \item See \texttt{bach\_code/experiment1.txt} for more results from initial tests.
 \end{itemize}
 
-\subsection{1/30}
+\subsection{12/30}
 \textbf{Goal:} The goal today is to see improve if we can improve on the results from the initial experiment performed yesterday. Potential methods are altering or deleting features, as well as adding regularization. A secondary goal is consider better methods for evaluation.
 \textbf{Result: }
 \begin{itemize}
@@ -54,11 +54,14 @@ indices $\to$ MIDI tuple $\to$ note tuple $\to$ musical score (via music21)
 \item I believe that the largest problem is that either the model needs to be segmented into sequential nets, or there needs to be a better representation for chords.
 \end{itemize}
 
-\subsection{1/31}
+\subsection{12/31}
 \textbf{Goal:} The goal today is to develop a new model that more closely models how chorales are composed today as 4-voice counterpoint exercises. This approach is based on both HARMONET (1992) and Schmidhuber (2015). There will be two LSTMs
 \textbf{Result:} 
 \begin{itemize}
 \item Mostly a thinking day. While HARMONET is an old model, it is remarkably well thought-out, and papers within the last five year that make use of the chorales either do not discuss harmonization in any detail or do not use harmonization as a machine learning task. I think using the general approach of HARMONET along with the improvement of LSTMs, will represent a strong baseline for moving forward with the inventions.
 \end{itemize}
+
+\subsection{1/1}
+\textbf{Goal:} 
 
 \end{document}

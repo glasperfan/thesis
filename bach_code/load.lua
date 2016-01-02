@@ -88,7 +88,7 @@ function data:next_test()
 	else
 		self.test_pointer = self.test_pointer + 1
 	end
-	return test
+	return test.X, test.y
 end
 
 -- data:__init('data/')
