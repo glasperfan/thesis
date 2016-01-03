@@ -336,7 +336,7 @@ class Featurizer(object):
 			pitch_after = S[index + 1].midi if index + 1 < len(S) else 0
 			f_pafter = self.pafter.index(pitch_after) + self.indices['pafter'][0]
  
-			# Input vector (f_off_start deleted)
+			# Input vector
 			input_vec = [f_key, f_mode, f_time, f_beat, f_off_end, f_cadence_dist, f_cadence, f_pitch, f_pbefore, f_pafter]
 
 			# Output class, 1-indexed for Torch
