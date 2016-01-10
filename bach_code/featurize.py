@@ -139,8 +139,8 @@ def feat_chord(i, a, t, b):
 # Featurize harmony (s, a, t, and b are notes, while 'key_sig' is a key signature object)
 def feat_harmony(s, a, t, b, key_obj):
 	voicing = [s,a,t,b]
-	rn = roman.romanNumeralFromChord(chord.Chord([s,a,t,b]), key_obj, True)
-	rn_fig = simplify_harmony(rn)
+	rn1 = roman.romanNumeralFromChord(chord.Chord([s,a,t,b]), key_obj)
+	rn_fig = simplify_harmony(rn1)
 	return rn_fig
 
 # Converts all unknown harmonies to either a triad or a seventh chord
@@ -216,21 +216,21 @@ class Featurizer(object):
 		self.offset_ends = OrderedSet()
 		self.cadence_dists = OrderedSet()
 		self.cadences = OrderedSet(['cadence', 'no cadence'])
-		self.harmonies = OrderedSet() # not a feature, this is the space of output classes
 		# We don't need to check for any pitch feature space since we
 		# already know the range of each voice.
 		self.pitch = OrderedSet(range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1))
 		self.pbefore = OrderedSet([0] + range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1)) # 0 is a dummy value
 		self.pafter = OrderedSet([0] + range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1))
-		self.harmonies = OrderedSet()
+		self.harmonies = OrderedSet() # not a feature, this is the space of output classes
 		# THIS ORDER MATTERS
 		self.features = [('key', self.keys), ('mode', self.key_modes), ('time', self.times), \
 						('beatstr', self.beats), ('offset', self.offset_ends), ('cadence_dists', self.cadence_dists), \
 						('cadence?', self.cadences), ('pitch', self.pitch), ('pbefore', self.pitch), \
-						('pafter', self.pitch)]
+						('pafter', self.pitch), ('harm_prev', self.harmonies), ('harm_two_prev', self.harmonies)]
 
 		for idx, score in enumerate(self.original):
-			print idx
+			sys.stdout.write("Analyzing #%d 	\r" % (idx + 1))
+			sys.stdout.flush()
 			# score-wide features
 			S, A, T, B = getNotes(score.parts[0]), getNotes(score.parts[1]), getNotes(score.parts[2]), getNotes(score.parts[3])
 			assert len(S) == len(A)
@@ -259,6 +259,9 @@ class Featurizer(object):
 			# Store objects for featurizing
 			self.analyzed.append((score, S, A, T, B, time_sig, key_sig, key_obj, fermata_locations))
 
+		# Add 'None' as an option for previous harmonies (i.e. to say there's no previous harmony for the first beat)
+		self.harmonies.add('None')
+
 		# Set feature indices
 		i_max = 1
 		for name, values in self.features:
@@ -274,7 +277,7 @@ class Featurizer(object):
 
 		# Create training examples (note: score is a collection of objects)
 		for idx, score in enumerate(training):
-			sys.stdout.write("Featurizing #%d 	\r" % idx)
+			sys.stdout.write("Featurizing #%d 	\r" % (idx + 1))
 			sys.stdout.flush()
 			X, y = self.featurize_score(score)
 			self.X_train.append(X)
@@ -283,7 +286,7 @@ class Featurizer(object):
 		
 		# Create test examples
 		for idx, score in enumerate(test):
-			sys.stdout.write("Featurizing #%d 	\r" % idx)
+			sys.stdout.write("Featurizing #%d 	\r" % (idx + 1))
 			sys.stdout.flush()
 			X, y = self.featurize_score(score)
 			self.X_test.append(X)
@@ -335,9 +338,15 @@ class Featurizer(object):
 			# Pitch after
 			pitch_after = S[index + 1].midi if index + 1 < len(S) else 0
 			f_pafter = self.pafter.index(pitch_after) + self.indices['pafter'][0]
- 
+			# Harmony 1 before
+			harm_prev = feat_harmony(S[index - 1], A[index - 1], T[index - 1], B[index - 1], key_obj) if index > 0 else 'None'
+			f_harm_prev = self.harmonies.index(harm_prev) + self.indices['harm_prev'][0]
+			# Harmony 2 before
+ 			harm_two_prev = feat_harmony(S[index - 2], A[index - 2], T[index - 2], B[index - 2], key_obj) if index > 1 else 'None'
+			f_harm_two_prev = self.harmonies.index(harm_two_prev) + self.indices['harm_two_prev'][0]
 			# Input vector
-			input_vec = [f_key, f_mode, f_time, f_beat, f_off_end, f_cadence_dist, f_cadence, f_pitch, f_pbefore, f_pafter]
+			input_vec = [f_key, f_mode, f_time, f_beat, f_off_end, f_cadence_dist, f_cadence, f_pitch, \
+						f_pbefore, f_pafter, f_harm_prev, f_harm_two_prev]
 
 			# Output class, 1-indexed for Torch
 			output_val = self.harmonies.index(feat_harmony(S[index], A[index], T[index], B[index], key_obj)) + 1
@@ -349,6 +358,7 @@ class Featurizer(object):
 
 	# Verify that the feature indices are all in the right ranges
 	def verify(self):
+		print "Verifying indices..."
 		self.X_train, self.y_train = thawObject("X_train"), thawObject("y_train")
 		self.X_test, self.y_test = thawObject("X_test"), thawObject("y_test")
 		self.indices = thawObject('indices')
@@ -372,6 +382,7 @@ class Featurizer(object):
 
 	# Write 
 	def write(self):
+		print "Writing to %s..." % self.output_dir
 		for idx, score in enumerate(self.X_train):
 			with h5py.File(self.output_dir + "train_%d.hdf5" % idx, "w", libver='latest') as f:
 				X_matrix = npy.matrix(score)
@@ -433,5 +444,6 @@ class Featurizer(object):
 sf = Featurizer()
 sf.run()
 print sf
+freezeObject(sf, 'featurizer')
 
 

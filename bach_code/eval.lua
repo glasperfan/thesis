@@ -81,22 +81,37 @@ end
 -- Evaluation with NLL --
 function eval(data_obj)
 	data_obj:reset_test_pointer()
-	local nll = 0
+	local nll_arr = {}
+	local count = 0.0
+	local correct = 0.0
+	local count_nt = 0.0
+	local correct_nt = 0.0
 	while true do
 		input, goal = data_obj:next_test()
 		out = model:forward(input)
-	    nll = nll + criterion:forward(out, goal)
-		if data_obj.test_pointer == 0 then 
-			-- break
-			for i = 1, input:size(1) do
+	    nll_arr[data_obj.test_pointer + 1] = criterion:forward(out, goal)
+		-- Measure accuracy
+		for i = 1, input:size(1) do
 				max, argmax = torch.max(model:forward(input[i]), 1)
 				answer = goal[i]
-				print (argmax[1], answer)
-			end
-			break
+				pred = argmax[1]
+				if pred == answer then correct = correct + 1 end
+				count = count + 1
+				if answer ~= 1 and answer ~= 13 then
+					if pred == answer then correct_nt = correct_nt + 1 end
+					count_nt = count_nt + 1
+				end
+				-- Print results from one chorale
+				if data_obj.test_pointer == 0 then print(pred, answer) end
 		end
+		-- Print results from one chorale, and then break
+		if data_obj.test_pointer == 0 then break end
 	end
-	print("Total cost:", nll)
+	nll_arr = torch.Tensor(nll_arr)
+	print(string.format("Average nll: %.3f", torch.mean(nll_arr) ))
+	print(string.format("Total nll: %.3f", torch.sum(nll_arr) ))
+	print(string.format("Percentage correct: %.2f%%", correct / count * 100.0))
+	print(string.format("Percentage correct (not tonic): %.2f%%", correct_nt / count_nt * 100.0))
 	return nll
 end
 
@@ -136,8 +151,8 @@ end
 function main() 
 	-- Contants
 	local embedding_size = 100
-	local hidden_size = 100
-	local epochs = 200
+	local hidden_size = 200
+	local epochs = 500
 	local learning_rate = 0.00001
 
 	-- Create the data loader class.

@@ -11,7 +11,8 @@
 
 from helpers import *
 from collections import Counter
-
+import h5py
+import numpy as npy
 
 # Print the number of unique lists in a list of lists
 def uniqueLst(lst_of_lsts):
@@ -31,7 +32,6 @@ def mapIndices(X, idx_dict):
 			Xmc.append(idx_dict[tuple(example)])
 		X_mapped.append(Xmc)
 	return X_mapped
-
 
 ######################################################## 
 
@@ -64,19 +64,36 @@ for ftd in features_to_delete:
 	del features[ftd_idx]
 
 X_unique = uniqueLst(flattenLst(X_all))
-X_dict = dict((tuple(v), k + 1) for k,v in enumerate(X_unique)) # 1-indexed for Torch
+X_dict = dict((tuple(v), k + 2) for k,v in enumerate(X_unique)) # 1-indexed for Torch
 
 print "Reduced the vocabulary size from %d to %d." % (len(uniqueLst(flattenLst(X_all_copy))), len(X_unique))
+
+# Pad the chorales
+padding = [0,0,0,0]
+X_dict[tuple(padding)] = 1
+y_padding_idx = max(flattenLst(y_all)) + 1
+print y_padding_idx
+max_chorale_length = max(map(lambda lst: len(lst), X_all))
+
+for idx, chorale in enumerate(X_train):
+	padding_len = max_chorale_length - len(chorale)
+	chorale += [padding] * padding_len
+	y_train[idx] += [y_padding_idx] * padding_len
+
+for idx, chorale in enumerate(X_test):
+	padding_len = max_chorale_length - len(chorale)
+	chorale += [padding] * padding_len
+	y_test[idx] += [y_padding_idx] * padding_len
+
+
+print "Chorales have been padding to a length of %d." % len(X_train[0])
 
 # Perform mapping
 X_train_rec = mapIndices(X_train, X_dict)
 X_test_rec = mapIndices(X_test, X_dict)
 
-# Testing
-for i in range(len(X_train_copy)):
-	assert len(X_train_copy[i]) == len(X_train_rec[i])
-for i in range(len(X_test_copy)):
-	assert len(X_test_copy[i]) == len(X_test_rec[i])
+# Testing (check dimensions)
+assert len(X_train[0]) == len(y_train[0]) == len(X_test[0]) == len(y_test[0])
 assert len(X_train_copy) == len(X_train_rec)
 assert len(X_test_copy) == len(X_test_rec)
 
@@ -84,15 +101,40 @@ assert len(X_test_copy) == len(X_test_rec)
 print "# First chorale below"
 for i, lst in enumerate(X_train_copy[0]):
 	print "%d\t -->\t %d" % (X_train_rec[0][i], y_train[0][i])
+print "...plus %d units of padding." % (len(X_train_rec[0]) - len(X_train_copy[0]))
 
-# Save the data
+# Freeze the Python objects for future reference.
 freezeObject(X_train_rec, "X_train_rec")
 freezeObject(X_test_rec, "X_test_rec")
 freezeObject(X_dict, "X_dict_rec")
+freezeObject(y_train, "y_train_rec")
+freezeObject(y_test, "y_test_rec")
+
+# Write the data to the data/ folder.
+for idx, score in enumerate(X_train_rec):
+	with h5py.File("data/train_%d_rec.hdf5" % idx, "w", libver='latest') as f:
+		X_vec = npy.array(X_train_rec[idx])
+		f.create_dataset("X", X_vec.shape, dtype='i', data=X_vec)
+		y_vec = npy.array(y_train[idx])
+		f.create_dataset("y", y_vec.shape, dtype='i', data=y_vec)
+
+for idx, score in enumerate(X_test_rec):
+	with h5py.File("data/test_%d_rec.hdf5" % idx, "w", libver='latest') as f:
+		X_vec = npy.array(X_test_rec[idx])
+		f.create_dataset("X", X_vec.shape, dtype='i', data=X_vec)
+		y_vec = npy.array(y_test[idx])
+		f.create_dataset("y", y_vec.shape, dtype='i', data=y_vec)
 
 
-
-
+with h5py.File("data/all_data_rec.hdf5", "w", libver='latest') as f:
+	npyXtrain = npy.matrix(X_train_rec)
+	f.create_dataset("X_train", npyXtrain.shape, dtype='i', data=npyXtrain)
+	npyXtest = npy.matrix(X_test_rec)
+	f.create_dataset("X_test", npyXtest.shape, dtype='i', data=npyXtest)
+	npyytrain = npy.matrix(y_train)
+	f.create_dataset("y_train", npyytrain.shape, dtype='i', data=npyytrain)
+	npyytest = npy.matrix(y_test)
+	f.create_dataset("y_test", npyytest.shape, dtype='i', data=npyytest)
 
 
 
