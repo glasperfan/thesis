@@ -2,7 +2,9 @@ from helpers import * # includes music21
 import math
 import time
 import sys
+import os
 from ordered_set import OrderedSet
+from glob import glob
 from random import shuffle
 import numpy as npy
 import h5py
@@ -106,10 +108,9 @@ def timing(f):
 # Featurizer helper functions
 #############################
 
-# Featurize the key signature (C major = 0, sharps are 1-7, flats are 8-14)
-# This is done to ensure flats aren't given negative values
+# Featurize the key signature (sharps are positive, flats are negative values)
 def feat_key(key_sig):
-	return key_sig.sharps if key_sig.sharps >= 0 else 7 - key_sig.sharps
+	return key_sig.sharps
 
 # Featurize the soprano note
 def feat_pitch(n):
@@ -139,16 +140,72 @@ def feat_chord(i, a, t, b):
 # Featurize harmony (s, a, t, and b are notes, while 'key_sig' is a key signature object)
 def feat_harmony(s, a, t, b, key_obj):
 	voicing = [s,a,t,b]
-	rn1 = roman.romanNumeralFromChord(chord.Chord([s,a,t,b]), key_obj)
-	rn_fig = simplify_harmony(rn1)
+	rn = roman.romanNumeralFromChord(chord.Chord([s,a,t,b]), key_obj)
+	rn_fig = verify_harmony(rn, key_obj)
 	return rn_fig
 
-# Converts all unknown harmonies to either a triad or a seventh chord
-def simplify_harmony(rn):
-	numeral = rn.romanNumeral
-	if '7' in rn.figure:
-		return numeral + '7'
-	return numeral
+def get_extension(rn):
+	return rn.figure[rn.figure.index(rn.romanNumeral) + len(rn.romanNumeral):]
+
+# Human teaching of Roman numeral analysis
+# this has poor practice written all over it, I know
+basicRomanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'i', 'ii', 'iio' 'iii', 'iv', 'v', 'vi', 'vii', 'viio']
+basicExtensions = ['', '6', '64', '7', 'b7', '65', '43', '42']
+def verify_harmony(rn, key_obj):
+	if not os.path.isfile("_frozen/harmony_dict.txt"):
+		freezeObject({}, "harmony_dict")
+	harmony_dict = thawObject("harmony_dict")
+	if rn.figure not in harmony_dict:
+		for idx in [1,2,3]:
+			if rn.figure[:idx] in basicRomanNumerals and rn.figure[idx:] in basicExtensions:
+				harmony_dict[rn.figure] = (rn.figure[:idx], rn.figure[idx:])
+				return harmony_dict[rn.figure]
+		inversion_changes = {('b7', '5', '3') : 'b7',
+							 ('b7', '4', '3') : 'b743',
+							 ('b7', '3') : 'b7',
+							 ('b7', '6', '5') : 'b765',
+							 ('b7', '4', '2') : 'b742',
+							 '765': '65',
+							 '742' : '2',
+							 '753' : '7',
+							 '73': '7',
+							 '653' : '65', 
+							 '643': '43',
+							 '642' : '42',
+							 '63' : '63',
+							 '64' : '64', 
+							 '532': '2', 
+							 '54' : '4',
+							 '42' : '42'}
+		for inv, correct_inv in inversion_changes.items():
+			if _contains(rn.figure, inv):
+				rml = rn.romanNumeral + 'o' if 'o' in rn.figure else rn.romanNumeral
+				rml = 'b' + rml[1:] if '-' in rn.romanNumeral else rml
+				rml = 'VI' if rml == 'bVI' and key_obj.mode == 'minor' else rml
+				harmony_dict[rn.figure] = (rml, correct_inv)
+				freezeObject(harmony_dict, "harmony_dict")
+				print "Added %s as %s." % (rn.figure, harmony_dict[rn.figure])
+				return harmony_dict[rn.figure]
+		print "The current figure is %s." % rn.figureAndKey
+		print "The pitches are %s %s %s %s." % rn.pitches
+		new_numeral = raw_input("What should the new roman numeral be?: ")
+		new_extension = raw_input("What should the new extension be?: ")
+		harmony_dict[rn.figure] = (new_numeral, new_extension)
+		freezeObject(harmony_dict, "harmony_dict")
+	return harmony_dict[rn.figure]
+
+def _contains(s, seq):
+	for c in seq:
+		if c not in s:
+			return False
+	return True
+
+
+
+# Featurize melodic motion as an interval (an integer representing the half steps between two pitches)
+# If n1 is a lower pitch than n2, the interval will be a positive value, and vice versa.
+def feat_interval(n1, n2):
+	return n2.midi - n1.midi
 
 
 
@@ -196,9 +253,8 @@ class Featurizer(object):
 	def gather_scores(self):
 		from os import listdir
 		self.original = []
-		for f in listdir(self.data_dir):
-			if f.endswith(".xml"):
-				self.original.append(converter.parse(self.data_dir + f))
+		for f in glob(self.data_dir + "*.xml"):
+			self.original.append(converter.parse(f))
 		print "Gathered %d 4-part chorales." % len(self.original)
 		
 		return self.original
@@ -215,18 +271,16 @@ class Featurizer(object):
 		self.beats = OrderedSet()
 		self.offset_ends = OrderedSet()
 		self.cadence_dists = OrderedSet()
+		self.intervals = OrderedSet()
 		self.cadences = OrderedSet(['cadence', 'no cadence'])
-		# We don't need to check for any pitch feature space since we
-		# already know the range of each voice.
 		self.pitch = OrderedSet(range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1))
-		self.pbefore = OrderedSet([0] + range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1)) # 0 is a dummy value
-		self.pafter = OrderedSet([0] + range(RANGE['Soprano']['min'], RANGE['Soprano']['max'] + 1))
-		self.harmonies = OrderedSet() # not a feature, this is the space of output classes
+		self.numerals = OrderedSet() # output feature
+		self.inversions = OrderedSet() # output feature
 		# THIS ORDER MATTERS
 		self.features = [('key', self.keys), ('mode', self.key_modes), ('time', self.times), \
 						('beatstr', self.beats), ('offset', self.offset_ends), ('cadence_dists', self.cadence_dists), \
-						('cadence?', self.cadences), ('pitch', self.pitch), ('pbefore', self.pitch), \
-						('pafter', self.pitch), ('harm_prev', self.harmonies), ('harm_two_prev', self.harmonies)]
+						('cadence?', self.cadences), ('pitch', self.pitch), ('ibefore', self.intervals), \
+						('iafter', self.intervals), ('numeral_prev', self.numerals), ('inv_prev', self.inversions)]
 
 		for idx, score in enumerate(self.original):
 			sys.stdout.write("Analyzing #%d 	\r" % (idx + 1))
@@ -253,14 +307,23 @@ class Featurizer(object):
 				self.offset_ends.add(feat_offset_end(index, len(S)))
 				# Distance to next cadence
 				self.cadence_dists.add(feat_cadence_dist(n, index, fermata_locations))
+				# Intervals
+				if index > 0:
+					self.intervals.add(feat_interval(S[index - 1], S[index]))
 				# Harmony
-				self.harmonies.add(feat_harmony(S[index], A[index], T[index], B[index], key_obj))
+				numeral, inversion = feat_harmony(S[index], A[index], T[index], B[index], key_obj)
+				self.numerals.add(numeral)
+				self.inversions.add(inversion)
 
 			# Store objects for featurizing
 			self.analyzed.append((score, S, A, T, B, time_sig, key_sig, key_obj, fermata_locations))
 
 		# Add 'None' as an option for previous harmonies (i.e. to say there's no previous harmony for the first beat)
-		self.harmonies.add('None')
+		self.numerals.add('None')
+		self.inversions.add('None')
+		# Add 'None' as an option for previous and future melodic intervals
+		# (i.e. the first note has no previous note, so the 'interval before' is represented as 'None')
+		self.intervals.add('None')
 
 		# Set feature indices
 		i_max = 1
@@ -301,7 +364,8 @@ class Featurizer(object):
 		freezeObject(self.y_train, "y_train")
 		freezeObject(self.X_test, "X_test")
 		freezeObject(self.y_test, "y_test")
-		freezeObject(list(self.harmonies), "harmonies")
+		freezeObject(list(self.numerals), "numerals")
+		freezeObject(list(self.inversions), "inversions")
 		freezeObject(self.indices, "indices")
 
 		
@@ -332,27 +396,26 @@ class Featurizer(object):
 			f_cadence = feat_cadence(n) + self.indices['cadence?'][0]
 			# Pitch
 			f_pitch = self.pitch.index(feat_pitch(n)) + self.indices['pitch'][0]
-			# Pitch before
-			pitch_before = S[index - 1].midi if index > 0 else 0
-			f_pbefore = self.pbefore.index(pitch_before) + self.indices['pbefore'][0]
-			# Pitch after
-			pitch_after = S[index + 1].midi if index + 1 < len(S) else 0
-			f_pafter = self.pafter.index(pitch_after) + self.indices['pafter'][0]
-			# Harmony 1 before
-			harm_prev = feat_harmony(S[index - 1], A[index - 1], T[index - 1], B[index - 1], key_obj) if index > 0 else 'None'
-			f_harm_prev = self.harmonies.index(harm_prev) + self.indices['harm_prev'][0]
-			# Harmony 2 before
- 			harm_two_prev = feat_harmony(S[index - 2], A[index - 2], T[index - 2], B[index - 2], key_obj) if index > 1 else 'None'
-			f_harm_two_prev = self.harmonies.index(harm_two_prev) + self.indices['harm_two_prev'][0]
+			# Melodic interval before
+			ibefore = feat_interval(S[index - 1], S[index]) if index > 0 else 'None'
+			f_ibefore = self.intervals.index(ibefore) + self.indices['ibefore'][0]
+			# Melodic interval after
+			iafter = feat_interval(S[index], S[index + 1]) if index < len(S) - 1 else 'None'
+			f_iafter = f_pbefore = self.intervals.index(iafter) + self.indices['iafter'][0]
+			# Previous harmony
+			num_prev, inv_prev = feat_harmony(S[index - 1], A[index - 1], T[index - 1], B[index - 1], key_obj) if index > 0 else ('None', 'None')
+			f_num_prev = self.numerals.index(num_prev) + self.indices['numeral_prev'][0]
+			f_inv_prev = self.inversions.index(inv_prev) + self.indices['inv_prev'][0]
 			# Input vector
 			input_vec = [f_key, f_mode, f_time, f_beat, f_off_end, f_cadence_dist, f_cadence, f_pitch, \
-						f_pbefore, f_pafter, f_harm_prev, f_harm_two_prev]
+						f_ibefore, f_iafter, f_num_prev, f_inv_prev]
 
 			# Output class, 1-indexed for Torch
-			output_val = self.harmonies.index(feat_harmony(S[index], A[index], T[index], B[index], key_obj)) + 1
+			f_num, f_prev = feat_harmony(S[index], A[index], T[index], B[index], key_obj)
+			output_vec = [self.numerals.index(f_num) + 1, self.inversions.index(f_prev) + 1]
 
 			X.append(input_vec)
-			y.append(output_val)
+			y.append(output_vec)
 
 		return X, y
 
@@ -362,14 +425,15 @@ class Featurizer(object):
 		self.X_train, self.y_train = thawObject("X_train"), thawObject("y_train")
 		self.X_test, self.y_test = thawObject("X_test"), thawObject("y_test")
 		self.indices = thawObject('indices')
-		self.harmonies = thawObject('harmonies')
+		self.numerals = thawObject('numerals')
+		self.inversions = thawObject('inversions')
 		inputs = self.X_train + self.X_test
 		outputs = self.y_train + self.y_test
 		for i, score in enumerate(inputs):
 			s_in = score
 			s_out = outputs[i]
 			for j, example in enumerate(s_in):
-				output = s_out[j]
+				numeral, inversion = s_out[j]
 
 				# Note the order here corresponds with the order in which the example features were added
 				features = ['key', 'mode', 'time', 'beatstr', 'offset', 'cadence_dists', 'cadence?', 'pitch', 'pbefore', 'pafter']
@@ -378,7 +442,11 @@ class Featurizer(object):
 						assert in_range(example[f_idx], self.indices[feature][0], self.indices[feature][1])
 					except:
 						pass
-				assert in_range(output, 1, len(self.harmonies))
+				try:
+					assert in_range(numeral, 1, len(self.numerals))
+					assert in_range(inversion, 1, len(self.inversions))
+				except:
+					pass
 
 	# Write 
 	def write(self):
@@ -387,15 +455,15 @@ class Featurizer(object):
 			with h5py.File(self.output_dir + "train_%d.hdf5" % idx, "w", libver='latest') as f:
 				X_matrix = npy.matrix(score)
 				f.create_dataset("X", X_matrix.shape, dtype='i', data=X_matrix)
-				y_vector = npy.array(self.y_train[idx])
-				f.create_dataset("y", y_vector.shape, dtype='i', data=y_vector)
+				y_matrix = npy.matrix(self.y_train[idx])
+				f.create_dataset("y", y_matrix.shape, dtype='i', data=y_matrix)
 		
 		for idx, score in enumerate(self.X_test):
 			with h5py.File(self.output_dir + "test_%d.hdf5" % idx, "w", libver='latest') as f:
 				X_matrix = npy.matrix(score)
 				f.create_dataset("X", X_matrix.shape, dtype='i', data=X_matrix)
-				y_vector = npy.array(self.y_test[idx])
-				f.create_dataset("y", y_vector.shape, dtype='i', data=y_vector)
+				y_matrix = npy.matrix(self.y_test[idx])
+				f.create_dataset("y", y_matrix.shape, dtype='i', data=y_matrix)
 
 		# Freeze features for evaluation later on
 		freezeObject(self.harmonies, "harmonies")
@@ -431,7 +499,10 @@ class Featurizer(object):
 		for name, values in self.features:
 			s+= "'%s': %s\n" % (name, str(self.indices[name]))
 		s += "\n"
-		s += "Harmonies (%d total)\n%s\n" % (len(self.harmonies), self.harmonies)
+		s += "Roman numerals (%d total)\n%s\n" % (len(self.numerals), self.numerals)
+		s += "\n"
+		s += "Inversions (%d total)\n%s\n" % (len(self.inversions), self.inversions)
+		s += "\n"
 		s += "Test-training split: %d training chorales, %d test chorales\n" % (len(self.training_split), len(self.test_split))
 		s += "Test-training examples: %d for training, %d for test\n" % (len(self.X_train), len(self.X_test))
 		s += "---------------------------------------\n"

@@ -1,6 +1,6 @@
 
 ---------- FEATURIZER RESULTS ----------
-key: OrderedSet([1, 0, 2, 11, 9, 3, 8, 10, 4])
+key: OrderedSet([1, 0, 2, -4, -2, 3, -1, -3, 4])
 mode: OrderedSet([u'major', u'minor'])
 time: OrderedSet([(3, 4), (4, 4), (3, 2)])
 beatstr: OrderedSet([0.5, 1.0, 0.25])
@@ -8,10 +8,10 @@ offset: OrderedSet([21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 
 cadence_dists: OrderedSet([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 13, 12, 16, 15, 14, 18, 17, 20, 19, 26, 25, 24, 23, 22, 21, 28, 27])
 cadence?: OrderedSet(['cadence', 'no cadence'])
 pitch: OrderedSet([60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81])
-pbefore: OrderedSet([60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81])
-pafter: OrderedSet([60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81])
-harm_prev: OrderedSet(['I', 'IV', 'V', 'vi', 'ii7', 'vii', 'ii', 'iii', 'iii7', 'iv', 'V7', 'I7', 'i', '#vii', '-VII', 'III', '#vi', '-VII7', '-VI', 'v', 'III7', 'IV7', '-vii', '#iv', '#vii7', '-VI7', 'iv7', 'II', '#vi7', 'vi7', 'VI', '#v', '#i', '#iv7', '-II', '-V', 'v7', '-vi', '-II7', 'i7', '#iii7', '#iii', '-vii7', 'VII', 'II7', '#v7', '#ii7', '#i7', 'VI7', 'vii7', '-vi7', '-ii', '-III7', '-III', '-I', '#ii', 'VII7', 'None'])
-harm_two_prev: OrderedSet(['I', 'IV', 'V', 'vi', 'ii7', 'vii', 'ii', 'iii', 'iii7', 'iv', 'V7', 'I7', 'i', '#vii', '-VII', 'III', '#vi', '-VII7', '-VI', 'v', 'III7', 'IV7', '-vii', '#iv', '#vii7', '-VI7', 'iv7', 'II', '#vi7', 'vi7', 'VI', '#v', '#i', '#iv7', '-II', '-V', 'v7', '-vi', '-II7', 'i7', '#iii7', '#iii', '-vii7', 'VII', 'II7', '#v7', '#ii7', '#i7', 'VI7', 'vii7', '-vi7', '-ii', '-III7', '-III', '-I', '#ii', 'VII7', 'None'])
+ibefore: OrderedSet([0, 7, -3, -2, 2, 3, -1, 4, 1, -4, -7, 5, -5, 12, 8, -8, -9, 10, -12, 6, 9, -6, 'None'])
+iafter: OrderedSet([0, 7, -3, -2, 2, 3, -1, 4, 1, -4, -7, 5, -5, 12, 8, -8, -9, 10, -12, 6, 9, -6, 'None'])
+numeral_prev: OrderedSet(['I', 'IV', 'V', 'vi', 'ii', 'viio', 'iii', 'iv', 'i', 'bVII', 'III', 'vio', 'VI', 'iio', 'v', 'bvii', '#ivo', 'II', 'viho', 'iiio', '#vo', '#io', '#ivho', 'bII', 'vii', 'bV', 'io', 'bvi', 'vo', 'iiho', 'bVI', '#iiio', 'vho', 'VII', '#IV', 'b-vii', 'b-VI', 'b-VII', '#vio', '#viio', '#iiiho', '#iii', 'bii', 'bIII', '#ii', '#iv', '#v', '#i', 'Vo', 'IIo', 'bI', '#iio', 'VIo', 'ivo', 'None'])
+inv_prev: OrderedSet(['', '6', '65', '7', '2', 'b7', '42', 'b742', '64', '4', '43', '742', '63', '+6', '+', 'None'])
 
 Indices:
 'key': (1, 9)
@@ -22,13 +22,17 @@ Indices:
 'cadence_dists': (125, 153)
 'cadence?': (154, 155)
 'pitch': (156, 177)
-'pbefore': (178, 199)
-'pafter': (200, 221)
-'harm_prev': (222, 279)
-'harm_two_prev': (280, 337)
+'ibefore': (178, 200)
+'iafter': (201, 223)
+'numeral_prev': (224, 278)
+'inv_prev': (279, 294)
 
-Harmonies (58 total)
-['I', 'IV', 'V', 'vi', 'ii7', 'vii', 'ii', 'iii', 'iii7', 'iv', 'V7', 'I7', 'i', '#vii', '-VII', 'III', '#vi', '-VII7', '-VI', 'v', 'III7', 'IV7', '-vii', '#iv', '#vii7', '-VI7', 'iv7', 'II', '#vi7', 'vi7', 'VI', '#v', '#i', '#iv7', '-II', '-V', 'v7', '-vi', '-II7', 'i7', '#iii7', '#iii', '-vii7', 'VII', 'II7', '#v7', '#ii7', '#i7', 'VI7', 'vii7', '-vi7', '-ii', '-III7', '-III', '-I', '#ii', 'VII7', 'None']
+Roman numerals (55 total)
+['I', 'IV', 'V', 'vi', 'ii', 'viio', 'iii', 'iv', 'i', 'bVII', 'III', 'vio', 'VI', 'iio', 'v', 'bvii', '#ivo', 'II', 'viho', 'iiio', '#vo', '#io', '#ivho', 'bII', 'vii', 'bV', 'io', 'bvi', 'vo', 'iiho', 'bVI', '#iiio', 'vho', 'VII', '#IV', 'b-vii', 'b-VI', 'b-VII', '#vio', '#viio', '#iiiho', '#iii', 'bii', 'bIII', '#ii', '#iv', '#v', '#i', 'Vo', 'IIo', 'bI', '#iio', 'VIo', 'ivo', 'None']
+
+Inversions (16 total)
+['', '6', '65', '7', '2', 'b7', '42', 'b742', '64', '4', '43', '742', '63', '+6', '+', 'None']
+
 Test-training split: 294 training chorales, 32 test chorales
 Test-training examples: 294 for training, 32 for test
 ---------------------------------------

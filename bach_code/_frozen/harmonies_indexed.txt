@@ -1,57 +1,58 @@
-['I
- 'IV
- 'V
- 'vi
- 'ii7
- 'vii
- 'ii
- 'iii
- 'iii7
- 'iv
- 'V7
- 'I7
- 'i
- '#vii
- '-VII
- 'III
- '#vi
- '-VII7
- '-VI
- 'v
- 'III7
- 'IV7
- '-vii
- '#iv
- '#vii7
- '-VI7
- 'iv7
- 'II
- '#vi7
- 'vi7
- 'VI
- '#v
- '#i
- '#iv7
- '-II
- '-V
- 'v7
- '-vi
- '-II7
- 'i7
- '#iii7
- '#iii
- '-vii7
- 'VII
- 'II7
- '#v7
- '#ii7
- '#i7
- 'VI7
- 'vii7
- '-vi7
- '-ii
- '-III7
- '-III
- '-I
- '#ii
- 'VII7']
+['I'
+'IV'
+'V'
+'vi'
+'ii7'
+'vii'
+'ii'									ii -> V -> I   ==   7 --> 3 --> 1
+'iii'
+'iii7'
+'iv'
+'V7'
+'I7'
+'i'
+'#vii'
+'-VII'
+'III'
+'#vi'
+'-VII7'
+'-VI'
+'v'
+'III7'
+'IV7'
+'-vii'
+'#iv'
+'#vii7'
+'-VI7'
+'iv7'
+'II'					<--- V/V
+'#vi7'
+'vi7'
+'VI'
+'#v'
+'#i'
+'#iv7'
+'-II'
+'-V'
+'v7'
+'-vi'
+'-II7'
+'i7'
+'#iii7'
+'#iii'
+'-vii7'
+'VII'
+'II7'
+'#v7'
+'#ii7'
+'#i7'
+'VI7'
+'vii7'
+'-vi7'
+'-ii'
+'-III7'
+'-III'
+'-I'
+'#ii'
+'VII7'
+'None']
