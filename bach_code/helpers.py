@@ -33,6 +33,9 @@ RANGE = {
 	}
 }
 
+# The total range (measured in half-steps) of the chorales
+TOTAL_RANGE = 95 # inclusive
+
 
 ## FUNCTIONS ##
 

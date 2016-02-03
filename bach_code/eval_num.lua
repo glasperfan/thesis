@@ -21,7 +21,7 @@ function make_model(max_index, output_size)
 	model:add(embedding)
 	
 	model:add(nn.Linear(embedding_size, hidden_size))
-	model:add(nn.Sigmoid())
+	model:add(nn.Tanh())
 	model:add(nn.Linear(hidden_size, output_size))
 	model:add(nn.LogSoftMax())
 
@@ -30,6 +30,7 @@ function make_model(max_index, output_size)
 
 	return model, criterion
 end
+
 
 -- Multiclass logistic regression --
 function multiclass_logistic_regression(max_index, output_size)
@@ -69,9 +70,9 @@ function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
 		end
 		-- print(torch.mean(nll_arr))
 		print("Epoch:", epoch, torch.mean(nll_arr))
-		eval_num(Xtrain, ytrain, model, criterion)
-		eval_num(Xtest, ytest, model, criterion)
 	end
+	eval_num(Xtrain, ytrain, model, criterion)
+	eval_num(Xtest, ytest, model, criterion)
 end
 
 
@@ -97,7 +98,7 @@ function eval_num(Xtest, ytest, model, criterion)
 	local correct_ntod = torch.sum(torch.eq(pred[nt][nd], ytest[nt][nd]))
 	local count_ntod = ytest[nt][nd]:size(1)
 	-- 	Print some output --
-	-- for i = count - 100, count do print(pred[i], ytest[i]) end 
+	for i = count - 100, count do print(pred[i], ytest[i]) end 
 	-- Results --
 	print(string.format("Average nll: %.3f", torch.mean(nll_arr)))
 	print(string.format("Percentage correct: %.2f%%", correct / count * 100.0))
@@ -107,20 +108,19 @@ end
 
 
 
-
 function main() 
 	-- Contants
-	-- embedding_size = 200
-	-- hidden_size = 200
+	embedding_size = 250
+	hidden_size = 250
 	epochs = 20
 	learning_rate = 0.01
 
 	-- Create the data loader class.
-	local f = hdf5.open("data/all_data.hdf5")
-	local Xtrain = f:read('X_train'):all()
-	local ytrain = f:read('y_train'):all()
-	local Xtest = f:read('X_test'):all()
-	local ytest = f:read('y_test'):all()
+	local f = hdf5.open("data/chorales.hdf5")
+	local Xtrain = f:read('Xtrain'):all()
+	local ytrain = f:read('ytrain'):all()
+	local Xtest = f:read('Xtest'):all()
+	local ytest = f:read('ytest'):all()
 	f:close()
 	
 	-- Select the training data for Roman numeral task --
@@ -137,8 +137,8 @@ function main()
 	local outsz_num = torch.max(yall_num)
 	
 	-- Create global models and criterion
-	model_num, criterion_num = make_model2(maxi_num, outsz_num)
-	
+	model_num, criterion_num = make_model(maxi_num, outsz_num)
+
 	-- Train
 	print("# Training numeral subtask")
 	train(Xtrain_num, ytrain_num, Xtest_num, ytest_num, model_num, criterion_num)
