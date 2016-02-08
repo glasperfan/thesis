@@ -19,7 +19,7 @@ function make_model(max_index)
 	-- Feed forward sequence
 	local model = nn.Sequential()
 	model:add(embedding)
-	
+
 	model:add(nn.Linear(embedding_size, hidden_size))
 	model:add(nn.Tanh())
 	smt = nn.SoftMaxTree(hidden_size, tree, root_id, _, _, true)
@@ -93,20 +93,14 @@ function main()
 	-- Load data
 	local f = hdf5.open("data/chorales.hdf5")
 	local Xtrain = f:read('Xtrain'):all()
-	local Xdev = f:read('Xdev'):all()
-	local Xtest = f:read('Xtest'):all()
 	local ytrain = f:read('ytrain'):all()
+	local Xdev = f:read('Xdev'):all()
 	local ydev = f:read('ydev'):all()
+	local Xtest = f:read('Xtest'):all()
 	local ytest = f:read('ytest'):all()
 	local yall = torch.cat(ytrain, torch.cat(ydev, ytest, 1), 1)
 	f:close()
 	
-	local f = hdf5.open("data/choralestree.hdf5")
-	local ytrainTree = f:read('ytrainTree'):all()
-	local ydevTree = f:read('ydevTree'):all()
-	local ytestTree = f:read('ytestTree'):all()
-	local yallTree = torch.cat(ytrainTree, torch.cat(ydevTree, ytestTree, 1), 1)
-	f:close()
 	
 	-- Select the training data, excluding the final two columns (features related to previous input) --
 	Xtrain = Xtrain[{ {}, {1,10} }]
@@ -116,9 +110,9 @@ function main()
 	local max_index = torch.max(Xall)
 
 	-- Create the tree --
-	counter = 1
+	counter = 2
 	tree = {}
-	root_id = 410725
+	root_id = 1
 	numeralSize = yall[{ {}, 1 }]:max()
 	inversionSize = yall[{ {}, 2 }]:max()
 	altoSize = yall[{ {}, 3 }]:max()
@@ -126,11 +120,12 @@ function main()
 
 	tree[root_id] = range(counter, counter + numeralSize)
 	counter = counter + numeralSize
-	for el = 1, numeralSize do
+	for el = 2, numeralSize + 1 do
 	    tree[el] = range(counter, counter + inversionSize)
 	    counter = counter + inversionSize
 	end
 	inv_min, inv_max = tree[tree[root_id][1]][1], counter - 1
+	-- print(inv_min, inv_max)
 	for el = inv_min, inv_max do
 	    tree[el] = range(counter, counter + altoSize)
 	    counter = counter + altoSize
@@ -140,7 +135,17 @@ function main()
 	    tree[el] = range(counter, counter + tenorSize)
 	    counter = counter + tenorSize
 	end
+	function treeify(dataset)
+		leaves = torch.IntTensor(dataset:size(1))
+		for i = 1, dataset:size(1) do
+			leaves[i] = lookup(dataset[i][1], dataset[i][2], dataset[i][3], dataset[i][4])
+		end
+		return leaves
+	end
 
+	ytrainTree = treeify(ytrain)
+	ydevTree = treeify(ydev)
+	ytestTree = treeify(ytest)
 
 	-- Create global models and criterion
 	model, criterion, smt = make_model(max_index)

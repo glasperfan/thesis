@@ -111,16 +111,20 @@ An Oracle experiment was then performed to see if knowing the correct previous h
 
 \subsection{Inversion subtask}
 
-For inversion selection, each melody note and the correct corresponding Roman numeral were assigned one of 13 possible inversions. In this task, predicting the most frequent class (root position) would already give you 56\% accuracy on both the training and test sets. The same 3 classifiers were used. For the network, the validation set was used to tune the parameters to an embedding size and hidden unit size of 200 and a learning rate of 0.001.
+For inversion selection, each melody note and the correct corresponding Roman numeral were assigned one of 13 possible inversions. In this task, predicting the most frequent class (root position) would already give you 57\% accuracy on both the training and test sets. The same 3 classifiers were used. For the network, the validation set was used to tune the parameters to an embedding size and hidden unit size of 200 and a learning rate of 0.001.
 
 \begin{center}
 	\begin{tabular}{ c | c | c }
 		\textbf{Classifier} & \textbf{Training} & \textbf{Test} \\ \hline
 		Multi-Class Logistic & 63.23\% & 64.68\% \\ \hline
 		Naive Bayes & 60.35\% & 60.92\% \\ \hline
-		Neural Network & 73.93\% & 65.50\%
+		Neural Network & 74.56\% & 66.01\%
 	\end{tabular}
 \end{center}
+
+\subsection{Alto and Tenor subtasks}
+
+The same model was applied to classifying the alto and tenor notes, separately. These models yielded a test accuracy of 35.06\% on for the alto voice and 29.22\% for the tenor voice. 
 
 \subsection{Classifier Sequence}
 

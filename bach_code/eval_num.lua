@@ -31,7 +31,6 @@ function make_model(max_index, output_size)
 	return model, criterion
 end
 
-
 -- Multiclass logistic regression --
 function multiclass_logistic_regression(max_index, output_size)
 	-- Embedding sequence
