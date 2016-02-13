@@ -49,18 +49,17 @@ function multiclass_logistic_regression(max_index, output_size)
 	return model, criterion
 end
 
-
+function isnan(x) return x ~= x end
 
 --- Train the Model ---
 function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
 	for epoch = 1, epochs do
-		local nll_arr = torch.Tensor(Xtrain:size(1))
+		local nll = torch.zeros(Xtrain:size(1))
 		model:zeroGradParameters()
 		for j = 1, Xtrain:size(1) do
 			-- Forward
 			local out = model:forward(Xtrain[j])
-			nll_arr[j] = criterion:forward(out, ytrain[j])
-
+			nll[j] = criterion:forward(out, ytrain[j])
 			-- Backward
 			local deriv = criterion:backward(out, ytrain[j])
 			model:backward(Xtrain[j], deriv)
@@ -68,10 +67,10 @@ function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
 			model:zeroGradParameters()
 		end
 		-- print(torch.mean(nll_arr))
-		print("Epoch:", epoch, torch.mean(nll_arr))
+		print("Epoch:", epoch, torch.mean(nll))
+		eval_num(Xtrain, ytrain, model, criterion)
+		eval_num(Xtest, ytest, model, criterion)
 	end
-	eval_num(Xtrain, ytrain, model, criterion)
-	eval_num(Xtest, ytest, model, criterion)
 end
 
 
@@ -79,40 +78,32 @@ end
 -- Evaluation numeral subtask --
 function eval_num(Xtest, ytest, model, criterion)
 	-- Collect numeral predictions
-	local nll_arr = torch.Tensor(Xtest:size(1))
+	local nll = 0
 	local pred = torch.IntTensor(ytest:size(1))
 	for j = 1, Xtest:size(1) do
 		out = model:forward(Xtest[j])
 		_ , argmax = torch.max(out, 1)
 		pred[j] = argmax[1]
-		nll_arr[j] = criterion:forward(out, ytest[j])
+		nll = nll + criterion:forward(out, ytest[j])
 	end
 	-- Evaluation
 	local correct = torch.sum(torch.eq(pred, ytest))
 	local count = pred:size(1)
-	local nt = torch.ne(ytest, 1) -- not tonic
-	local correct_nt = torch.sum(torch.eq(pred[nt], ytest[nt]))
-	local count_nt = ytest[nt]:size(1)
-	local nd = torch.ne(ytest[nt], 3) -- not tonic or dominant
-	local correct_ntod = torch.sum(torch.eq(pred[nt][nd], ytest[nt][nd]))
-	local count_ntod = ytest[nt][nd]:size(1)
-	-- 	Print some output --
-	for i = count - 100, count do print(pred[i], ytest[i]) end 
+	-- Print some output --
+	-- for i = count - 100, count do print(pred[i], ytest[i]) end
 	-- Results --
-	print(string.format("Average nll: %.3f", torch.mean(nll_arr)))
+	print(string.format("Average nll: %.3f", nll / Xtest:size(1)))
 	print(string.format("Percentage correct: %.2f%%", correct / count * 100.0))
-	print(string.format("Percentage correct (not tonic): %.2f%%", correct_nt / count_nt * 100.0))
-	print(string.format("Percentage correct (not tonic or dominant): %.2f%%", correct_ntod / count_ntod * 100.0))
 end
 
 
 
 function main() 
 	-- Contants
-	embedding_size = 250
-	hidden_size = 250
+	embedding_size = 300
+	hidden_size = 300
 	epochs = 20
-	learning_rate = 0.01
+	learning_rate = 0.005
 
 	-- Create the data loader class.
 	local f = hdf5.open("data/chorales.hdf5")
@@ -125,8 +116,8 @@ function main()
 	-- Select the training data for Roman numeral task --
 	local Xtrain_num = Xtrain[{ {}, {1,10} }]
 	local Xtest_num = Xtest[{ {}, {1,10} }]
-	local ytrain_num = ytrain[{ {}, 1 }]
-	local ytest_num = ytest[{ {}, 1 }]
+	local ytrain_num = ytrain[{ {}, 5 }]
+	local ytest_num = ytest[{ {}, 5 }]
 
 	-- Aggregate training and test sets
 	local Xall_num = torch.cat(Xtrain_num, Xtest_num, 1)

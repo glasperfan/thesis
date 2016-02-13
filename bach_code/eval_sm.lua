@@ -1,4 +1,4 @@
--- eval_tree.lua
+-- eval_sum.lua
 
 --[[
 	Experiment 2C: Softmax
@@ -48,6 +48,7 @@ function multiclass_logistic_regression(max_index, output_size)
 	return model, criterion
 end
 
+
 --- Train the Model ---
 function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
 	for epoch = 1, epochs do
@@ -66,9 +67,9 @@ function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
 		end
 		-- print(torch.mean(nll_arr))
 		print("Epoch:", epoch, torch.mean(nll_arr))
+		eval(Xtrain, ytrain, model, criterion)
+		eval(Xtest, ytest, model, criterion)
 	end
-	eval(Xtrain, ytrain, model, criterion)
-	eval(Xtest, ytest, model, criterion)
 end
 
 
@@ -107,33 +108,29 @@ function main()
 	local Xtrain = f:read('Xtrain'):all()
 	local Xdev = f:read('Xdev'):all()
 	local Xtest = f:read('Xtest'):all()
-	local ytrain = f:read('ytrain'):all()
-	local ydev = f:read('ydev'):all()
-	local ytest = f:read('ytest'):all()
+	f:close()
+
 	Xtrain = Xtrain[{ {}, {1,10} }]
 	Xdev = Xdev[{ {}, {1,10} }]
 	Xtest = Xtest[{ {}, {1,10} }]
-	Xall = torch.cat(Xtrain, torch.cat(Xdev, Xtest, 1), 1)
-	-- ytrain = ytrain[{ {}, 4 }]
-	-- ydev = ydev[{ {}, 4 }]
-	-- ytest = ytest[{ {}, 4 }]
-	-- yall = torch.cat(ytrain, torch.cat(ydev, ytest, 1), 1)
-	f:close()
+	Xtrain = torch.cat(Xtrain, Xdev, 1)
+	local Xall = torch.cat(Xtrain, Xtest, 1)
 
 	local f = hdf5.open("data/chorales_sm.hdf5")
-	local ytrain = f:read('ytrainunique'):all()
-	local ydev = f:read('ydevunique'):all()
-	local ytest = f:read('ytestunique'):all()
-	local yall = torch.cat(ytrain, torch.cat(ydev, ytest, 1), 1)
-	
+	local ytrain = f:read('ytrainfeat'):all() -- this contains both the training and dev sets
+	local ytest = f:read('ytestfeat'):all()
+	local yall = f:read('yallfeat'):all()
+	local Xtestex = f:read('Xtestex'):all()
+	local ytestex = f:read('ytestex'):all()
+	Xtestex = Xtestex[{ {}, {1,10} }]
 	local max_index = torch.max(Xall)
 	local output_size = torch.max(yall)
 
 	-- Create global models and criterion
-	model, criterion = multiclass_logistic_regression(max_index, output_size)
+	model, criterion = make_model(max_index, output_size)
 
 	-- Train
-	train(Xtrain, ytrain, Xtest, ytest, model, criterion)
+	train(Xtrain, ytrain, Xtestex, ytestex, model, criterion)
 end
 
 main()
