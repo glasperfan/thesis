@@ -120,9 +120,6 @@ function main()
 	local ytrain = f:read('ytrainfeat'):all() -- this contains both the training and dev sets
 	local ytest = f:read('ytestfeat'):all()
 	local yall = f:read('yallfeat'):all()
-	local Xtestex = f:read('Xtestex'):all()
-	local ytestex = f:read('ytestex'):all()
-	Xtestex = Xtestex[{ {}, {1,10} }]
 	local max_index = torch.max(Xall)
 	local output_size = torch.max(yall)
 

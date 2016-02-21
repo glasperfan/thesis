@@ -103,13 +103,16 @@ def GCT(t, v, c):
     # Add extensions and select root
     rotated = map(list, list(set(map(tuple,rotated))))
     withextensions = [addextensions(x, pcset) for x in rotated]
+    print withextensions
     withroot = [((x[0] - t) % 12, map(lambda e: (e - x[0]) % 12, x)) for x in withextensions]
     # Return the optimal choice to ensure unique encodings
+    print withroot
+    print
     choice = withroot[0] if len(withroot) == 1 else optimalchoice(withroot)
     bass = (lowest_note.midi - t - choice[0]) % 12
     bass_idx = choice[1].index(bass)
     base = tuple(choice[1]) if len(choice[1]) > 1 else choice[1][0]
-    result = choice[0], bass_idx, base
+    result = choice[0], bass_idx, base # 
     return result
 
 

@@ -76,7 +76,7 @@ end
 -- Constants
 embedding_size = 250
 hidden_size = 250
-epochs = 12
+epochs = 6
 learning_rate = 0.01
 
 -- Load data
@@ -112,7 +112,7 @@ train_data = {}
 test_data = {}
 max_indices = {}
 for i = 1, num_output_types do
-	local source = Xtrain											-- Create train/test input
+	local source = Xtrain												-- Create train/test input
 	local source_test = Xtest
 	if i > 1 then
 		source = torch.cat(train_data[i - 1], ytrain[{ {} , i - 1 }], 2)
@@ -122,12 +122,12 @@ for i = 1, num_output_types do
 		source_test[{ {}, source_test:size(2) }]:apply(increase_index)
 	end
 	max_idx = torch.cat(source, source_test, 1):max()
-	local target = ytrain[{ {}, i }]								-- ytrain
-	local target_test = ytest[{ {}, i }]							-- ytest
-	local model, criterion = make_model(max_idx, target:max())		-- create the model
-	train(source, target, model, criterion)							-- train
-	eval(source_test, target_test, model, criterion)				-- eval
-	models[i] = model 												-- store data and model for full eval
+	local target = ytrain[{ {}, i }]									-- ytrain
+	local target_test = ytest[{ {}, i }]								-- ytest
+	local model, criterion = make_model(max_idx, yall[{ {}, i}]:max())	-- create the model
+	train(source, target, model, criterion)								-- train
+	eval(source_test, target_test, model, criterion)					-- eval
+	models[i] = model 													-- store data and model for full eval
 	train_data[i] = source
 	test_data[i] = source_test
 	max_indices[i] = max_idx
@@ -136,10 +136,10 @@ end
 -- Evaluate ---
 preds = torch.IntTensor(ytest:size())
 accuracy = torch.zeros(ytest:size(1))
-for j = 1, Xtest:size(1) do											-- Iterate over the test datapoints
-	probs = torch.ones(ytrain:size(1))								-- Create a record of the probability of each possible outcome
-	for k = 1, ytrain:size(1) do									-- Iterate over all possible output combinations
-		for m = 1, num_output_types do 								-- Iterate over the different classifiers
+for j = 1, Xtest:size(1) do								-- Iterate over the test datapoints
+	probs = torch.ones(ytrain:size(1))					-- Create a record of the probability of each possible outcome
+	for k = 1, ytrain:size(1) do						-- Iterate over all possible output combinations
+		for m = 1, num_output_types do 					-- Iterate over the different classifiers
 			local model = models[m]
 			local testX = test_data[m][j]
 			for n = 1, m - 1 do

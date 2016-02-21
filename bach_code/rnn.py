@@ -40,10 +40,6 @@ def load():
 	return cX, cy, cXall, cyall
     
 
-# [1 1 3 4] --> [1 13 26 42] or something like that
-def target_update(cy, cols_max):
-
-
 # Generate a batch out of a chorale
 # cX = chorale in the shape len * featsize
 # cy = harmonization in the shape seqlen * featsize
@@ -90,35 +86,30 @@ def pad(cX, cy, max_seq_len, xpadding, ypadding):
 
 
 
-# Load
-cX, cy, cXall, cyall = load()
+def run():
+	# Load
+	cX, cy, cXall, cyall = load()
 
-# Update targets to be one-hot vectors
-max_target_idx = [max(cyall[:, i]) for i in range(len(cyall[0]))]
-for i in range(len(cy)):
-	cy[i] = target_update(cy[i], max_target_idx)
-print "target vectors updated..."
-
-# Batch
-for i in range(len(cX)):
-	cX[i], cy[i] = batch(cX[i], cy[i])
-print "batched..."
-
-# Pad
-xpadding = [max(cXall[:, i]) + 1 for i in range(len(cXall[0]))]
-ypadding = [max(cyall[:, i]) + 1 for i in range(len(cyall[0]))]
-for i in range(len(cX)):
-	cX[i], cy[i] = pad(cX[i], cy[i], SEQLEN, xpadding, ypadding)
-print "padded..."
-
-# Write
-with h5py.File('data/chorales_nn.hdf5', "w", libver='latest') as f:
+	# Batch
 	for i in range(len(cX)):
-		X3d = numpy.array(map(numpy.array, tuple(cX[i]))).transpose([1,0,2]) # seqlen * batchsize * featsize
-		y3d = numpy.array(map(numpy.array, tuple(cy[i]))).transpose([1,0,2])
-		assert X3d.shape[0] == SEQLEN
-		assert X3d.shape[2] == len(cXall[0])
-		f.create_dataset('chorale%dX' % (i + 1), X3d.shape, dtype="i", data=X3d)
-		f.create_dataset('chorale%dy' % (i + 1), y3d.shape, dtype="i", data=y3d)
-	f.create_dataset('metadata', (1,2), dtype="i", data=numpy.array([max(xpadding), max(ypadding)]))
-print "written..."
+		cX[i], cy[i] = batch(cX[i], cy[i])
+	print "batched..."
+
+	# Pad
+	xpadding = [max(cXall[:, i]) + 1 for i in range(len(cXall[0]))]
+	ypadding = [max(cyall[:, i]) + 1 for i in range(len(cyall[0]))]
+	for i in range(len(cX)):
+		cX[i], cy[i] = pad(cX[i], cy[i], SEQLEN, xpadding, ypadding)
+	print "padded..."
+
+	# Write
+	with h5py.File('data/chorales_nn.hdf5', "w", libver='latest') as f:
+		for i in range(len(cX)):
+			X3d = numpy.array(map(numpy.array, tuple(cX[i]))).transpose([1,0,2]) # seqlen * batchsize * featsize
+			y3d = numpy.array(map(numpy.array, tuple(cy[i]))).transpose([1,0,2])
+			assert X3d.shape[0] == SEQLEN
+			assert X3d.shape[2] == len(cXall[0])
+			f.create_dataset('chorale%dX' % (i + 1), X3d.shape, dtype="i", data=X3d)
+			f.create_dataset('chorale%dy' % (i + 1), y3d.shape, dtype="i", data=y3d)
+		f.create_dataset('metadata', (1,2), dtype="i", data=numpy.array([max(xpadding), max(ypadding)]))
+	print "written..."

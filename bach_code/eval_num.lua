@@ -22,6 +22,8 @@ function make_model(max_index, output_size)
 	
 	model:add(nn.Linear(embedding_size, hidden_size))
 	model:add(nn.Tanh())
+	model:add(nn.Linear(hidden_size, hidden_size))
+	model:add(nn.Tanh())
 	model:add(nn.Linear(hidden_size, output_size))
 	model:add(nn.LogSoftMax())
 
@@ -103,7 +105,7 @@ function main()
 	embedding_size = 300
 	hidden_size = 300
 	epochs = 20
-	learning_rate = 0.005
+	learning_rate = 0.01
 
 	-- Create the data loader class.
 	local f = hdf5.open("data/chorales.hdf5")
@@ -114,10 +116,10 @@ function main()
 	f:close()
 	
 	-- Select the training data for Roman numeral task --
-	local Xtrain_num = Xtrain[{ {}, {1,10} }]
-	local Xtest_num = Xtest[{ {}, {1,10} }]
-	local ytrain_num = ytrain[{ {}, 5 }]
-	local ytest_num = ytest[{ {}, 5 }]
+	local Xtrain_num = Xtrain--[{ {}, {1,10} }]
+	local Xtest_num = Xtest--[{ {}, {1,10} }]
+	local ytrain_num = ytrain[{ {}, 2 }]
+	local ytest_num = ytest[{ {}, 2 }]
 
 	-- Aggregate training and test sets
 	local Xall_num = torch.cat(Xtrain_num, Xtest_num, 1)

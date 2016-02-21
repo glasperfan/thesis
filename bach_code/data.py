@@ -24,10 +24,9 @@ import h5py
 # current melody pitch.
 #
 # There are output datasets from the following properties:
-# - Root note
-# - Inversions ('[root]', '6', '65', '42')
-# - Alto voice (MIDI note in the alto range)
-# - Tenor voice (MIDI note in the tenor range)
+# - Root note, relative to the tonic
+# - Inversions (root, 1st, 2nd, or 3rd inversion)
+# - Base, or chord function (major, minor, etc.), defined as a set of intervals away from the tonic
 #
 #
 #
@@ -68,20 +67,6 @@ def timing(f):
     return wrap
 
 
-#############################
-# Featurizer helper functions
-#############################
-
-# Featurize the harmony as a tuple (ATB) at time i
-def feat_chord(i, a, t, b):
-	return a[i].midi, t[i].midi, b[i].midi
-
-# Featurize melodic motion as an interval (an integer representing the half steps between two pitches)
-# If n1 is a lower pitch than n2, the interval will be a positive value, and vice versa.
-def feat_interval(n1, n2):
-	return n2.midi - n1.midi
-
-
 
 class Featurizer(object):
 	#
@@ -115,8 +100,8 @@ class Featurizer(object):
 		# THIS ORDER MATTERS
 		self.input_features = [self.keys, self.modes, self.times, self.beats, self.offsets, self.cadence_dists, \
 								self.cadences, self.pitches, self.intervals, self.intervals, self.roots, \
-								self.inversions, self.bases]
-		self.output_features = [self.roots, self.inversions, self.bases, self.altos, self.tenors]
+								self.bases, self.inversions]
+		self.output_features = [self.roots, self.bases, self.inversions, self.altos, self.tenors]
 
 	# Collect all preprocessed scores
 	@timing
@@ -186,34 +171,33 @@ class Featurizer(object):
 				v_iafter = S[index + 1].midi - S[index].midi if index < len(S) - 1 else 'None'
 				self.intervals.add(v_iafter)
 				# [10]: root at time t-1
-				# [11]: inversion at time t-1
-				# [12]: base at time t-1
+				# [11]: base at time t-1
+				# [12]: inversion at time t-1
 				timetminus1 = yc[-1] if len(yc) > 0 else ('*padding*', '*padding*', '*padding*')
-				v_root_prev = timetminus1[0]
-				v_inv_prev = timetminus1[1]
-				v_base_prev = timetminus1[2]
-				# Intentionally not adding the ordered sets (it's added below)
+				v_root_prev = timetminus1[0] # NOTE THE ORDER
+				v_base_prev = timetminus1[1]
+				v_inv_prev = timetminus1[2]
 				
 				# Output vector
 				# [0]: root
-				# [1]: inversion
-				# [2]: base
+				# [1]: base
+				# [2]: inversion
 				consonance = [1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0] # see gct module
 				v_root, v_inv, v_base = gct.GCT(tonic, consonance, chord.Chord([B[index], T[index], A[index], S[index]]))
 				self.roots.add(v_root)
-				self.inversions.add(v_inv)
 				self.bases.add(v_base)
-				# [2]: Alto pitch (relative to key signature)
+				self.inversions.add(v_inv)
+				# [3]: Alto pitch (relative to key signature)
 				v_alto = (A[index].midi - tonic) % 12
 				self.altos.add(v_alto)
-				# [3]: Tenor pitch (relative to key signature)
+				# [4]: Tenor pitch (relative to key signature)
 				v_tenor = (T[index].midi - tonic) % 12
 				self.tenors.add(v_tenor)
  
 				# Input vector
 				input_vec = [v_key, v_mode, v_time, v_beat, v_off_end, v_cadence_dist, v_cadence, \
-							 v_pitch, v_ibefore, v_iafter, v_root_prev, v_inv_prev, v_base_prev]
-				output_vec = [v_root, v_inv, v_base, v_alto, v_tenor]
+							 v_pitch, v_ibefore, v_iafter, v_root_prev, v_base_prev, v_inv_prev]
+				output_vec = [v_root, v_base, v_inv, v_alto, v_tenor]
 
 				Xc.append(input_vec)
 				yc.append(output_vec)
@@ -229,8 +213,8 @@ class Featurizer(object):
 		freezeObject(Xvalues, 'Xvalues')
 		freezeObject(yvalues, 'yvalues')
 		freezeObject(self.roots, 'roots')
-		freezeObject(self.inversions, 'inversions')
 		freezeObject(self.bases, 'bases')
+		freezeObject(self.inversions, 'inversions')
 		freezeObject(self.altos, "alto_range")
 		freezeObject(self.tenors, "tenor_range")
 	
