@@ -64,8 +64,6 @@ def optimalchoice(choices):
             if sum(choice[1]) > 6: # 6 semitones
                 return choice
     choices_f = [x for x in choices if x[1][1] < 9]
-    if len(choices_f) < 1:
-    	print choices
     for choice in choices_f:
         # Select dominant chords with the correct root
         if choice[1] == DOMINANT:
@@ -103,11 +101,8 @@ def GCT(t, v, c):
     # Add extensions and select root
     rotated = map(list, list(set(map(tuple,rotated))))
     withextensions = [addextensions(x, pcset) for x in rotated]
-    print withextensions
     withroot = [((x[0] - t) % 12, map(lambda e: (e - x[0]) % 12, x)) for x in withextensions]
     # Return the optimal choice to ensure unique encodings
-    print withroot
-    print
     choice = withroot[0] if len(withroot) == 1 else optimalchoice(withroot)
     bass = (lowest_note.midi - t - choice[0]) % 12
     bass_idx = choice[1].index(bass)
@@ -164,5 +159,5 @@ def test():
     assert GCT(cmajor, v, c17) == (8, 2, (0, 4, 7, 10))
     assert GCT(cmajor, v, c18) == (8, 3, (0, 4, 7, 10))
 
-#loop(test)
-test()
+loop(test)
+# test()

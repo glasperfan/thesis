@@ -43,12 +43,7 @@ import h5py
 def split(lst, pg):
 		shuffle(lst)
 		split_point = int(len(lst) * pg)
-		set1 = lst[:split_point]
-		set2 = lst[split_point:]
-		for s in set1:
-			for t in set2:
-				assert not npy.array_equal(s, t)
-		return set1, set2
+		return lst[:split_point], lst[split_point:]
 
 def _contains(s, seq):
 	for c in seq:
@@ -109,7 +104,10 @@ class Featurizer(object):
 		from os import listdir
 		self.original = []
 		for f in glob(self.data_dir + "*.xml"):
-			self.original.append(converter.parse(f))
+			score = converter.parse(f)
+			if score.parts[0].quarterLength > 300: # removes on excessively long score
+				continue
+			self.original.append(score)
 		print "Gathered %d 4-part chorales." % len(self.original)
 		
 		return self.original
@@ -274,12 +272,12 @@ class Featurizer(object):
 	@timing
 	def aggregrate(self):
 		stack = lambda x1, x2: npy.vstack((x1, x2))
-		trainX, trainy = [x for (x, y, sc, idx) in self.train], [y for (x, y, sc, idx) in self.train]
-		devX, devy = [x for (x, y, sc, idx) in self.dev], [y for (x, y, sc, idx) in self.dev]
-		testX, testy = [x for (x, y, sc, idx) in self.test], [y for (x, y, sc, idx) in self.test]
-		self.trainXall, self.trainyall = reduce(stack, trainX), reduce(stack, trainy)
-		self.devXall, self.devyall = reduce(stack, devX), reduce(stack, devy)
-		self.testXall, self.testyall = reduce(stack, testX), reduce(stack, testy)
+		self.trainX, self.trainy = [x for (x, y, sc, idx) in self.train], [y for (x, y, sc, idx) in self.train]
+		self.devX, self.devy = [x for (x, y, sc, idx) in self.dev], [y for (x, y, sc, idx) in self.dev]
+		self.testX, self.testy = [x for (x, y, sc, idx) in self.test], [y for (x, y, sc, idx) in self.test]
+		self.trainXall, self.trainyall = reduce(stack, self.trainX), reduce(stack, self.trainy)
+		self.devXall, self.devyall = reduce(stack, self.devX), reduce(stack, self.devy)
+		self.testXall, self.testyall = reduce(stack, self.testX), reduce(stack, self.testy)
 		self.dataXall = stack(stack(self.trainXall, self.devXall), self.testXall)
 		self.datayall = stack(stack(self.trainyall, self.devyall), self.testyall)
 
@@ -288,17 +286,34 @@ class Featurizer(object):
 	def write(self):
 		print "Writing to %s folder." % self.output_dir
 		with h5py.File(self.output_dir + "chorales.hdf5", "w", libver="latest") as f:
+			# Write accumulated chorales
 			f.create_dataset("Xtrain", self.trainXall.shape, dtype="i", data=self.trainXall)
 			f.create_dataset("ytrain", self.trainyall.shape, dtype="i", data=self.trainyall)
 			f.create_dataset("Xdev", self.devXall.shape, dtype="i", data=self.devXall)
 			f.create_dataset("ydev", self.devyall.shape, dtype="i", data=self.devyall)
 			f.create_dataset("Xtest", self.testXall.shape, dtype="i", data=self.testXall)
 			f.create_dataset("ytest", self.testyall.shape, dtype="i", data=self.testyall)
+			# Write every chorale into train/dev/test sets
 			with open('data/chorale_index.txt', 'w') as m:
-				for Xcf, ycf, score, idx in self.featurized:
-					f.create_dataset("chorale%d_X" % idx, Xcf.shape, dtype="i", data=Xcf)
-					f.create_dataset("chorale%d_y" % idx, ycf.shape, dtype="i", data=ycf)
-					m.write("%d\t %s\n" % (idx, score.metadata.title))
+				m.write("TRAINING SET\n")
+				for idx, (X, y) in enumerate(zip(self.trainX, self.trainy)):
+					f.create_dataset("train/chorale%d_X" % idx, X.shape, dtype="i", data=X)
+					f.create_dataset("train/chorale%d_y" % idx, y.shape, dtype="i", data=y)
+					m.write("%d\t %s\n" % (idx, self.train[idx][2].metadata.title))
+				m.write("VALIDATION SET\n")
+				for idx, (X, y) in enumerate(zip(self.devX, self.devy)):
+					f.create_dataset("dev/chorale%d_X" % idx, X.shape, dtype="i", data=X)
+					f.create_dataset("dev/chorale%d_y" % idx, y.shape, dtype="i", data=y)
+					m.write("%d\t %s\n" % (idx, self.dev[idx][2].metadata.title))
+				m.write("TEST SET\n")
+				for idx, (X, y) in enumerate(zip(self.testX, self.testy)):
+					f.create_dataset("test/chorale%d_X" % idx, X.shape, dtype="i", data=X)
+					f.create_dataset("test/chorale%d_y" % idx, y.shape, dtype="i", data=y)
+					m.write("%d\t %s\n" % (idx, self.test[idx][2].metadata.title))
+			# Write every chorale individually
+			for Xcf, ycf, score, idx in self.featurized:
+				f.create_dataset("chorale%d_X" % idx, Xcf.shape, dtype="i", data=Xcf)
+				f.create_dataset("chorale%d_y" % idx, ycf.shape, dtype="i", data=ycf)
 
 
 

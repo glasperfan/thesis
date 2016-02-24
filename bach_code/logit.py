@@ -79,45 +79,64 @@ def test2():
 	Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	runLogitAndNB(Xtrainsparse, Xtestsparse)
 
+def load_dataset(name, data_file):
+	dataX, datay = [], []
+	with h5py.File(data_file, "r", libver='latest') as f:
+		counter = 0
+		while True:
+			try:
+				dataX.append(f['%s/chorale%d_X' % (name, counter)].value)
+				datay.append(f['%s/chorale%d_y' % (name, counter)].value)
+			except:
+				break
+			counter += 1
+	return dataX, datay
+
+# Score without counting padding
+def score_with_padding(pred, ytest, ypadding):
+	correct = 0.0
+	for idx, p in enumerate(pred):
+		if ytest[idx] == p and ytest[idx] != ypadding:
+			correct += 1
+	return correct / ytest.shape[0]
+
 # Full harmonization
 def test3():
 	print("3. Testing softmax for full harmonization...")
-	Xtrain = numpy.vstack((Xtrainraw, Xdevraw))
-	ytrain = numpy.vstack((ytrainraw, ydevraw))
-	Xtest = Xtestraw
-	ytest = ytestraw
-	Xall = numpy.vstack((Xtrain, Xtest))
-	yall = numpy.vstack((ytrain, ytest))
-	# Create the map between features and indices
-	harmdict = {}
-	for idx, feature in enumerate(list(set(map(tuple, yall)))):
-		harmdict[feature] = idx + 1
+	trainXc, trainyc = load_dataset("train", "data/chorales_rnn.hdf5")
+	devXc, devyc = load_dataset("dev", "data/chorales_rnn.hdf5")
+	testXc, testyc = load_dataset("test", "data/chorales_rnn.hdf5")
+	stack = lambda x1, x2: numpy.vstack((x1, x2))
+	hstack = lambda x1, x2: numpy.hstack((x1, x2))
+	Xtrain = stack(reduce(stack, trainXc), reduce(stack, devXc))
+	ytrain = hstack(reduce(hstack, trainyc), reduce(hstack, devyc))
+	Xtest, ytest = reduce(stack, testXc), reduce(hstack, testyc)
 
-	f = lambda x: harmdict[tuple(x)]
-	ytrainfeat = numpy.array(map(f, ytrain))
-	ytestfeat = numpy.array(map(f, ytest))
-	yallfeat = numpy.array(map(f, yall))
-	for idx in range(len(ytestfeat)):
-		if ytestfeat[idx] not in ytrainfeat:
-			ytestfeat[idx] = max(yallfeat) + 1
-	yallfeat = numpy.hstack((ytrainfeat, ytestfeat))
-	with h5py.File('data/chorales_sm.hdf5', "w", libver='latest') as f:
-		f.create_dataset('ytrainfeat', ytrainfeat.shape, dtype="i", data=ytrainfeat)
-		f.create_dataset('ytestfeat', ytestfeat.shape, dtype="i", data=ytestfeat)
-		f.create_dataset('yallfeat', yallfeat.shape, dtype="i", data=yallfeat)
-	print "data/chorales_sm.hdf5 written"
+	ypadding = ytest.max()
+	Xtrain_up, ytrain_up, Xtest_up, ytest_up = [], [], [], []
+	for idx, p in enumerate(ytrain):
+		if p != ypadding:
+			Xtrain_up.append(Xtrain[idx])
+			ytrain_up.append(ytrain[idx])
+	for idx, p in enumerate(ytest):
+		if p != ypadding:
+			Xtest_up.append(Xtest[idx])
+			ytest_up.append(ytest[idx])
+	Xtrain, ytrain, Xtest, ytest = numpy.array(Xtrain_up), numpy.array(ytrain_up), \
+								   numpy.array(Xtest_up), numpy.array(ytest_up)
+
 	Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	RF = RandomForestClassifier(10, "entropy", None)
-	RF.fit(Xtrain, ytrainfeat)
-	score_RF = RF.score(Xtest, ytestfeat)
+	RF.fit(Xtrain, ytrain)
+	score_RF = score_with_padding(RF.predict(Xtest), ytest, ytest.max())
 	print "R-FOREST: score %.2f%%" % (score_RF * 100)
 	ERF = ExtraTreesClassifier(n_estimators=40, max_depth=None, min_samples_split=1, random_state=0)
-	ERF.fit(Xtrain, ytrainfeat)
-	score_ERF = ERF.score(Xtest, ytestfeat)
+	ERF.fit(Xtrain, ytrain)
+	score_ERF = ERF.score(Xtest, ytest)
 	print "EXTRA TREES: score %.2f%%" % (score_ERF * 100)
-	logit = linear_model.LogisticRegression(multi_class='multinomial', solver='lbfgs', C=100)
-	logit.fit(Xtrain, ytrainfeat)
-	score_logit = logit.score(Xtest, ytestfeat)
+	logit = linear_model.LogisticRegression(multi_class='multinomial', solver='lbfgs', C=1)
+	logit.fit(Xtrain, ytrain)
+	score_logit = logit.score(Xtest, ytest)
 	print "LOGIT: score %.2f%%" % (score_logit * 100)
 
 # test1()

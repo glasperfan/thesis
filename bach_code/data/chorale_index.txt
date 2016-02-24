@@ -1,326 +1,328 @@
-183	 Die Wollust dieser Welt
-163	 Ein feste Burg ist unser Gott
-5	 In dich hab ich gehoffet, Herr 1
-325	 Christus, der uns selig macht
-110	 Herr, straf mich nicht in deinem Zorn
-194	 Hilf, Gott, laß mirs gelingen
-301	 Hast du denn, Liebster, dein Angesicht gänzlich verborgen
-316	 Wer nur den lieben Gott läßt walten
-237	 O Welt, ich muß dich lassen
-209	 Heilig, heilig, heilig
-207	 Aus tiefer Not schrei ich zu dir 2
-116	 Gott, der du selber bist das Licht
-126	 Gott lebet noch, Seele, was verzagst du doch?
-54	 O Lamm Gottes, unschuldig
-324	 Wer nur den lieben Gott läßt walten
-222	 Ach Gott, vom Himmel sieh' darein
-265	 Das neugeborne Kindelein
-165	 O Welt, ich muß dich lassen
-152	 Ach Gott, vom Himmel sieh' darein
-267	 Wir Christenleut
-188	 Nun lob, mein Seel, den Herren
-196	 Auf meinen lieben Gott
-87	 Christus, der uns selig macht
-306	 Warum betrübst du dich, mein Herz
-309	 Nun bitten wir den heiligen Geist
-58	 Heut ist, o Mensch, ein großer Trauertag
-149	 Gib unsern Fürsten und aller Obrigkeit (ending)
-254	 Ach Gott und Herr, wie groß und schwer
-14	 Durch Adams Fall ist ganz verderbt
-318	 Jesu Kreuz, Leiden und Pein
-227	 Ich dank dir, lieber Herre
-178	 Wo Gott der Herr nicht bei uns hält
-30	 Schwing dich auf zu deinem Gott
-60	 Schaut, ihr Sünder! Ihr macht mir große Pein
-298	 Wie schön leuchtet der Morgenstern
-239	 Warum sollt ich mich denn grämen
-53	 Ihr Knecht des Herren allzugleich
-197	 Wie schön leuchtet der Morgenstern
-211	 Erbarm dich mein, o Herre Gott
-18	 Meine Seel erhebt den Herren
-25	 Herr Jesu Christ, dich zu uns wend
-93	 O Mensch, schau Jesum Christum an
-293	 Nun lob, mein Seel, den Herren
-292	 Herzlich tut mich verlangen
-190	 Wachet doch, erwacht, ihr Schläfer
-86	 Christ ist erstanden
-273	 O stilles Gotteslamm
-218	 Es woll uns Gott genädig sein 2
-28	 Warum sollt ich mich denn grämen
-24	 Gott der Vater wohn uns bei
-136	 Jesu, Jesu, du bist mein
-200	 Herr, ich habe mißgehandelt
-269	 O Traurigkeit, o Herzeleid
-82	 Was bist du doch, o Seele, so betrübet
-131	 Nun sich der Tag geendet hat
-259	 Vater unser im Himmelreich
-230	 Herzlich tut mich verlangen
-41	 Alle Menschen müssen sterben 1
-63	 Jesus Christus, unser Heiland, der den Tod überwandt
-317	 Herzliebster Jesu, was hast du verbrochen
-147	 Nun laßt uns Gott dem Herren
-214	 Jesu, meine Freude
-47	 Der Tag der ist so freudenreich
-215	 Mit Fried und Freud ich fahr dahin
-78	 Ein feste Burg ist unser Gott
-177	 Herzlich tut mich verlangen
-195	 Herr Christ, der einge Gottes-Söhn
-96	 So gibst du nun, mein Jesu, gute Nacht
-29	 In allen meinen Taten
-146	 Wie nach einer Wasserquelle
-203	 Die Wollust dieser Welt
-272	 Herzliebster Jesu, was hast du verbrochen
-311	 Durch Adams Fall ist ganz verderbt
-315	 Ermuntre dich, mein schwacher Geist
-2	 Von Gott will ich nicht lassen
-193	 Wo Gott, der Herr, nicht bei uns hält
-321	 Da Christus geboren war
-112	 Valet will ich dir geben
-68	 Das neugeborne Kindelein
-300	 Helft mir Gotts Güte preisen
-151	 Christ lag in Todesbanden
-206	 Christus, der ist mein Leben
-276	 O Welt, ich muß dich lassen
-35	 Wer nur den lieben Gott läßt walten
-161	 Gib dich zufrieden und sei stille
-180	 Gelobet seist du, Jesu Christ
-221	 Wo Gott, der Herr, nicht bei uns hält
-89	 Herzlich tut mich verlangen
-102	 Lob sei dir, gütiger Gott
-174	 Jesu, meine Freude
-97	 Spiritus sancti gratia
-67	 Ich hab mein Sach Gott heimgestellt
-76	 Komm, Gott Schöpfer, heiliger Geist
-155	 Was mein Gott will, das g'scheh allzeit
-34	 Christ lag in Todesbanden
-32	 Aus tiefer Not schrei ich zu dir 2
-247	 Werde munter, mein Gemüte
-175	 Wenn einer schon ein Haus aufbaut
-153	 Jesu, meine Freude
-240	 Meine Seel erhebt den Herren
-124	 O höchster Gott, o unser lieber Herre
-139	 Allein Gott in der Höh sei Ehr
-148	 Meine Augen schließ ich jetzt in Gottes Namen zu
-125	 Werde munter, mein Gemüte
-101	 Weltlich Ehr und zeitlich Gut
-289	 In dich hab ich gehoffet, Herr 1
-133	 Wie bist du, Seele, in mir so gar betrübt
-281	 Komm, heiliger Geist, Herre Gott
-231	 Meines Lebens letzte Zeit
-22	 Du geballtes Weltgebäude
-216	 Allein Gott in der Höh sei Ehr
-99	 Dir, dir, Jehova, will ich singen
-234	 Nun bitten wir den heiligen Geist
-150	 Nun freut euch, lieben Christen, g'mein 2
-296	 Nun bitten wir den heiligen Geist
-288	 Wie nach einer Wasserquelle
-111	 Ich dank dir, lieber Herre
-258	 Kommt her zu mir, spricht Gottes Söhn
-167	 Jesus Christus, unser Heiland, der von uns den Gottes Zorn wandt
-31	 In dulci jubilo
-90	 Christus ist erstanden, hat überwunden
-13	 Allein Gott in der Höh sei Ehr
-9	 Ist Gott mein Schild und Helfersmann
-263	 O Welt, ich muß dich lassen
-179	 Herr, ich habe mißgehandelt
-279	 Wie nach einer Wasserquelle
-176	 Wo Gott der Herr nicht bei uns hält
-199	 Christus, der uns selig macht
-223	 Gott des Himmels und der Erden
-249	 Herzlich tut mich verlangen
-33	 Warum betrübst du dich, mein Herz
-257	 Mach's mit mir, Gott, nach deiner Güt
-61	 Sei gegrüßet, Jesu gütig
-109	 Lasset uns den Herren preisen
-270	 Herzlich lieb hab ich dich, o Herr
-20	 Kyrie, Gott Vater in Ewigkeit
-271	 An Wasserflüssen Babylon
-74	 Ihr lieben Christen, freut euch nun
-75	 Ach Gott, erhör mein Seufzen und Wehklagen
-83	 Liebster Immanuel, Herzog der Frommen
-52	 Für Freuden laßt uns springen
-84	 Wie schön leuchtet der Morgenstern
-80	 Herr, nun laß in Frieden
-191	 Meinen Jesum laß ich nicht
-128	 Was betrübst du dich, mein Herze
-262	 Mit Fried und Freud ich fahr dahin
-278	 Es woll uns Gott genädig sein 1
-108	 Ach, wie groß ist Gottes Güt und Wohltat
-322	 Vater unser im Himmelreich
-260	 Es ist das Heil uns kommen her
-189	 Nun danket alle Gott
-39	 Jesus ist mein Aufenthalt
-232	 Was mein Gott will, das g'scheh allzeit
-50	 Ihr Gestirn, ihr hohen Lüfte
-168	 Herzlich lieb hab ich dich, o Herr
-157	 Wenn mein Stündlein vorhanden ist 2
-36	 Wenn ich in Angst und Not mein' Augen heb empor
-202	 Jesus Christ, unser Herre
-305	 Nun laßt uns Gott dem Herren
-10	 Helft mir Gotts Güte preisen
-256	 Du Friedefürst, Herr Jesu Christ
-213	 Wenn mein Stündlein vorhanden ist 1
-65	 Erstanden ist der heilig Christ
-19	 Liebster Jesu, wir sind hier
-229	 Ermuntre dich, mein schwacher Geist
-26	 Wer Gott vertraut, hat wohl gebaut
-286	 Herzlich tut mich verlangen
-48	 Als der gütige Gott vollenden wollt sein Wort
-242	 Wir Christenleut
-244	 O Welt, ich muß dich lassen
-241	 Allein zu dir, Herr Jesu Christ
-261	 Ach wie nichtig, ach wie flüchtig
-243	 Ermuntre dich, mein schwacher Geist
-69	 Wachet auf, ruft uns die Stimme
-310	 Helft mir Gotts Güte preisen
-142	 Jesu, nun sei gepreiset
-319	 Herzlich lieb hab ich dich, o Herr
-1	 Aus tiefer Not schrei ich zu dir 1
-104	 Mitten wir im Leben sind
-287	 Das walt' mein Gott, Vater, Sohn und heiliger Geist
-201	 Mach's mit mir, Gott, nach deiner Güt
-8	 Werde munter, mein Gemüte
-144	 Wie nach einer Wasserquelle
-79	 Herr Jesu Christ, wahr' Mensch und Gott
-21	 Wir glauben all an einen Gott, Schöpfer Himmels und der Erden
-91	 Es sind doch selig alle, die im rechten Glauben wandeln
-118	 Lobet den Herren, denn er ist sehr freundlich
-4	 O Welt, ich muß dich lassen
-245	 Wachet doch, erwacht, ihr Schläfer
-145	 Nun komm, der Heiden Heiland
-313	 Ermuntre dich, mein schwacher Geist
-187	 Rex Christe factor omnium
-113	 Nun preiset alle Gottes Barmherzigkeit
-220	 Es ist das Heil uns kommen her
-264	 Wenn mein Stündlein vorhanden ist 1
-23	 Allein zu dir, Herr Jesu Christ
-160	 Wachet doch, erwacht, ihr Schläfer
-59	 Jesu, der du selbsten wohl
-304	 Freuet euch, ihr Christen alle
+TRAINING SET
+0	 Warum betrübst du dich, mein Herz
+1	 Kommt her, ihr lieben Schwesterlein
+2	 Ihr Knecht des Herren allzugleich
+3	 Aus meines Herzens Grunde
+4	 Werde munter, mein Gemüte
+5	 Menschenkind, merk eben
+6	 Hilf, Gott, laß mirs gelingen
+7	 Es woll uns Gott genädig sein 2
+8	 Meine Seel erhebt den Herren
+9	 Gott des Himmels und der Erden
+10	 Jesus Christ, unser Herre
+11	 Nun lob, mein Seel, den Herren
+12	 Herzlich tut mich verlangen
+13	 Es sind doch selig alle, die im rechten Glauben wandeln
+14	 Jesu, meine Freude
+15	 Herzlich lieb hab ich dich, o Herr
+16	 Mach's mit mir, Gott, nach deiner Güt
+17	 Danket dem Herrn, heuf und allzeit
+18	 Ermuntre dich, mein schwacher Geist
+19	 O Welt, ich muß dich lassen
+20	 Wachet doch, erwacht, ihr Schläfer
+21	 Heilig, heilig, heilig
+22	 Erbarm dich mein, o Herre Gott
+23	 Nun preiset alle Gottes Barmherzigkeit
+24	 Jesu Kreuz, Leiden und Pein
+25	 Werde munter, mein Gemüte
+26	 Das walt' mein Gott, Vater, Sohn und heiliger Geist
+27	 Ich dank dir Gott für alle Wohltat
+28	 Herr Jesu Christ, dich zu uns wend
+29	 Was willst du dich, o meine Seele, kränken
+30	 Mit Fried und Freud ich fahr dahin
+31	 Wie schön leuchtet der Morgenstern
+32	 Es woll uns Gott genädig sein 2
+33	 Jesus Christus, unser Heiland, der von uns den Gottes Zorn wandt
+34	 Herzlich lieb hab ich dich, o Herr
+35	 Valet will ich dir geben
+36	 Wenn mein Stündlein vorhanden ist 1
+37	 Puer natus in Bethlehem
+38	 Wir Christenleut
+39	 Werde munter, mein Gemüte
+40	 Am Sabbat früh Marien drei 1
+41	 Ich bin ja, Herr, in deiner Macht
+42	 Ich dank dir, lieber Herre
+43	 Wenn ich in Angst und Not mein' Augen heb empor
+44	 Christus, der ist mein Leben
+45	 O Welt, ich muß dich lassen
+46	 Wachet doch, erwacht, ihr Schläfer
+47	 Eins ist not, ach Herr, dies eine
+48	 Nun laßt uns Gott dem Herren
+49	 Auf, auf, mein Herz, und du, mein ganzer Sinn
+50	 Jesus Christus, unser Heiland, der den Tod überwandt
+51	 Auf meinen lieben Gott
+52	 Wer nur den lieben Gott läßt walten
+53	 Durch Adams Fall ist ganz verderbt
+54	 Wenn mein Stündlein vorhanden ist 1
+55	 Das neugeborne Kindelein
+56	 Komm, Gott Schöpfer, heiliger Geist
+57	 Wer nur den lieben Gott läßt walten
+58	 Gott hat das Evangelium
+59	 Kommt her, ihr lieben Schwesterlein
+60	 Für Freuden laßt uns springen
+61	 Gott der Vater wohn uns bei
+62	 Helft mir Gotts Güte preisen
+63	 Gib unsern Fürsten und aller Obrigkeit (ending)
+64	 Kommt her zu mir, spricht Gottes Söhn
+65	 O Welt, ich muß dich lassen
+66	 Was bist du doch, o Seele, so betrübet
+67	 Schwing dich auf zu deinem Gott
+68	 Ein feste Burg ist unser Gott
+69	 Es stehn vor Gottes Throne
+70	 Dir, dir, Jehova, will ich singen
+71	 Jesu, der du selbsten wohl
+72	 Ach Gott, vom Himmel sieh' darein
+73	 Nun danket alle Gott
+74	 In allen meinen Taten
+75	 Warum sollt ich mich denn grämen
+76	 Nun bitten wir den heiligen Geist
+77	 Christus, der uns selig macht
+78	 Liebster Jesu, wir sind hier
+79	 Sei gegrüßet, Jesu gütig
+80	 Es sind doch selig alle, die im rechten Glauben wandeln
+81	 O Welt, ich muß dich lassen
+82	 Herr, ich habe mißgehandelt
+83	 Was mein Gott will, das g'scheh allzeit
+84	 O höchster Gott, o unser lieber Herre
+85	 Meinen Jesum laß ich nicht, weil er sich für mich gegeben
+86	 Gelobet seist du, Jesu Christ
+87	 Ermuntre dich, mein schwacher Geist
+88	 Nun lob, mein Seel, den Herren
+89	 Was mein Gott will, das g'scheh allzeit
+90	 Die Wollust dieser Welt
+91	 Ermuntre dich, mein schwacher Geist
+92	 Lobet den Herren, denn er ist sehr freundlich
+93	 Allein Gott in der Höh sei Ehr
+94	 Als der gütige Gott vollenden wollt sein Wort
+95	 Jesu, du mein liebstes Leben
+96	 In dulci jubilo
+97	 In dich hab ich gehoffet, Herr 1
+98	 Wo Gott zum Haus nicht gibt sein Gunst
+99	 O Ewigkeit, du Donnerwort
+100	 Wo Gott, der Herr, nicht bei uns hält
+101	 Mein Hüter und mein Hirt ist Gott der Herre
+102	 Allein zu dir, Herr Jesu Christ
+103	 Christus, der uns selig macht
+104	 O Welt, ich muß dich lassen
+105	 Wo Gott der Herr nicht bei uns hält
+106	 Es spricht der Unweisen Mund
+107	 Jesu, Jesu, du bist mein
+108	 Lasset uns den Herren preisen
+109	 Du geballtes Weltgebäude
+110	 O wir armen Sünder
+111	 Herr, nun laß in Frieden
+112	 Meinen Jesum laß ich nicht
+113	 Herr Jesu Christ, du hast bereit
+114	 Allein Gott in der Höh sei Ehr
+115	 Von Gott will ich nicht lassen
+116	 Wachet doch, erwacht, ihr Schläfer
+117	 O Mensch, schau Jesum Christum an
+118	 Lobet Gott, unsern Herren
+119	 O Lamm Gottes, unschuldig
+120	 Christus, der uns selig macht
+121	 Herr Jesu Christ, meins Lebens Licht
+122	 Warum sollt ich mich denn grämen
+123	 Ach Gott und Herr, wie groß und schwer
+124	 Wenn mein Stündlein vorhanden ist 2
+125	 Mitten wir im Leben sind
+126	 Jesu, meine Freude
+127	 Der du bist drei in Einigkeit
+128	 Wie bist du, Seele, in mir so gar betrübt
+129	 Wer nur den lieben Gott läßt walten
+130	 Werde munter, mein Gemüte
+131	 Jesus, meine Zuversicht
+132	 Jesu Kreuz, Leiden und Pein
+133	 Christum wir sollen loben schon
+134	 Durch Adams Fall ist ganz verderbt
+135	 Wie nach einer Wasserquelle
+136	 Ach Gott, erhör mein Seufzen und Wehklagen
+137	 Helft mir Gotts Güte preisen
+138	 Von Gott will ich nicht lassen
+139	 Ach, was soll ich Sünder machen
+140	 Nicht so traurig, nicht so sehr
+141	 Wer nur den lieben Gott läßt walten
+142	 Christ lag in Todesbanden
+143	 Danket dem Herrn heut und allzeit
+144	 Das alte Jahr vergangen ist
+145	 Wie nach einer Wasserquelle
+146	 Gib dich zufrieden und sei stille
+147	 Ist Gott mein Schild und Helfersmann
+148	 So gibst du nun, mein Jesu, gute Nacht
+149	 Nun lob, mein Seel, den Herren
+150	 Christ, der du bist der helle Tag
+151	 Wer Gott vertraut, hat wohl gebaut
+152	 Christus ist erstanden, hat überwunden
+153	 Das neugeborne Kindelein
+154	 Christ lag in Todesbanden
+155	 Nun laßt uns Gott dem Herren
+156	 Allein Gott in der Höh sei Ehr
+157	 Wachet auf, ruft uns die Stimme
+158	 Nun ruhen alle Wälder
+159	 Wenn mein Stündlein vorhanden ist 2
+160	 Herr Jesu Christ, meins Lebens Licht
+161	 Herzliebster Jesu, was hast du verbrochen
+162	 Von Gott will ich nicht lassen
+163	 Heilig, heilig, heilig
+164	 Dies sind die heiligen zehn Gebot
+165	 Hast du denn, Liebster, dein Angesicht gänzlich verborgen
+166	 Nun sich der Tag geendet hat
+167	 Wie schön leuchtet der Morgenstern
+168	 Wer nur den lieben Gott läßt walten
+169	 Ihr Gestirn, ihr hohen Lüfte
+170	 Herzliebster Jesu, was hast du verbrochen
+171	 Ach Herre Gott, mich treibt die Not
+172	 Die Nacht ist kommen, drin wir ruhen sollen
+173	 Erstanden ist der heilig Christ
+174	 Herr, straf mich nicht in deinem Zorn
+175	 Gott sei gelobet und gebenedeiet
+176	 Liebster Immanuel, Herzog der Frommen
+177	 Christ lag in Todesbanden
+178	 Gott lebet noch, Seele, was verzagst du doch?
+179	 Was Gott tut, das ist wohlgetan
+180	 An Wasserflüssen Babylon
+181	 Alle Menschen müssen sterben 1
+182	 Das alte Jahr vergangen ist
+183	 Meines Lebens letzte Zeit
+184	 Es woll uns Gott genädig sein 1
+185	 Du geballtes Weltgebäude
+186	 Jesu, meines Herzens Freud'
+187	 Es ist das Heil uns kommen her
+188	 Ich dank dir, lieber Herre
+189	 Warum betrübst du dich, mein Herz
+190	 Herzlich tut mich verlangen
+191	 Die Wollust dieser Welt
+192	 Es ist das Heil uns kommen her
+193	 Herzlich tut mich verlangen
+194	 Da Christus geboren war
+195	 Herzlich tut mich verlangen
+196	 Aus tiefer Not schrei ich zu dir 2
+197	 Christ lag in Todesbanden
+198	 Den Vater dort oben
+199	 Meine Augen schließ ich jetzt in Gottes Namen zu
+200	 O Traurigkeit, o Herzeleid
+201	 Wie schön leuchtet der Morgenstern
+202	 Keinen hat Gott verlassen
+203	 Warum betrübst du dich, mein Herz
+204	 Wenn einer schon ein Haus aufbaut
+205	 Es ist genug
+206	 Ich hab mein Sach Gott heimgestellt
+207	 Schaut, ihr Sünder! Ihr macht mir große Pein
+208	 Wie nach einer Wasserquelle
+209	 Aus tiefer Not schrei ich zu dir 2
+210	 Nun freut euch, lieben Christen, g'mein 1
+211	 Erhalt uns, Herr, bei deinem Wort
+212	 Wenn wir in höchsten Nöten sein
+213	 Rex Christe factor omnium
+214	 Was mein Gott will, das g'scheh allzeit
+215	 Jesus ist mein Aufenthalt
+216	 Ach Gott und Herr, wie groß und schwer
+217	 Lob sei dir, gütiger Gott
+218	 Herr Jesu Christ, wahr' Mensch und Gott
+219	 Freuet euch, ihr Christen alle
+220	 Wie schön leuchtet der Morgenstern
+221	 O Welt, ich muß dich lassen
+222	 Weltlich Ehr und zeitlich Gut
+223	 Herzliebster Jesu, was hast du verbrochen
+224	 Komm, heiliger Geist, Herre Gott
+225	 Kommt her, ihr lieben Schwesterlein
+226	 Jesu Kreuz, Leiden und Pein
+227	 Ein feste Burg ist unser Gott
+228	 O Welt, ich muß dich lassen
+229	 O Gott, du frommer Gott
+230	 Vitam quae faciunt
+231	 Ihr lieben Christen, freut euch nun
+232	 Wie nach einer Wasserquelle
 233	 Werde munter, mein Gemüte
-294	 Christus, der uns selig macht
-171	 Eins ist not, ach Herr, dies eine
-122	 Die Nacht ist kommen, drin wir ruhen sollen
-282	 Christus, der ist mein Leben
-44	 Herr Jesu Christ, meins Lebens Licht
-181	 Nun ruhen alle Wälder
-208	 Aus tiefer Not schrei ich zu dir 2
-127	 Heilig, heilig, heilig
-182	 Es ist das Heil uns kommen her
-140	 Ein feste Burg ist unser Gott
-98	 Am Sabbat früh Marien drei 1
-70	 Als Jesus Christus in der Nacht
-314	 O Welt, ich muß dich lassen
-246	 Von Gott will ich nicht lassen
-121	 Christ, der du bist der helle Tag
-7	 Was mein Gott will, das g'scheh allzeit
-274	 Jesu Kreuz, Leiden und Pein
-119	 Vitam quae faciunt
-85	 Da der Herr Christ zu Tische saß
-295	 Jesu Kreuz, Leiden und Pein
-46	 Wo Gott zum Haus nicht gibt sein Gunst
-228	 Kommt her, ihr lieben Schwesterlein
-57	 Du großer Schmerzensmann, vom Vater so geschlagen
-77	 Ach Herre Gott, mich treibt die Not
-135	 Jesu, du mein liebstes Leben
-106	 Herr Jesu Christ, meins Lebens Licht
-100	 Helft mir Gotts Güte preisen
-170	 Ach Gott und Herr, wie groß und schwer
-143	 Ach Gott, vom Himmel sieh' darein
-40	 Meinen Jesum laß ich nicht, weil er sich für mich gegeben
-205	 O Gott, du frommer Gott
-138	 Wenn wir in höchsten Nöten sein
-284	 Erhalt uns, Herr, bei deinem Wort
-275	 Wer nur den lieben Gott läßt walten
-169	 Wie schön leuchtet der Morgenstern
-123	 O Ewigkeit, du Donnerwort
-277	 Was Gott tut, das ist wohlgetan
-320	 Valet will ich dir geben
-72	 Nun freut euch, lieben Christen, g'mein 1
-162	 Ich dank dir, lieber Herre
-27	 Jesu, meine Freude
-251	 Kommt her zu mir, spricht Gottes Söhn
-268	 Christum wir sollen loben schon
-290	 Herzliebster Jesu, was hast du verbrochen
-302	 Verleih uns Frieden gnädiglich (beginning)
-42	 Der du bist drei in Einigkeit
-38	 Nicht so traurig, nicht so sehr
-12	 Puer natus in Bethlehem
-210	 Meine Seel erhebt den Herren
-312	 Herr Christ, der einge Gottes-Söhn
-255	 Was mein Gott will, das g'scheh allzeit
-51	 Das alte Jahr vergangen ist
-164	 O Ewigkeit, du Donnerwort
-212	 Wir Christenleut
-159	 Nun lob, mein Seel, den Herren
-105	 Es ist genug
-130	 Den Vater dort oben
-129	 Es wird schier der letzte Tag herkommen
-43	 Hilf, Herr Jesu, laß gelingen 1
-95	 Herr Gott, dich loben wir, Herr Gott, wir danken dir
-66	 Danket dem Herrn heut und allzeit
-250	 Wachet doch, erwacht, ihr Schläfer
-88	 Hilf, Gott laß mirs gelingen
-192	 Warum betrübst du dich, mein Herz
-37	 Danket dem Herrn, heuf und allzeit
-224	 Jesus, meine Zuversicht
-15	 Dies sind die heiligen zehn Gebot
-55	 Es stehn vor Gottes Throne
-73	 Christ lag in Todesbanden
-238	 Jesu, meine Freude
-141	 Ich bin ja, Herr, in deiner Macht
-186	 Wenn mein Stündlein vorhanden ist 2
-156	 Wie nach einer Wasserquelle
-64	 Jesus, meine Zuversicht
-154	 Jesu, meines Herzens Freud'
-120	 Mein Hüter und mein Hirt ist Gott der Herre
-266	 Kommt her, ihr lieben Schwesterlein
-107	 Herr, dein Ohren zu mir neige
-283	 Gott sei gelobet und gebenedeiet
-137	 Singt dem Herrn ein neues Lied
-0	 Aus meines Herzens Grunde
-81	 Gottlob, es geht nunmehr zu Ende
-219	 Ihr Knecht des Herren allzugleich
-92	 O wir armen Sünder
-16	 Alles ist an Gottes Segen
-323	 Herzliebster Jesu, was hast du verbrochen
-235	 Wenn mein Stündlein vorhanden ist 1
-291	 Heut' triumphieret Gottes Sohn
-253	 Ach, was soll ich Sünder machen
-226	 Lobet Gott, unsern Herren
-225	 Wer nur den lieben Gott läßt walten
-297	 Die Wollust dieser Welt
-11	 Auf, auf, mein Herz, und du, mein ganzer Sinn
-166	 Kommt her, ihr lieben Schwesterlein
-117	 Herr Jesu Christ, du hast bereit
-252	 Christ lag in Todesbanden
-285	 Wenn mein Stündlein vorhanden ist 2
-248	 O Welt, ich muß dich lassen
-236	 Es woll uns Gott genädig sein 2
-103	 O wie selig seid ihr doch, ihr Frommen
-204	 Das alte Jahr vergangen ist
-198	 Es sind doch selig alle, die im rechten Glauben wandeln
-17	 Keinen hat Gott verlassen
-184	 Vater unser im Himmelreich
-62	 O Herzensangst, o Bangigkeit und Zagen
-134	 Es spricht der Unweisen Mund
-303	 Wenn mein Stündlein vorhanden ist 2
-185	 Was Gott tut, das ist wohlgetan
-71	 Gott hat das Evangelium
-6	 Es woll uns Gott genädig sein 1
-299	 Du geballtes Weltgebäude
-49	 Gelobet seist du, Jesu Christ
-280	 Wenn wir in höchsten Nöten sein
-307	 Werde munter, mein Gemüte
-308	 Jesu, meine Freude
-56	 Menschenkind, merk eben
-217	 Von Gott will ich nicht lassen
-3	 Was mein Gott will, das g'scheh allzeit
-173	 Wie nach einer Wasserquelle
-132	 Was willst du dich, o meine Seele, kränken
-45	 Es woll uns Gott genädig sein 2
-172	 Auf meinen lieben Gott
-115	 Das walt Gott Vater und Gott Sohn
-114	 Ich dank dir Gott für alle Wohltat
-158	 Vater unser im Himmelreich
-94	 Wer nur den lieben Gott läßt walten
+234	 Wenn mein Stündlein vorhanden ist 2
+235	 Vater unser im Himmelreich
+236	 O Welt, ich muß dich lassen
+237	 Christus, der ist mein Leben
+238	 Alles ist an Gottes Segen
+239	 O Ewigkeit, du Donnerwort
+240	 O stilles Gotteslamm
+241	 Gott, der du selber bist das Licht
+242	 Allein zu dir, Herr Jesu Christ
+243	 Meine Seel erhebt den Herren
+244	 Singt dem Herrn ein neues Lied
+245	 Vater unser im Himmelreich
+246	 Verleih uns Frieden gnädiglich (beginning)
+247	 Wer nur den lieben Gott läßt walten
+248	 Ach wie nichtig, ach wie flüchtig
+249	 Mit Fried und Freud ich fahr dahin
+250	 Heut' triumphieret Gottes Sohn
+251	 Spiritus sancti gratia
+252	 Wo Gott der Herr nicht bei uns hält
+253	 Wir Christenleut
+254	 Heut ist, o Mensch, ein großer Trauertag
+255	 Jesu, meine Freude
+256	 Ermuntre dich, mein schwacher Geist
+257	 Jesu, meine Freude
+258	 Mach's mit mir, Gott, nach deiner Güt
+259	 Die Wollust dieser Welt
+VALIDATION SET
+0	 Jesu, meine Freude
+1	 Meine Seel erhebt den Herren
+2	 Helft mir Gotts Güte preisen
+3	 Wachet doch, erwacht, ihr Schläfer
+4	 Wenn mein Stündlein vorhanden ist 2
+5	 Es wird schier der letzte Tag herkommen
+6	 Ach Gott, vom Himmel sieh' darein
+7	 Herzliebster Jesu, was hast du verbrochen
+8	 Aus tiefer Not schrei ich zu dir 1
+9	 O Herzensangst, o Bangigkeit und Zagen
+10	 Nun komm, der Heiden Heiland
+11	 Es woll uns Gott genädig sein 1
+12	 Nun freut euch, lieben Christen, g'mein 2
+13	 Wo Gott, der Herr, nicht bei uns hält
+14	 Da der Herr Christ zu Tische saß
+15	 Wie nach einer Wasserquelle
+16	 Hilf, Herr Jesu, laß gelingen 1
+17	 Kyrie, Gott Vater in Ewigkeit
+18	 Ich dank dir, lieber Herre
+19	 Ein feste Burg ist unser Gott
+20	 Christ ist erstanden
+21	 Vater unser im Himmelreich
+22	 Es woll uns Gott genädig sein 2
+23	 Es ist das Heil uns kommen her
+24	 Du großer Schmerzensmann, vom Vater so geschlagen
+25	 Kommt her zu mir, spricht Gottes Söhn
+26	 Das walt Gott Vater und Gott Sohn
+27	 Ach, wie groß ist Gottes Güt und Wohltat
+28	 Jesus, meine Zuversicht
+29	 Gelobet seist du, Jesu Christ
+30	 Nun bitten wir den heiligen Geist
+31	 Nun bitten wir den heiligen Geist
+TEST SET
+0	 Ach Gott, vom Himmel sieh' darein
+1	 Herzlich lieb hab ich dich, o Herr
+2	 Der Tag der ist so freudenreich
+3	 Herr Christ, der einge Gottes-Söhn
+4	 Was Gott tut, das ist wohlgetan
+5	 Was mein Gott will, das g'scheh allzeit
+6	 Was mein Gott will, das g'scheh allzeit
+7	 In dich hab ich gehoffet, Herr 1
+8	 Wenn wir in höchsten Nöten sein
+9	 Wir Christenleut
+10	 Jesu, meine Freude
+11	 Wenn mein Stündlein vorhanden ist 1
+12	 Als Jesus Christus in der Nacht
+13	 Herzlich tut mich verlangen
+14	 Valet will ich dir geben
+15	 Herr Christ, der einge Gottes-Söhn
+16	 Jesu, nun sei gepreiset
+17	 Wir glauben all an einen Gott, Schöpfer Himmels und der Erden
+18	 Hilf, Gott laß mirs gelingen
+19	 Auf meinen lieben Gott
+20	 O wie selig seid ihr doch, ihr Frommen
+21	 Wie nach einer Wasserquelle
+22	 Herr, dein Ohren zu mir neige
+23	 Ihr Knecht des Herren allzugleich
+24	 Herr, ich habe mißgehandelt
+25	 Christus, der uns selig macht
+26	 Du Friedefürst, Herr Jesu Christ
+27	 Helft mir Gotts Güte preisen
+28	 Gottlob, es geht nunmehr zu Ende
+29	 Herzlich tut mich verlangen
+30	 Aus tiefer Not schrei ich zu dir 2
+31	 Vater unser im Himmelreich
+32	 Was betrübst du dich, mein Herze
