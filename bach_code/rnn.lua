@@ -89,7 +89,7 @@ for epoch = 1, 20 do
 		nll = nll / y:size(1)
 		nll_epoch = nll_epoch + nll
 	end
-	nll_epoch = nll_epoch / 260
+	nll_epoch = nll_epoch / (num_train + num_dev)
 	print("Epoch: ", epoch, nll_epoch)
 	if nll_epoch > last_score then break end
 	last_score = nll_epoch

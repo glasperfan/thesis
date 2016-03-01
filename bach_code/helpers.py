@@ -7,6 +7,7 @@
 #########
 import os
 from music21 import *
+from ordered_set import OrderedSet
 
 ## CONSTANTS ##
 

@@ -8,6 +8,7 @@ from glob import glob
 from random import shuffle
 import numpy as npy
 import h5py
+import os
 
 #####
 #
@@ -215,6 +216,8 @@ class Featurizer(object):
 		freezeObject(self.inversions, 'inversions')
 		freezeObject(self.altos, "alto_range")
 		freezeObject(self.tenors, "tenor_range")
+		freezeObject(self.input_features, "input_features")
+		freezeObject(self.output_features, "output_features")
 	
 	# After calling self.analyze, this converts the X and y matrices to vectors of feature indices
 	# As scores are examined, the indices of output chords are generated.
@@ -280,7 +283,6 @@ class Featurizer(object):
 		self.testXall, self.testyall = reduce(stack, self.testX), reduce(stack, self.testy)
 		self.dataXall = stack(stack(self.trainXall, self.devXall), self.testXall)
 		self.datayall = stack(stack(self.trainyall, self.devyall), self.testyall)
-
 	# Write 
 	@timing
 	def write(self):
@@ -315,6 +317,13 @@ class Featurizer(object):
 				f.create_dataset("chorale%d_X" % idx, Xcf.shape, dtype="i", data=Xcf)
 				f.create_dataset("chorale%d_y" % idx, ycf.shape, dtype="i", data=ycf)
 
+		# Save test scores for future use
+		test_scores = [sc for (x, y, sc, idx) in self.test]
+		test_dir = '/Users/hzabriskie/Documents/Thesis/thesis/bach_code/data/test_scores'
+		if not os.path.exists(test_dir):
+			os.makedirs(test_dir)
+		for idx, sc in enumerate(test_scores):
+			sc.write('musicxml', test_dir + '/' + str(idx) + '.xml')
 
 
 	def run(self):

@@ -13,7 +13,7 @@ def encode(train, test):
 	encoder.fit(numpy.vstack((train, test)))
 	trainencoded = encoder.transform(train)
 	testencoded = encoder.transform(test)
-	return trainencoded, testencoded
+	return encoder, trainencoded, testencoded
 
 def runLogitAndNB(Xtrainsparse, Xtestsparse):
 	for i in range(len(ytrainraw[0])):
@@ -67,7 +67,7 @@ def test1():
 	print("1. Testing learning on melody alone...")
 	Xtrain = numpy.vstack((Xtrainraw[:, range(0,10)], Xdevraw[:, range(0,10)]))
 	Xtest = Xtestraw[:, range(0,10)]
-	Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
+	encoder, Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	runLogitAndNB(Xtrainsparse, Xtestsparse)
 
 
@@ -76,7 +76,7 @@ def test2():
 	print("2. Performing oracle experiment...")
 	Xtrain = numpy.vstack((Xtrainraw, Xdevraw))
 	Xtest = Xtestraw
-	Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
+	encoder, Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	runLogitAndNB(Xtrainsparse, Xtestsparse)
 
 def load_dataset(name, data_file):
@@ -108,10 +108,16 @@ def test3():
 	testXc, testyc = load_dataset("test", "data/chorales_rnn.hdf5")
 	stack = lambda x1, x2: numpy.vstack((x1, x2))
 	hstack = lambda x1, x2: numpy.hstack((x1, x2))
+	# Remove Oracle features
+	trainXc = [X[:, range(0,10)] for X in trainXc]
+	devXc = [X[:, range(0,10)] for X in devXc]
+	testXc = [X[:, range(0,10)] for X in testXc]
+	# Aggregate data
 	Xtrain = stack(reduce(stack, trainXc), reduce(stack, devXc))
 	ytrain = hstack(reduce(hstack, trainyc), reduce(hstack, devyc))
 	Xtest, ytest = reduce(stack, testXc), reduce(hstack, testyc)
 
+	# Remove padding
 	ypadding = ytest.max()
 	Xtrain_up, ytrain_up, Xtest_up, ytest_up = [], [], [], []
 	for idx, p in enumerate(ytrain):
@@ -125,22 +131,25 @@ def test3():
 	Xtrain, ytrain, Xtest, ytest = numpy.array(Xtrain_up), numpy.array(ytrain_up), \
 								   numpy.array(Xtest_up), numpy.array(ytest_up)
 
-	Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
+	encoder, Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	RF = RandomForestClassifier(10, "entropy", None)
 	RF.fit(Xtrain, ytrain)
 	score_RF = score_with_padding(RF.predict(Xtest), ytest, ytest.max())
 	print "R-FOREST: score %.2f%%" % (score_RF * 100)
 	ERF = ExtraTreesClassifier(n_estimators=40, max_depth=None, min_samples_split=1, random_state=0)
-	ERF.fit(Xtrain, ytrain)
-	score_ERF = ERF.score(Xtest, ytest)
+	ERF.fit(Xtrainsparse, ytrain)
+	score_ERF = ERF.score(Xtestsparse, ytest)
 	print "EXTRA TREES: score %.2f%%" % (score_ERF * 100)
 	logit = linear_model.LogisticRegression(multi_class='multinomial', solver='lbfgs', C=1)
-	logit.fit(Xtrain, ytrain)
-	score_logit = logit.score(Xtest, ytest)
+	logit.fit(Xtrainsparse, ytrain)
+	score_logit = logit.score(Xtestsparse, ytest)
 	print "LOGIT: score %.2f%%" % (score_logit * 100)
 
-# test1()
-# test2()
-test3()
+def run():
+	# test1()
+	# test2()
+	test3()
+
+# run()
 
 

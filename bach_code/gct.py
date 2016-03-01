@@ -73,6 +73,7 @@ def optimalchoice(choices):
         intervals = chord_to_intervals(choice[1])
         if all(x > 2 for x in intervals):
             return choice
+    # If all else fails, choose randomly
     return rand_choice(choices_f)
 
 
