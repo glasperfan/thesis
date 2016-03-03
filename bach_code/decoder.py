@@ -132,6 +132,23 @@ def make_score(original_score, y_predicted, chorale_idx):
 		bass_p = note.Note(o8vb(bass_midi, 2), quarterLength=1)
 		B.append(bass_p)
 
+	# Improve voice leading
+	def smooth(prev, curr, voice):
+		dist = curr.midi - prev.midi
+		if abs(dist) > 6 and dist != 12:
+			if dist > 0 and curr.midi - 12 >= RANGE[voice]['min']:
+				curr.pitch.ps -= 12.0
+			elif curr.midi + 12 <= RANGE[voice]['max']:
+				curr.pitch.ps += 12.0
+
+	def smooth_part(notes, voice):
+		for idx in range(1, len(notes)):
+			smooth(notes[idx - 1], notes[idx], voice)
+
+	smooth_part(A.flat.notes, 'Alto')
+	smooth_part(T.flat.notes, 'Tenor')
+	smooth_part(B.flat.notes, 'Bass')
+
 	# Create measures
 	S.makeMeasures(inPlace=True)
 	A.makeMeasures(inPlace=True)

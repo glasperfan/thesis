@@ -1,13 +1,3 @@
-\BOOKMARK [1][-]{section.1}{A primer on machine learning topics}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{Supervised machine learning}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Distributions and classification}{section.1}% 3
-\BOOKMARK [2][-]{subsection.1.3}{Logistic regression}{section.1}% 4
-\BOOKMARK [2][-]{subsection.1.4}{Neural Networks}{section.1}% 5
-\BOOKMARK [2][-]{subsection.1.5}{Recurrent Neural Networks \(RNN\)}{section.1}% 6
-\BOOKMARK [2][-]{subsection.1.6}{Long Short-Term Memory \(LSTM\)}{section.1}% 7
-\BOOKMARK [1][-]{section.2}{An introduction to tonal harmony and the chorale}{}% 8
-\BOOKMARK [2][-]{subsection.2.1}{Pitch class, pitch, note}{section.2}% 9
-\BOOKMARK [2][-]{subsection.2.2}{Interval, scale, chord, key}{section.2}% 10
-\BOOKMARK [2][-]{subsection.2.3}{The triad and harmonic analysis}{section.2}% 11
-\BOOKMARK [2][-]{subsection.2.4}{Bach's settings of the chorales}{section.2}% 12
-\BOOKMARK [2][-]{subsection.2.5}{Exploratory Application: Bach Inventions}{section.2}% 13
+\BOOKMARK [0][-]{chapter.1}{A Theoretical Overview}{}% 1
+\BOOKMARK [1][-]{section.1.1}{An introduction for the musician}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{An introduction to tonal harmony and the chorale}{chapter.1}% 3

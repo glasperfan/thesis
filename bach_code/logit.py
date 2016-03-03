@@ -134,22 +134,25 @@ def test3():
 	encoder, Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	RF = RandomForestClassifier(10, "entropy", None)
 	RF.fit(Xtrain, ytrain)
-	score_RF = score_with_padding(RF.predict(Xtest), ytest, ytest.max())
-	print "R-FOREST: score %.2f%%" % (score_RF * 100)
+	score_RF_train = RF.score(Xtrain, ytrain)
+	score_RF_test = RF.score(Xtest, ytest)
+	print "R-FOREST: %.2f%% training, %.2f%% test" % (score_RF_train * 100, score_RF_test * 100)
 	ERF = ExtraTreesClassifier(n_estimators=40, max_depth=None, min_samples_split=1, random_state=0)
 	ERF.fit(Xtrainsparse, ytrain)
-	score_ERF = ERF.score(Xtestsparse, ytest)
-	print "EXTRA TREES: score %.2f%%" % (score_ERF * 100)
+	score_ERF_train = ERF.score(Xtrainsparse, ytrain)
+	score_ERF_test = ERF.score(Xtestsparse, ytest)
+	print "EXTRA TREES: %.2f%% training, %.2f%% test" % (score_ERF_train * 100, score_ERF_test * 100)
 	logit = linear_model.LogisticRegression(multi_class='multinomial', solver='lbfgs', C=1)
 	logit.fit(Xtrainsparse, ytrain)
-	score_logit = logit.score(Xtestsparse, ytest)
-	print "LOGIT: score %.2f%%" % (score_logit * 100)
+	score_logit_train = logit.score(Xtrainsparse, ytrain)
+	score_logit_test = logit.score(Xtestsparse, ytest)
+	print "LOGIT: %.2f%% training, %.2f%% test" % (score_logit_train * 100, score_logit_test * 100)
 
 def run():
 	# test1()
 	# test2()
 	test3()
 
-# run()
+run()
 
 

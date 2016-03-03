@@ -1,0 +1,142 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{dreyfus1996bach}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Dreyfus}{D.}%
+     {Laurence}{L.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Harvard University Press}%
+  }
+  \keyw{music theory, musical structure}
+  \strng{namehash}{DL1}
+  \strng{fullhash}{DL1}
+  \field{labelyear}{1996}
+  \field{sortinit}{D}
+  \field{title}{Bach and the Patterns of Invention}
+  \field{year}{1996}
+\endentry
+
+\entry{eck2002blues}{inproceedings}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Eck}{E.}%
+     {Douglas}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schmidhuber}{S.}%
+     {Jurgen}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {IEEE}%
+  }
+  \keyw{neural networks, RNN, LSTM, jazz}
+  \strng{namehash}{EDSJ1}
+  \strng{fullhash}{EDSJ1}
+  \field{labelyear}{2002}
+  \field{sortinit}{E}
+  \field{booktitle}{Neural Networks for Signal Processing, 2002. Proceedings of
+  the 2002 12th IEEE Workshop on}
+  \field{pages}{747\bibrangedash 756}
+  \field{title}{Finding temporal structure in music: Blues improvisation with
+  LSTM recurrent networks}
+  \field{annotation}{%
+  This article is a further development of the ideas Eck proposes in his other
+  2002 paper (cite-key: eck2002structure), where he demonstrates the ability of
+  LSTMs to develop an understanding of larger musical structures, such as the
+  12-bar blues form. Here, Eck argues that LSTMs are also highly effective at
+  learning to compose music by analyzing examples of a machine that is able to
+  produce blues melodies. Eck is one of the few researchers to explore the
+  realm of computational harmonic analysis in jazz, and he loves many topics
+  untouched where others could explore.%
+  }
+  \field{year}{2002}
+\endentry
+
+\entry{franklin2006jazz}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Franklin}{F.}%
+     {Judy~A}{J.~A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {World Scientific}%
+  }
+  \keyw{jazz, neural networks, RNN}
+  \strng{namehash}{FJA1}
+  \strng{fullhash}{FJA1}
+  \field{labelyear}{2006}
+  \field{sortinit}{F}
+  \field{number}{04}
+  \field{pages}{623\bibrangedash 650}
+  \field{title}{Jazz melody generation using recurrent networks and
+  reinforcement learning}
+  \field{volume}{15}
+  \field{journaltitle}{International Journal on Artificial Intelligence Tools}
+  \field{year}{2006}
+\endentry
+
+\entry{nagler2014schubot}{thesis}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Nagler}{N.}%
+     {Dylan~Jeremy}{D.~J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Schubert, chorales, machine learning}
+  \strng{namehash}{NDJ1}
+  \strng{fullhash}{NDJ1}
+  \field{labelyear}{2014}
+  \field{sortinit}{N}
+  \field{title}{SCHUBOT: Machine Learning Tools for the Automated Analysis of
+  Schubert's Lieder}
+  \list{institution}{1}{%
+    {Harvard University}%
+  }
+  \field{type}{Honors thesis}
+  \field{annotation}{%
+  Dylan Nagler's undergraduate represents one of the most recent attempts to
+  apply a variety of machine learning models to musical tasks. This
+  demonstrates how the basic questions about automatic harmonization continue
+  to be asked many years later, although the author here applies them to a less
+  common data set - Schubert lieder. He first describes a number of supervised
+  learning methods which might be applied, including hidden Markov models and
+  PCFGs (grammars). He then describes a program he wrote to harmonically
+  analyze Schubert lieder and the metholodogy behind his approach. Nagler is
+  very descriptive in explaining his methodology, which will be additionally
+  useful because of his use of the music21 musicology library to preprocess his
+  data.%
+  }
+  \field{year}{2014}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

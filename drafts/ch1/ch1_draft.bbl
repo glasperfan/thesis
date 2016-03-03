@@ -16,32 +16,6 @@
   {}
 \endgroup
 
-\entry{cuthbertmusic21}{article}{}
-  \name{author}{2}{}{%
-    {{}%
-     {Cuthbert}{C.}%
-     {Michael~Scott}{M.~S.}%
-     {}{}%
-     {}{}}%
-    {{}%
-     {Ariza}{A.}%
-     {Christopher}{C.}%
-     {}{}%
-     {}{}}%
-  }
-  \keyw{music21}
-  \strng{namehash}{CMSAC1}
-  \strng{fullhash}{CMSAC1}
-  \field{labelyear}{2010}
-  \field{sortinit}{C}
-  \field{pages}{637\bibrangedash 642}
-  \field{title}{music21: A toolkit for computer-aided musicology and symbolic
-  music data}
-  \field{journaltitle}{International Society for Music Information Retrieval}
-  \field{year}{2010}
-  \warn{\item Invalid format of field 'month'}
-\endentry
-
 \entry{eck2002blues}{inproceedings}{}
   \name{author}{2}{}{%
     {{}%
@@ -432,6 +406,34 @@
   \field{year}{2015}
   \warn{\item Invalid format of field 'date' \item Invalid format of field
   'date'}
+\endentry
+
+\entry{cross2008}{inproceedings}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Rohrmeier}{R.}%
+     {Martin}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cross}{C.}%
+     {Ian}{I.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Hokkaido University Sapporo, Japan}%
+  }
+  \keyw{harmonization, chorales}
+  \strng{namehash}{RMCI1}
+  \strng{fullhash}{RMCI1}
+  \field{labelyear}{2008}
+  \field{sortinit}{R}
+  \field{booktitle}{Proceedings of the 10th international conference on music
+  perception and cognition}
+  \field{pages}{619\bibrangedash 627}
+  \field{title}{Statistical properties of tonal harmony in Bach's chorales}
+  \field{year}{2008}
 \endentry
 
 \lossort
