@@ -2,6 +2,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}A Theoretical Overview}{1}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.1}An introduction for the musician}{1}{section.1.1}
+\contentsline {section}{\numberline {1.1}An introduction for the musician}{2}{section.1.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.2}An introduction to tonal harmony and the chorale}{11}{section.1.2}

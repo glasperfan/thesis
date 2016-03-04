@@ -96,6 +96,32 @@
   \field{year}{2014}
 \endentry
 
+\entry{cuthbertmusic21}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Cuthbert}{C.}%
+     {Michael~Scott}{M.~S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ariza}{A.}%
+     {Christopher}{C.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{music21}
+  \strng{namehash}{CMSAC1}
+  \strng{fullhash}{CMSAC1}
+  \field{labelyear}{2010}
+  \field{sortinit}{C}
+  \field{pages}{637\bibrangedash 642}
+  \field{title}{music21: A toolkit for computer-aided musicology and symbolic
+  music data}
+  \field{journaltitle}{International Society for Music Information Retrieval}
+  \field{year}{2010}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
 \entry{eck2002structure}{article}{}
   \name{author}{2}{}{%
     {{}%
@@ -292,6 +318,35 @@
   \field{year}{2014}
 \endentry
 
+\entry{leonard2015rnn}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {L{\'e}onard}{L.}%
+     {Nicholas}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Waghmare}{W.}%
+     {Sagar}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Wang}{W.}%
+     {Yang}{Y.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{neural networks, machine learning}
+  \strng{namehash}{LNWSWY1}
+  \strng{fullhash}{LNWSWY1}
+  \field{labelyear}{2015}
+  \field{sortinit}{L}
+  \field{number}{1511.07889}
+  \field{title}{rnn: Recurrent Library for Torch}
+  \field{journaltitle}{arXiv}
+  \field{year}{2015}
+\endentry
+
 \entry{madsen2002}{article}{}
   \name{author}{2}{}{%
     {{}%
@@ -359,6 +414,101 @@
   \field{volume}{6}
   \field{journaltitle}{Connection Science}
   \field{year}{1994}
+\endentry
+
+\entry{scikit-learn}{article}{}
+  \name{author}{16}{}{%
+    {{}%
+     {Pedregosa}{P.}%
+     {F.}{F.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Varoquaux}{V.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Gramfort}{G.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Michel}{M.}%
+     {V.}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Thirion}{T.}%
+     {B.}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Grisel}{G.}%
+     {O.}{O.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Blondel}{B.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Prettenhofer}{P.}%
+     {P.}{P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Weiss}{W.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dubourg}{D.}%
+     {V.}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vanderplas}{V.}%
+     {J.}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Passos}{P.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cournapeau}{C.}%
+     {D.}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Brucher}{B.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Perrot}{P.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Duchesnay}{D.}%
+     {E.}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{machine learning}
+  \strng{namehash}{PF+1}
+  \strng{fullhash}{PFVGGAMVTBGOBMPPWRDVVJPACDBMPMDE1}
+  \field{labelyear}{2011}
+  \field{sortinit}{P}
+  \field{pages}{2825\bibrangedash 2830}
+  \field{title}{Scikit-learn: Machine Learning in {P}ython}
+  \field{volume}{12}
+  \field{journaltitle}{Journal of Machine Learning Research}
+  \field{year}{2011}
 \endentry
 
 \entry{sun2009classification}{article}{}

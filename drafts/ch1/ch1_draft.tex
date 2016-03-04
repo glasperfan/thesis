@@ -1,4 +1,4 @@
-\documentclass[11pt]{book}
+\documentclass[11pt, openany]{book}
 \usepackage{basecommon}
 \usepackage[margin=1.5in, top=1in]{geometry}
 \usepackage{graphicx}
@@ -12,7 +12,7 @@
 \graphicspath{ {images/} }
 \usepackage{setspace}
 \doublespacing
-\title{Chapter 1 (DRAFT)}
+\title{Chapter 1}
 \author{Hugh Zabriskie}
 \date{7 March 2016}
 
@@ -35,7 +35,7 @@
 	\centering
 	{\par}
 	\vspace*{3.5cm}
-	{\Large\bfseries\center J.S. BOT: Exploring Computational Harmonic Analysis and Prediction in the Bach Chorales\par}
+	{\Large\bfseries\center Computational Harmonic Analysis and Prediction in the Bach Chorales\par}
 	\vspace{3.5cm}
 	{by Hugh P. Zabriskie '16\par}
 	\vspace{5cm}
@@ -82,7 +82,7 @@ To be completed.
 \newpage
 
 % Add line numbers
-\linenumbers
+%\linenumbers
 
 % Add headers
 \pagestyle{fancy}
@@ -95,7 +95,7 @@ To be completed.
 \pagenumbering{arabic}
 \chapter{A Theoretical Overview}
 
-This thesis examines the potential for algorithmic models to learn the processes and conventions involved in harmonizing a chorale melody that Bach pioneered centuries ago. One objective of this work is to improve upon previous computational attempts at chorale harmonization by consistently incorporating musical knowledge about the Chorales and the general approach to harmonizing a melody into the major design decisions of the research. By thoughtfully extracting musical features, we hope  the f  is to take advantage of musical knowledge of the Chorales to thoughtfully extract features and develop a more suited model. \\
+This thesis examines the potential for algorithmic models to learn the processes and conventions involved in harmonizing a chorale melody that Bach pioneered centuries ago. One objective of this work is to improve upon previous computational attempts at chorale harmonization by consistently incorporating musical knowledge about the Chorales and the general approach to harmonizing a melody into the major design decisions of the research. By thoughtfully extracting features and selecting model architectures that are well-suited to the format of the musical dataset, we hope to advance computational knowledge related to the Chorales and the ability of various models to approximate the complex tasks of harmonic analysis and melodic harmonization. \\
 
 The purpose of this chapter is to provide a high-level introduction to the topics in the music and computer science fields that are relevant to this thesis. The highly interdisciplinary nature of this research requires a certain level of familiarity with both the fundamentals of music theory and counterpoint, as well as the mathematical mechanisms that drive the machine learning models used in later chapters.
 
@@ -174,7 +174,7 @@ The most likely classification is therefore $$\argmax_k Pr(\boldy = k| \boldx, \
 
 \subsection*{Neural Networks}
 
-In this section, we introduce \textit{artificial neural networks}, a family of machine learning models that are the focus of this thesis. Neural networks give us a way to model deeper interactions, and to generate predictions based on a combination of many non-linear functions - a series of cascading smaller decisions to determine a larger decision. They are exceptionally powerful, and by the Universal Approximation Theorem (Cybenko et. al. 1989), a feed-forward 3-layer neural network of finite size is proven to approximate any continuous function bounded by $n$ dimensions with any desired non-zero error \citep{goldberg2015nnlp}. As in multinomial logistic regression, the objective is $K-class$ classification. Neural networks are loosely inspired by the architecture of biological neural networks, where the complex decisions computed by our brains is a function of the many, small computations made by individual neurons. In an artificial network, the "neuron" is a unit with a unique weight that accepts a vector input and returns a scalar output. Neurons are organized as a series of layers, where the first is referred to as the "input" layer, the intermediary layers being the "hidden" layer, and the final layer being the "output" layer. In order to obtain the $K$-class distribution, $\boldx$ is "fed forward" through the network by a process known as forward propagation. The process is shown below for a 3-layer network, where $\sigma$ is the sigmoid function (applied element wise). $\theta^{(i)}$ is the matrix of parameters that control the mapping of input units to hidden units for the $i$th layers. $\boldb^{(i)}$ is the bias neuron for the $i$th layer. $L_i$ is the size of the $i$th layer.
+In this section, we introduce \textit{artificial neural networks}, a family of machine learning models that are the focus of this thesis. Neural networks give us a way to model deeper interactions, and to generate predictions based on a combination of many non-linear functions - a series of cascading smaller decisions to determine a larger decision. They are exceptionally powerful, and by the Universal Approximation Theorem (Cybenko et. al. 1989), a feed-forward 3-layer neural network of finite size is proven to approximate any continuous function bounded by $n$ dimensions with any desired non-zero error \citep{goldberg2015nnlp}. As in multinomial logistic regression, the objective is $K$-class classification. Neural networks are loosely inspired by the architecture of biological neural networks, where the complex decisions computed by our brains is a function of the many, small computations made by individual neurons. In an artificial network, the "neuron" is a computational unit that accepts a vector input and returns a scalar output. Neurons are organized as a series of layers, where the first is referred to as the "input" layer, the intermediary layers being the "hidden" layer, and the final layer being the "output" layer. In order to obtain the $K$-class distribution, $\boldx$ is "fed forward" through the network by a process known as forward propagation. The process is shown below for a 3-layer network, where $\sigma$ is the sigmoid function (applied element wise). $\theta^{(i)}$ is the matrix of parameters that control the mapping of input units to hidden units for the $i$th layers. $\boldb^{(i)}$ is the bias neuron for the $i$th layer. $L_i$ is the size of the $i$th layer.
 \begin{align*}
 \boldz^{(1)} &= \theta^{(1)T}\boldx + \boldb^{(1)} \\
 \bolda^{(1)} &= \sigma(\boldz^{(1)}) \\
@@ -184,14 +184,57 @@ In this section, we introduce \textit{artificial neural networks}, a family of m
 h_{\theta}(\boldx) &= \sigma(\boldz^{(3)})
 \end{align*}
 
-where $$x \in \reals^m, h_{\theta}(\boldx) \in \reals^K, \theta^{(i)} \in \reals^{L_{i} \times L_{i+1}}, b^{(i)} \in $$
+where $$x \in \reals^m, h_{\theta}(\boldx) \in \reals^K, \theta^{(i)} \in \reals^{L_{i} \times L_{i+1}}, b^{(i)} \in \reals^{L_{i}}$$
 
 When a layer is reached, each neuron in the layer performs a linear combination of the input and its parameters, applies a non-linear function (i.e. sigmoid $\sigma$), and then passes the result forward to each neuron in the next layer. Each connection between two neurons also carries a separate, adjustable parameter. This continues until the final layer, where the output layer returns a vector that is forwarded through a softmax function to obtain the $K$-dimensional distribution $h_{\theta}(\boldx)$.
 
 \begin{figure*}[h]
 \caption{Abstract representation of a three-layer neural network architecture, where each circle represents a neuron. $\theta$ controls the flow of information between activation layers.}
 \centering
-\includegraphics[scale=0.55]{nn}
+
+\begin{tikzpicture}[shorten >=2pt,->, draw=none, node distance=3cm]
+    \definecolor{gray}{RGB}{213, 217, 222}
+    \definecolor{lightblue}{RGB}{134, 176, 217}
+    \definecolor{deepblue}{RGB}{52, 134, 217}
+    \tikzstyle{every pin edge}=[<-,shorten <=2pt]
+    \tikzstyle{neuron}=[draw, circle, inner sep=7pt]
+    \tikzstyle{input neuron}=[neuron, fill=gray];
+    \tikzstyle{output neuron}=[neuron, fill=deepblue];
+    \tikzstyle{hidden neuron}=[neuron, fill=lightblue];
+    \tikzstyle{annot} = [text width=4em, text centered]
+
+    % Draw the input layer nodes
+    \foreach \name / \y in {1,...,4}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+        \node[input neuron, pin=left: $\boldx^{(i)}_\y$] (I-\name) at (0,-\y) {};
+
+    % Draw the hidden layer nodes
+    \foreach \name / \y in {1,...,5}
+        \path[yshift=0.5cm]
+            node[hidden neuron] (H-\name) at (3cm,-\y cm) {};
+
+    % Draw the output layer node
+    \foreach \name / \y in {1,...,3}
+    	 \path[yshift=-0.5cm]
+		node[output neuron, pin={[pin edge={->}]right: $h_{\theta}(\boldx^{(i)})_{\y}$}] (O-\name) at (6cm,-\y cm) {};
+
+    % Connect every node in the input layer with every node in the
+    % hidden layer.
+    \foreach \source in {1,...,4}
+        \foreach \dest in {1,...,5}
+            \path (I-\source) edge (H-\dest);
+
+    % Connect every node in the hidden layer with the output layer
+    \foreach \source in {1,...,5}
+    	\foreach \dest in {1,...,3}
+        		\path (H-\source) edge (O-\dest);
+
+    % Annotate the layers
+    \node[annot,above of=I-1, right=0.8cm, node distance=1.2cm] (t1) {$\theta^{(1)}$};
+    \node[annot,right of=t1] (t2) {$\theta^{(2)}$};
+    %\node[annot,left of=hl] {Input layer};
+    %\node[annot,right of=hl] {Output layer};
+\end{tikzpicture}
 \end{figure*}
 
 For all neural models used in this thesis, the objective is to minimize \textit{negative log likelihood}. Likelihood ($\mathcal{L}$) is a function of the parameters $\theta$ given a set of observations $\mathcal{X}$, and it is in fact equivalent to the probability of those observations given the parameters.
@@ -222,8 +265,51 @@ where $$\theta^{(1)} \in \reals^{|\boldx| \times h}, \theta^{(2)} \in \reals^{h 
 
 \begin{figure*}[h]
 \centering
-\includegraphics[scale=0.55]{rnn}
-\caption{Abstraction of an RNN over a time series. The activation of the neurons in the hidden layer is a function of the input from the previous layer and its own output from the previous computation. }
+\caption{Abstraction of an RNN over a time series. The activation of the neurons in the hidden layer is a function from the previous layer (in this architecture, this is always the input layer) and the hidden layer output from the previous time step. }
+\begin{tikzpicture}[shorten >=2pt,->, draw=none, node distance=3cm]
+    \definecolor{gray}{RGB}{213, 217, 222}
+    \definecolor{lightblue}{RGB}{134, 176, 217}
+    \definecolor{deepblue}{RGB}{52, 134, 217}
+    \tikzstyle{every pin edge}=[<-,shorten <=2pt, thin]
+    \tikzstyle{neuron}=[draw, circle, minimum size=12mm]
+    \tikzstyle{input neuron}=[neuron, fill=gray];
+    \tikzstyle{output neuron}=[neuron, fill=deepblue];
+    \tikzstyle{hidden neuron}=[neuron, fill=lightblue];
+    \tikzstyle{annot} = [text width=4em, text centered]
+
+    \def\layerdist{2}
+    % Draw the input layer nodes
+    \foreach \name / \y in {1,...,6}
+        \node[input neuron] (I-\name) at (\y * 2, \layerdist * 0) {$\boldx_{\y}$};
+    \foreach \name / \y in {1,...,6}
+    	\node[annot,below of=I-\name, node distance=1cm] (t1) {$t=\y$};
+
+    % Draw the hidden layer nodes
+    \foreach \name / \y in {1,...,6}
+    	\node[hidden neuron] (H-\name) at (\y * 2, \layerdist * 1) {};
+
+    % Draw the output layer node
+    \foreach \name / \y in {1,...,6}
+    	\node[output neuron] (O-\name) at (\y * 2, \layerdist * 2) {$h(\boldx_{\y})$};
+
+    % Connect the input layer with the hidden layer
+    \foreach \unit in {1,...,6}
+    	\path (I-\unit) edge (H-\unit);
+    
+    % Connect the hidden layer with the output layer
+    \foreach \unit in {1,...,6}
+    	\path (H-\unit) edge (O-\unit);
+
+    % Connect the recurrent layer
+    \path (H-1) edge (H-2);
+    \path (H-2) edge (H-3);
+    \path (H-3) edge (H-4);
+    \path (H-4) edge (H-5);
+    \path (H-5) edge (H-6);
+
+    % Annotate the layers
+    \node[annot,left of=H-1, left=0.1cm, node distance=0.8cm] (t1) {Hidden layer};
+\end{tikzpicture}
 \end{figure*}
 
 The recurrent model of incorporating feedback from previous decisions is a promising approach to the harmonization task, where the chorale can be represented as a sequence of melody notes with corresponding, interrelated harmonizations. \cite{karpathy2015rnn} famously cited the "unreasonable effectiveness" of recurrent neural networks in learning sequential data for a variety of tasks, including speech recognition, language translation, and image captioning. As a result, we hypothesized that recurrent models would perform particularly well on musical tasks that require contextualized decision-making and benefit from correlating temporally distant inputs.
@@ -235,7 +321,7 @@ Long Short-Term Memory networks (LSTMs) are a variant of RNNs that replace the h
 \begin{figure*}[h]
 \centering
 \includegraphics[scale=0.5]{lstm2}
-\caption{The chained structure of an LSTM memory cell. Each cell contains multiple network layers, where the RNN presented previously has only one (the sigmoid layer). Diagram borrowed from \citet{colah2015lstms}.}
+\caption{The chained structure of an LSTM memory cell. Each cell contains multiple network layers, where the RNN presented previously has only one (the sigmoid layer). Diagram created by \citet{colah2015lstms}.}
 \end{figure*}
 
 
@@ -293,27 +379,26 @@ Structurally, the chorale is written for the four standard voice ranges: soprano
 The chorale should be viewed in multiple dimensions. In the vertical dimension, the notes of each voice at time $t$ can be heard simultaneously as a chord; and therefore, the chorale can be abstracted to a four-voice chordal progression. Learning to recognize and generate choral progressions is the primary task of models of this thesis. The progression is guided by the cadences that structure each phrase, and each cadence is defined by the relationship between the melody and the bass line. The inner voices (alto and tenor) function as supportive voices that "fill out" the harmonies. However, in the linear dimension, the chorale represents a combination of four independent but complimentary melodic lines, and the contour of each line is governed by the conventions of \textit{voice leading}. Voice leading embodies a broad set of characteristics, but they include rules about preferred and undesired intervals, parallel and contrary motion, and methods for rhythmically embellishing a chord progression (i.e. passing tones). The conventions of voice leading the acceptable motion in each voice as the harmony shifts in the vertical dimension. \\
 
 \begin{figure*}[h]
-\caption{ The opening of the chorale \textit{Nun lob' mein' Seel', den Herren} }
+\caption{ The opening of the chorale \textit{Nun lob mein' Seel', den Herren} }
 \centerline{\includegraphics[scale=0.45]{chorale_mine}}
 \end{figure*}
 
-The opening phrases of the chorale \textit{Nun lob' mein' Seel', den Herren} illustrate the importance of context in the task of harmonization. An important property of Bach's four-voice chorales is that the harmonic transitions occur very uniformly on each beat, so the task of harmonizing a chorale can be into divided into a time series of decisions for each beat of the melody. Bach's choice of harmonization for each beat is not a localized decision, but rather a decision that factors in information about the harmonic progression that preceded the current moment as well as the likely harmonies to occur next. For example, in measures 3-4 and measures 7-8, Bach constructs the cadence \lrom{2}$^6$ - \rom{5} - \rom{1}. Were we harmonizing the chorale ourselves in the same way and decided to harmonize the melody with a \lrom{2}$^6$ voicing on beat 2, this constrains the harmonies we could convincingly assign to beat 3. An additional constraint is placed by the fermata that occurs two beats later, which is almost certainly the resolution point of an authentic (\rom{1}) or half (\rom{5}) cadence. The harmonization of beat 3 must therefore bridge its surrounding harmonies to satisfy the expression \lrom{2}$^6$ - * - \{\rom{1}, \rom{5}\}. \\ 
+The opening section of the chorale \textit{Nun lob mein' Seel', den Herren} (Figure 1.6) illustrates the importance of \textit{context} in chorale harmonization. Bach's choice of harmonization for each beat is not an independent decision, but rather a choice guided by the harmonic destination of each phrase, which the composer almost certainly decided in advance of writing out the other voices. The harmony at time $t$ constrains the set of harmonies that it can smoothly transition to at time $t+1$, and therefore if we decide to assign a certain harmony at time $t$, the preceding harmonies must be chosen with the constraint that they provide a satisfying towards that harmony. Note, for example, the \lrom{2}$^6$ - \rom{5} - \rom{1} cadences that Bach constructs in measures 3-4 and 7-8. Were we harmonizing this chorale ourselves and decided to assign a \lrom{2}$^6$ harmony to beat 2 of measure 3, we would constrain which harmonies we could convincingly transition to on beat 3. The fermata on the downbeat of measure adds the additional constraint that a cadence conclude there - like an authentic (\rom{1}) or half (\rom{5}) cadence. The harmonization of beat 3 must therefore bridge its surrounding harmonies to satisfy the expression \lrom{2}$^6$ - * - \{\rom{1}, \rom{5}\}. \\ 
 
-Another important harmonic choice to examine is the C$\sharp^7$ harmony in measure 5, which is not diatonic to the chorale's key of A-major. In this case, C$\sharp^7$ functions as a secondary dominant, since the harmony resolves to $F\sharp$-minor in measure 6, and in f$\sharp$, C$\sharp^7$ is the dominant 7th chord. Secondary dominants are an effective tool for prolonging the resolution towards a certain harmony, and Bach uses them frequently to expand his harmonic pallette. The chorale \textit{Warum betrübst du dich, mein Herz} illustrates the use of secondary dominants to facilitate a chromatically ascending bass line. \footnote{This is not my diagram, but will be replaced with my own (and my own Roman numeral analysis). Current image credited to \url{https://lukedahn.wordpress.com/2010/02/08/bachs-12-tone-chorale-phrases/}.} \\
+The C$\sharp^7$ harmony in measure 5 of \textit{Nun lob mein' Seel', den Herren} further illustrates the need for careful planning when constructing a harmonic progression because the harmony is not to the key of A-major. Non-diatonic harmonies most commonly occur in areas of tonicization - when the harmony briefly establishes a new tonic - or when the harmony is functioning a secondary dominant. In this instance, the C$\sharp^7$ is functioning as a secondary dominant, since it acts a dominant harmony with respect to $F\sharp$-minor in measure 6. Secondary dominants are an effective tool for prolonging the resolution towards a certain harmony, and Bach uses them frequently to expand his harmonic palette. The chorale \textit{Warum betrübst du dich, mein Herz} (Figure 1.7) also contains non-diatonic harmonies functioning as secondary dominants, which facilitate the chromatically ascending bass line in measures 2 and 3. \\
 
 \begin{figure*}[h]
 \caption{ First phrase of \textit{Warum betrübst du dich, mein Herz} }
 \centerline{\includegraphics[scale=0.45]{chorale2_mine}}
 \end{figure*}
 
-Therefore, a substantial model for chorale harmonization requires a variety of past, present, and future information in order to make accurate decisions. Characteristics of the melody note - such as pitch, beat strength, or the presence of a fermata - provide information about the stability of the harmony and whether or not a transitional harmony is more appropriate (such as a secondary dominant). The preceding harmonies indicate whether larger harmonic progressions are taking place, such as cadences and prolongations of a single harmony. And information about future events like fermatas or the final beat signal the endpoint of the current phrase, and so a convincing harmonic progression should lead towards the point of resolution. \\
+In summary, the process of harmonization requires consideration of the larger harmonic structure and how each chosen harmony will contribute to the harmonic progression of the phrase. Characteristics of the melody note - such as pitch, beat strength, or the presence of a fermata - provide information about what harmonies might compliment it, while knowing the location of the next fermata or the preceding harmony inform how future harmonies should be chosen to create a satisfying progression. \\
 
-\citet{cross2008} discuss the potential for statistical learning over the chorales as a dataset. They present a formal mathematical approach for segmenting chorales into segments of a quarter note. The approach to "quantizing" the chorales discussed in Chapter 2 loosely follows these concepts but relies on a set of rules based on prior musical knowledge. Moreover, the study describes the unbalanced distribution of chords in the corpus. In their dataset, tonic and dominant chords occurred 5285 times, while all other chords collectively occur 5604 times. As a result, we hypothesized that harmonic classification for certain models might suffer from an imbalanced dataset. The imbalance in chord frequency translates to an imbalance in chord transition, and as might be suspected, the frequency of transitions between \rom{1}, \rom{4}, and \rom{5} harmonies clearly dominate. As a result, there are many chords that occur with relative infrequency that may be difficult to classify. \\
 
-A final potential difficulty to note is that chorales can be harmonized in many different ways. we intentionally kept chorales in the dataset that shared melodies but had different harmonizations in order to preserve the complexity of the task, which should be reflected in the results.
-
-\newpage
-
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhf{}
+\fancyhead[R]{\thepage}
 \printbibliography
 
 

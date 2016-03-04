@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  2 MAR 2016 14:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  3 MAR 2016 10:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1166,18 +1166,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 200--201
 
  []
 
-[9] <examples/ex1.png, id=128, 1447.4075pt x 379.4175pt>
+[9] <examples/ex1.png, id=127, 1447.4075pt x 379.4175pt>
 File: examples/ex1.png Graphic file (type png)
 
 <use examples/ex1.png>
 Package pdftex.def Info: examples/ex1.png used on input line 204.
 (pdftex.def)             Requested size: 434.2256pt x 113.82613pt.
-
+ [10 <./examples/ex1.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 212--213
 
  []
 
-[10 <./examples/ex1.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 214--215
 
  []
@@ -1199,6 +1199,11 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 239.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 239.
 Package rerunfilecheck Info: File `ch3_4_draft.out' has not changed.
 (rerunfilecheck)             Checksum: E43922204AC617682B3173A6A6163AAD;1061.
+
+
+Package biblatex Warning: Please rerun LaTeX.
+(biblatex)                Page breaks have changed.
+
 Package logreq Info: Writing requests to 'ch3_4_draft.run.xml'.
 \openout1 = `ch3_4_draft.run.xml'.
 
@@ -1210,7 +1215,7 @@ Here is how much of TeX's memory you used:
  27092 multiletter control sequences out of 15000+600000
  47086 words of font info for 114 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,14n,70p,1938b,980s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,14n,70p,2174b,980s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
@@ -1222,7 +1227,7 @@ nts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/typ
 e1/urw/palatino/uplri8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw
 /times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utm
 r8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ch3_4_draft.pdf (14 pages, 196725 bytes).
+Output written on ch3_4_draft.pdf (14 pages, 197862 bytes).
 PDF statistics:
  208 PDF objects out of 1000 (max. 8388607)
  175 compressed objects within 2 object streams
