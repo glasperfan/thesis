@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  7 MAR 2016 01:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  7 MAR 2016 07:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -962,21 +962,21 @@ File: english.lbx 2013/11/25 v2.8a biblatex localization (PK/JW/AB)
 (./thesis_final.aux)
 \openout1 = `thesis_final.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 55.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 58.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
@@ -1065,6 +1065,11 @@ Package biblatex Warning: BibTeX reported the following issues
 
 
 Package biblatex Warning: BibTeX reported the following issues
+(biblatex)                with 'johnson2015compose':
+(biblatex)                - Invalid format of field 'month'.
+
+
+Package biblatex Warning: BibTeX reported the following issues
 (biblatex)                with 'karpathy2015rnn':
 (biblatex)                - Invalid format of field 'month'.
 
@@ -1085,10 +1090,10 @@ Package biblatex Warning: BibTeX reported the following issues
 (biblatex)                - Invalid format of field 'date'.
 
 )
-Package biblatex Info: Reference section=0 on input line 55.
-Package biblatex Info: Reference segment=0 on input line 55.
+Package biblatex Info: Reference section=0 on input line 58.
+Package biblatex Info: Reference segment=0 on input line 58.
 \AtBeginShipoutBox=\box43
-Package hyperref Info: Link coloring OFF on input line 55.
+Package hyperref Info: Link coloring OFF on input line 58.
  (/usr/local/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -1097,22 +1102,22 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count327
 )
-LaTeX Info: Redefining \ref on input line 55.
-LaTeX Info: Redefining \pageref on input line 55.
-LaTeX Info: Redefining \nameref on input line 55.
+LaTeX Info: Redefining \ref on input line 58.
+LaTeX Info: Redefining \pageref on input line 58.
+LaTeX Info: Redefining \nameref on input line 58.
 
 (./thesis_final.out) (./thesis_final.out)
 \@outlinefile=\write6
 \openout6 = `thesis_final.out'.
 
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 62.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 65.
  [1
 
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [1] [2]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 105.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 114.
  (./thesis_final.toc
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 5.
@@ -1165,14 +1170,14 @@ Missing character: There is no ü in font pplri7t!
 ]
 Chapter 1.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 124.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 133.
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
 
  []
 
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 133.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 142.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1180,72 +1185,67 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.136 
+l.145 
        [1
 
 ] [2]
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 143.
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 152.
 
  (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/omsppl.fd
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 143.
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 150
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 152.
+LaTeX Font Info:    Try loading font information for U+fplmbb on input line 159
 .
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ufplmbb.fd
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
 )
-<images/sigmoid.png, id=229, 537.00626pt x 364.36125pt>
+<images/sigmoid.png, id=258, 537.00626pt x 364.36125pt>
 File: images/sigmoid.png Graphic file (type png)
 
 <use images/sigmoid.png>
-Package pdftex.def Info: images/sigmoid.png used on input line 155.
+Package pdftex.def Info: images/sigmoid.png used on input line 164.
 (pdftex.def)             Requested size: 268.50247pt x 182.18018pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \vbox (badness 6625) has occurred while \output is active []
-
- [3]
+[3]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [4 <./images/sigmoid.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 175--176
+Underfull \hbox (badness 10000) in paragraph at lines 184--185
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 191--192
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
 
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [5]
-Underfull \hbox (badness 10000) in paragraph at lines 198--199
+Underfull \hbox (badness 10000) in paragraph at lines 200--201
 
  []
 
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 207--208
 
-Underfull \vbox (badness 1946) has occurred while \output is active []
+ []
 
- [6]
+[6]
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 283--284
+ [7]
+Underfull \hbox (badness 10000) in paragraph at lines 293--294
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 292--293
+Underfull \hbox (badness 10000) in paragraph at lines 302--303
 
  []
 
@@ -1259,152 +1259,160 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-[10] <images/lstm2.png, id=283, 806.89455pt x 303.17265pt>
+[10] <images/lstm2.png, id=313, 806.89455pt x 303.17265pt>
 File: images/lstm2.png Graphic file (type png)
 
 <use images/lstm2.png>
-Package pdftex.def Info: images/lstm2.png used on input line 351.
+Package pdftex.def Info: images/lstm2.png used on input line 361.
 (pdftex.def)             Requested size: 403.44629pt x 151.58595pt.
 
-Overfull \hbox (5.96129pt too wide) in paragraph at lines 351--352
+Overfull \hbox (5.96129pt too wide) in paragraph at lines 361--362
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 363--364
-
- []
-
-[11 <./images/lstm2.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 373--374
 
  []
 
+[11 <./images/lstm2.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 383--384
 
-Underfull \hbox (badness 10000) in paragraph at lines 379--380
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 389--390
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 381--382
+Underfull \hbox (badness 10000) in paragraph at lines 391--392
 
  []
 
-<images/chord-scale.png, id=299, 441.65pt x 116.435pt>
+<images/chord-scale.png, id=331, 441.65pt x 116.435pt>
 File: images/chord-scale.png Graphic file (type png)
 
 <use images/chord-scale.png>
-Package pdftex.def Info: images/chord-scale.png used on input line 387.
+Package pdftex.def Info: images/chord-scale.png used on input line 395.
 (pdftex.def)             Requested size: 264.99203pt x 69.86153pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--395
-
- []
-
-[13 <./images/chord-scale.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 396--397
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 398--399
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 403--404
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14]
-Underfull \hbox (badness 10000) in paragraph at lines 405--406
+ [13 <./images/chord-scale.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 406--407
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 407--408
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
 
 Underfull \vbox (badness 5802) has occurred while \output is active []
 
+ [14]
+Underfull \hbox (badness 10000) in paragraph at lines 413--414
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 415--416
+
+ []
+
+
+Underfull \vbox (badness 1077) has occurred while \output is active []
+
  [15]
-<images/chorale_mine.png, id=321, 969.6225pt x 389.455pt>
+Underfull \hbox (badness 10000) in paragraph at lines 417--418
+
+ []
+
+<images/chorale_mine.png, id=353, 969.6225pt x 389.455pt>
 File: images/chorale_mine.png Graphic file (type png)
 
 <use images/chorale_mine.png>
-Package pdftex.def Info: images/chorale_mine.png used on input line 411.
+Package pdftex.def Info: images/chorale_mine.png used on input line 421.
 (pdftex.def)             Requested size: 436.3261pt x 175.25313pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 414--415
-
- []
-
-[16 <./images/chorale_mine.png>]
-Missing character: There is no ü in font pplri7t!
-
-Underfull \hbox (badness 10000) in paragraph at lines 416--417
+ [16 <./images/chorale_mine.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
 
  []
 
 Missing character: There is no ü in font pplri7t!
+[17
+
+]
 Missing character: There is no ü in font pplri7t!
-<images/chorale2_mine.png, id=328, 964.60374pt x 263.98625pt>
+Missing character: There is no ü in font pplri7t!
+ <images/chorale2_mine.png, id=363, 964.60374pt x 263.98625pt>
 File: images/chorale2_mine.png Graphic file (type png)
 
 <use images/chorale2_mine.png>
-Package pdftex.def Info: images/chorale2_mine.png used on input line 420.
+Package pdftex.def Info: images/chorale2_mine.png used on input line 431.
 (pdftex.def)             Requested size: 434.06767pt x 118.79271pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
+Underfull \hbox (badness 10000) in paragraph at lines 434--435
 
  []
 
-[17 <./images/chorale2_mine.png>] [18]
+[18
+
+ <./images/chorale2_mine.png>]
 Chapter 2.
 [19
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 440--441
+Underfull \hbox (badness 10000) in paragraph at lines 451--452
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--443
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 
  []
 
 [20]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 444.
+Underfull \hbox (badness 10000) in paragraph at lines 455--456
 
- (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [21]
+ []
+
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 461--462
+
+ []
+
 [22]
-Underfull \hbox (badness 10000) in paragraph at lines 458--459
+Underfull \hbox (badness 10000) in paragraph at lines 464--466
 
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1622) has occurred while \output is active []
 
  [23]
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 491--492
 
  []
 
-[24]
-Overfull \hbox (3.08386pt too wide) in paragraph at lines 481--482
+
+Underfull \vbox (badness 1270) has occurred while \output is active []
+
+ [24]
+Overfull \hbox (3.08386pt too wide) in paragraph at lines 493--494
 \OT1/ppl/m/n/10.95 gard-less of con-text ([]Cam-bouropou-los, Kaliakatsos-Papak
 ostas, and Tsougras, []2014[]).
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 481--482
+Underfull \hbox (badness 10000) in paragraph at lines 493--494
 
  []
 
@@ -1412,66 +1420,77 @@ Underfull \hbox (badness 10000) in paragraph at lines 481--482
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
-<images/GCT.png, id=401, 733.74126pt x 168.63pt>
+<images/GCT.png, id=432, 733.74126pt x 168.63pt>
 File: images/GCT.png Graphic file (type png)
  <use images/GCT.png>
-Package pdftex.def Info: images/GCT.png used on input line 486.
+Package pdftex.def Info: images/GCT.png used on input line 498.
 (pdftex.def)             Requested size: 396.21439pt x 91.05884pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 497--498
+Underfull \hbox (badness 10000) in paragraph at lines 509--510
 
  []
 
 [26 <./images/GCT.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 541--542
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 554.
+
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 554--555
 
  []
 
 
-Underfull \vbox (badness 1527) has occurred while \output is active []
+Underfull \vbox (badness 1314) has occurred while \output is active []
 
  [27]
-Overfull \hbox (3.95856pt too wide) in paragraph at lines 547--548
+Overfull \hbox (3.95856pt too wide) in paragraph at lines 560--561
 \OT1/ppl/m/n/10.95 voice har-monies have am-bigu-ous im-pli-ca-tions in the 4-v
 oice model that the chorales
  []
 
 
-Overfull \hbox (12.61018pt too wide) in paragraph at lines 547--548
+Overfull \hbox (12.61018pt too wide) in paragraph at lines 560--561
 \OT1/ppl/m/n/10.95 chordal pro-gres-sions of 4-voice har-mony. Like mod-ern chu
 rch hymns, Bach's chorales
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--548
+Underfull \hbox (badness 10000) in paragraph at lines 560--561
 
  []
 
 [28]
-Underfull \hbox (badness 10000) in paragraph at lines 549--550
+Underfull \hbox (badness 10000) in paragraph at lines 562--563
 
  []
 
 [29]
-Underfull \hbox (badness 10000) in paragraph at lines 574--575
+Underfull \hbox (badness 10000) in paragraph at lines 587--588
 
  []
 
-[30] [31] <images/subtasks.png, id=461, 1084.05pt x 578.16pt>
+[30]
+Underfull \hbox (badness 10000) in paragraph at lines 619--620
+
+ []
+
+[31] <images/subtasks.png, id=493, 1084.05pt x 578.16pt>
 File: images/subtasks.png Graphic file (type png)
 
 <use images/subtasks.png>
-Package pdftex.def Info: images/subtasks.png used on input line 636.
+Package pdftex.def Info: images/subtasks.png used on input line 649.
 (pdftex.def)             Requested size: 542.02368pt x 289.07928pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 641--642
+Underfull \hbox (badness 10000) in paragraph at lines 654--655
 
  []
 
 [32] [33 <./images/subtasks.png>]
 Chapter 3.
 
-Overfull \hbox (4.34116pt too wide) in paragraph at lines 654--655
+Overfull \hbox (4.34116pt too wide) in paragraph at lines 667--668
 \OT1/ppl/m/n/10.95 I will now shift fo-cus to su-per-vised learn-ing of the cho
 rales us-ing both non-recurrent
  []
@@ -1482,12 +1501,12 @@ Underfull \vbox (badness 7168) has occurred while \output is active []
  [34
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 660--661
+Underfull \hbox (badness 10000) in paragraph at lines 673--674
 
  []
 
 [35]
-Underfull \hbox (badness 10000) in paragraph at lines 666--667
+Underfull \hbox (badness 10000) in paragraph at lines 679--680
 
  []
 
@@ -1495,7 +1514,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 666--667
 Underfull \vbox (badness 1077) has occurred while \output is active []
 
  [36]
-Underfull \hbox (badness 10000) in paragraph at lines 672--673
+Underfull \hbox (badness 10000) in paragraph at lines 685--686
 
  []
 
@@ -1504,22 +1523,22 @@ Underfull \vbox (badness 1077) has occurred while \output is active []
 
  [37]
 [38]
-Underfull \hbox (badness 10000) in paragraph at lines 718--719
+Underfull \hbox (badness 10000) in paragraph at lines 731--732
 
  []
 
 [39]
-Underfull \hbox (badness 10000) in paragraph at lines 758--759
+Underfull \hbox (badness 10000) in paragraph at lines 771--772
 
  []
 
 [40]
-Underfull \hbox (badness 10000) in paragraph at lines 764--765
+Underfull \hbox (badness 10000) in paragraph at lines 777--778
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 766--767
+Underfull \hbox (badness 10000) in paragraph at lines 779--780
 
  []
 
@@ -1527,208 +1546,159 @@ Underfull \hbox (badness 10000) in paragraph at lines 766--767
 Underfull \vbox (badness 1077) has occurred while \output is active []
 
  [41]
-[42] <examples/ex_minor_1.pdf, id=519, 794.97pt x 614.295pt>
+Underfull \vbox (badness 1077) has occurred while \output is active []
+
+ [42]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [43]
+[44] <examples/ex_minor_1.pdf, id=563, 794.97pt x 614.295pt>
 File: examples/ex_minor_1.pdf Graphic file (type pdf)
 
 <use examples/ex_minor_1.pdf>
-Package pdftex.def Info: examples/ex_minor_1.pdf used on input line 774.
-(pdftex.def)             Requested size: 794.96806pt x 614.29349pt.
-File: examples/ex_minor_1.pdf Graphic file (type pdf)
- <use examples/ex_minor_1.pdf>
-Package pdftex.def Info: examples/ex_minor_1.pdf used on input line 774.
-(pdftex.def)             Requested size: 794.96806pt x 614.29349pt.
+Package pdftex.def Info: examples/ex_minor_1.pdf used on input line 837.
+(pdftex.def)             Requested size: 614.295pt x 474.69582pt.
 
-<examples/ex_minor_1.pdf, id=522, page=1, 794.97pt x 614.295pt>
-File: examples/ex_minor_1.pdf Graphic file (type pdf)
 
-<use examples/ex_minor_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_minor_1.pdf, page1 used on input line 774.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-(pdftex.def)             Requested size: 794.96806pt x 614.29349pt.
-File: examples/ex_minor_1.pdf Graphic file (type pdf)
- <use examples/ex_minor_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_minor_1.pdf, page1 used on input line 774.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
-File: examples/ex_minor_1.pdf Graphic file (type pdf)
-
-<use examples/ex_minor_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_minor_1.pdf, page1 used on input line 774.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
-File: examples/ex_minor_1.pdf Graphic file (type pdf)
- <use examples/ex_minor_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_minor_1.pdf, page1 used on input line 774.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
-File: examples/ex_minor_1.pdf Graphic file (type pdf)
-
-<use examples/ex_minor_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_minor_1.pdf, page1 used on input line 774.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
- [43
-
- <./examples/ex_minor_1.pdf>]
-<examples/ex_major_1.pdf, id=556, 794.97pt x 614.295pt>
+<examples/ex_major_1.pdf, id=564, 794.97pt x 614.295pt>
 File: examples/ex_major_1.pdf Graphic file (type pdf)
 
 <use examples/ex_major_1.pdf>
-Package pdftex.def Info: examples/ex_major_1.pdf used on input line 778.
-(pdftex.def)             Requested size: 794.96806pt x 614.29349pt.
-File: examples/ex_major_1.pdf Graphic file (type pdf)
- <use examples/ex_major_1.pdf>
-Package pdftex.def Info: examples/ex_major_1.pdf used on input line 778.
-(pdftex.def)             Requested size: 794.96806pt x 614.29349pt.
+Package pdftex.def Info: examples/ex_major_1.pdf used on input line 848.
+(pdftex.def)             Requested size: 614.295pt x 474.69582pt.
 
-<examples/ex_major_1.pdf, id=559, page=1, 794.97pt x 614.295pt>
-File: examples/ex_major_1.pdf Graphic file (type pdf)
-
-<use examples/ex_major_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_major_1.pdf, page1 used on input line 778.
-
-(pdftex.def)             Requested size: 794.96806pt x 614.29349pt.
-File: examples/ex_major_1.pdf Graphic file (type pdf)
- <use examples/ex_major_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_major_1.pdf, page1 used on input line 778.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
-File: examples/ex_major_1.pdf Graphic file (type pdf)
-
-<use examples/ex_major_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_major_1.pdf, page1 used on input line 778.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
-File: examples/ex_major_1.pdf Graphic file (type pdf)
- <use examples/ex_major_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_major_1.pdf, page1 used on input line 778.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
-File: examples/ex_major_1.pdf Graphic file (type pdf)
-
-<use examples/ex_major_1.pdf, page 1>
-Package pdftex.def Info: examples/ex_major_1.pdf, page1 used on input line 778.
-
-(pdftex.def)             Requested size: 615.04005pt x 475.25821pt.
- [44 <./examples/ex_major_1.pdf>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \vbox (badness 6758) has occurred while \output is active []
-
- [45]
-[46]
+[45 <./examples/ex_minor_1.pdf>] [46 <./examples/ex_major_1.pdf>]
 Chapter 4.
-[47
+
+Underfull \vbox (badness 7168) has occurred while \output is active []
+
+ [47
+
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 843--844
+Underfull \hbox (badness 10000) in paragraph at lines 868--869
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 845--846
+Underfull \hbox (badness 10000) in paragraph at lines 870--871
 
  []
 
 
-Underfull \vbox (badness 1184) has occurred while \output is active []
+Underfull \vbox (badness 1077) has occurred while \output is active []
 
  [48]
-Underfull \hbox (badness 10000) in paragraph at lines 850--851
+Underfull \hbox (badness 10000) in paragraph at lines 875--876
 
  []
 
 
-Underfull \vbox (badness 1184) has occurred while \output is active []
+Underfull \vbox (badness 1077) has occurred while \output is active []
 
  [49]
-<examples/ex1.png, id=621, 1447.4075pt x 379.4175pt>
+<examples/ex1.png, id=646, 1447.4075pt x 379.4175pt>
 File: examples/ex1.png Graphic file (type png)
  <use examples/ex1.png>
-Package pdftex.def Info: examples/ex1.png used on input line 854.
+Package pdftex.def Info: examples/ex1.png used on input line 879.
 (pdftex.def)             Requested size: 434.2256pt x 113.82613pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 862--863
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [50 <./examples/ex1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 887--888
 
  []
 
-[50 <./examples/ex1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 864--865
+
+Overfull \hbox (15.99815pt too wide) in paragraph at lines 889--890
+[]\OT1/ppl/m/n/10.95 The pri-mary tech-nique for im-ply-ing har-monies is the o
+ne-voice In-ven-tion melodies
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 889--890
 
  []
 
-<examples/ex2.png, id=629, 1606.0pt x 465.74pt>
+[51] <examples/ex2.png, id=657, 1606.0pt x 465.74pt>
 File: examples/ex2.png Graphic file (type png)
  <use examples/ex2.png>
-Package pdftex.def Info: examples/ex2.png used on input line 868.
+Package pdftex.def Info: examples/ex2.png used on input line 893.
 (pdftex.def)             Requested size: 433.62581pt x 125.75148pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[51] [52 <./examples/ex2.png>] [53]
-Overfull \hbox (4.83952pt too wide) in paragraph at lines 888--888
-\OT1/ppl/m/n/10.95 a-bilis-tic in-fer-ence''. In: \OT1/ppl/m/it/10.95 Ad-vances
- in neu-ral in-for-ma-tion pro-cess-ing sys-tems \OT1/ppl/m/n/10.95 17, pp. 25{
+Underfull \hbox (badness 10000) in paragraph at lines 897--898
 
  []
 
-
-Overfull \hbox (22.30913pt too wide) in paragraph at lines 888--888
-[][]\OT1/ppl/m/n/10.95 Cuthbert, Michael Scott and Christo-pher Ariza (2010). `
-`mu-sic21: A toolkit for computer-
- []
-
-[54
+[52 <./examples/ex2.png>] [53] [54
 
 ]
-Overfull \hbox (15.77592pt too wide) in paragraph at lines 888--888
+Overfull \hbox (4.57234pt too wide) in paragraph at lines 914--914
+[][]\OT1/ppl/m/n/10.95 Boulanger-Lewandowski, Nico-las, Yoshua Ben-gio, and Pas
+-cal Vin-cent (2012). ``Mod-
+ []
+
+
+Overfull \hbox (15.77592pt too wide) in paragraph at lines 914--914
 \OT1/ppl/m/n/10.95 bilis-tic har-mo-niza-tion with fixed in-ter-me-di-ate chord
  con-straints''. In: \OT1/ppl/m/it/10.95 ICMC|SMC\OT1/ppl/m/n/10.95 .
  []
 
 
-Overfull \hbox (1.21829pt too wide) in paragraph at lines 888--888
+Overfull \hbox (22.30913pt too wide) in paragraph at lines 914--914
+[][]\OT1/ppl/m/n/10.95 Cuthbert, Michael Scott and Christo-pher Ariza (2010). `
+`mu-sic21: A toolkit for computer-
+ []
+
+[55
+
+
+]
+Overfull \hbox (1.21829pt too wide) in paragraph at lines 914--914
 [][]\OT1/ppl/m/n/10.95 Kaliakatsos-Papakostas, Max-i-mos et al. (2015). ``Eval-
 u-at-ing the Gen-eral Chord Type
  []
 
 
-Overfull \hbox (35.33284pt too wide) in paragraph at lines 888--888
+Overfull \hbox (35.33284pt too wide) in paragraph at lines 914--914
 \OT1/ppl/m/n/10.95 Blog. \OT1/ppl/m/sc/10.95 url\OT1/ppl/m/n/10.95 : []$\OT1/pc
 r/m/n/10.95 http : / / karpathy . github . io / 2015 / 05 / 21 / rnn -[] effect
 iveness/$[]\OT1/ppl/m/n/10.95 . 
  []
 
-[55]
-Overfull \hbox (10.37195pt too wide) in paragraph at lines 888--888
+[56]
+Overfull \hbox (10.37195pt too wide) in paragraph at lines 914--914
 [][]\OT1/ppl/m/n/10.95 Olah, Christo-pher (2015). \OT1/ppl/m/it/10.95 Un-der-st
 and-ing LSTM Net-works\OT1/ppl/m/n/10.95 . Blog. \OT1/ppl/m/sc/10.95 url\OT1/pp
 l/m/n/10.95 : []$\OT1/pcr/m/n/10.95 http : / / colah .
  []
 
-[56]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 890.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 890.
+[57]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 916.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 916.
  (./thesis_final.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 890.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 890.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 916.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 916.
 Package rerunfilecheck Info: File `thesis_final.out' has not changed.
-(rerunfilecheck)             Checksum: C423EE311D11577B19DE1C6806849546;2076.
+(rerunfilecheck)             Checksum: 5DC5615B170E57727CCB14AD8D1B9883;2421.
 Package logreq Info: Writing requests to 'thesis_final.run.xml'.
 \openout1 = `thesis_final.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 25196 strings out of 493117
- 455179 string characters out of 6135433
- 630743 words of memory out of 5000000
- 27984 multiletter control sequences out of 15000+600000
+ 25214 strings out of 493117
+ 455424 string characters out of 6135433
+ 631001 words of memory out of 5000000
+ 27998 multiletter control sequences out of 15000+600000
  36622 words of font info for 101 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,18n,70p,1936b,1057s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,15n,70p,1936b,1059s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
@@ -1742,10 +1712,10 @@ ts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
 1/urw/palatino/uplbi8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/
 palatino/uplr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/palatin
 o/uplri8a.pfb>
-Output written on thesis_final.pdf (62 pages, 919211 bytes).
+Output written on thesis_final.pdf (63 pages, 923005 bytes).
 PDF statistics:
- 750 PDF objects out of 1000 (max. 8388607)
- 629 compressed objects within 7 object streams
- 178 named destinations out of 1000 (max. 500000)
- 338 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 779 PDF objects out of 1000 (max. 8388607)
+ 663 compressed objects within 7 object streams
+ 184 named destinations out of 1000 (max. 500000)
+ 348 words of extra memory for PDF output out of 10000 (max. 10000000)
 
