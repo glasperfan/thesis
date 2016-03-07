@@ -21,9 +21,11 @@ function make_model(max_index, output_size)
 	model:add(embedding)
 	
 	model:add(nn.Linear(embedding_size, hidden_size))
-	model:add(nn.Tanh())
+	model:add(nn.ReLU())
+	model:add(nn.Dropout(0.2))
 	model:add(nn.Linear(hidden_size, hidden_size))
-	model:add(nn.Tanh())
+	model:add(nn.ReLU())
+	model:add(nn.Dropout(0.2))
 	model:add(nn.Linear(hidden_size, output_size))
 	model:add(nn.LogSoftMax())
 
@@ -55,23 +57,31 @@ function isnan(x) return x ~= x end
 
 --- Train the Model ---
 function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
-	for epoch = 1, epochs do
+	model:training()
+	last_nll = 999999
+	epoch = 1
+	while true do
 		local nll = torch.zeros(Xtrain:size(1))
-		model:zeroGradParameters()
+		nll = 0
 		for j = 1, Xtrain:size(1) do
 			-- Forward
 			local out = model:forward(Xtrain[j])
-			nll[j] = criterion:forward(out, ytrain[j])
+			nll = nll + criterion:forward(out, ytrain[j])
 			-- Backward
 			local deriv = criterion:backward(out, ytrain[j])
+			model:zeroGradParameters()
 			model:backward(Xtrain[j], deriv)
 			model:updateParameters(learning_rate)
 			model:zeroGradParameters()
 		end
-		-- print(torch.mean(nll_arr))
-		print("Epoch:", epoch, torch.mean(nll))
+		print("Epoch:", epoch, nll / Xtrain:size(1))
+		model:evaluate()
 		eval_num(Xtrain, ytrain, model, criterion)
 		eval_num(Xtest, ytest, model, criterion)
+		model:training()
+		if last_nll < nll then break end
+		last_nll = nll
+		epoch = epoch + 1
 	end
 end
 
@@ -102,10 +112,9 @@ end
 
 function main() 
 	-- Contants
-	embedding_size = 300
-	hidden_size = 300
-	epochs = 20
-	learning_rate = 0.01
+	embedding_size = 200
+	hidden_size = 200
+	learning_rate = 0.001
 
 	-- Create the data loader class.
 	local f = hdf5.open("data/chorales.hdf5")
@@ -116,10 +125,11 @@ function main()
 	f:close()
 	
 	-- Select the training data for Roman numeral task --
+	local SUBTASK = 5
 	local Xtrain_num = Xtrain--[{ {}, {1,10} }]
 	local Xtest_num = Xtest--[{ {}, {1,10} }]
-	local ytrain_num = ytrain[{ {}, 2 }]
-	local ytest_num = ytest[{ {}, 2 }]
+	local ytrain_num = ytrain[{ {}, SUBTASK }]
+	local ytest_num = ytest[{ {}, SUBTASK }]
 
 	-- Aggregate training and test sets
 	local Xall_num = torch.cat(Xtrain_num, Xtest_num, 1)
@@ -132,7 +142,7 @@ function main()
 	model_num, criterion_num = make_model(maxi_num, outsz_num)
 
 	-- Train
-	print("# Training numeral subtask")
+	print("# Training subtask", SUBTASK)
 	train(Xtrain_num, ytrain_num, Xtest_num, ytest_num, model_num, criterion_num)
 end
 

@@ -21,6 +21,10 @@ function make_model(max_index, output_size)
 	
 	model:add(nn.Linear(embedding_size, hidden_size))
 	model:add(nn.Tanh())
+	-- model:add(nn.Dropout(dropout))
+	model:add(nn.Linear(hidden_size, hidden_size))
+	model:add(nn.Tanh())
+	-- model:add(nn.Dropout(dropout))
 	model:add(nn.Linear(hidden_size, output_size))
 	model:add(nn.LogSoftMax())
 
@@ -30,45 +34,34 @@ function make_model(max_index, output_size)
 	return model, criterion
 end
 
--- Multiclass logistic regression --
-function multiclass_logistic_regression(max_index, output_size)
-	-- Embedding sequence
-	local embedding = nn.Sequential()
-	embedding:add(nn.LookupTable(max_index, output_size))
-	embedding:add(nn.Sum(1))
-
-	-- Feed forward sequence
-	local model = nn.Sequential()
-	model:add(embedding)
-	model:add(nn.LogSoftMax())
-
-	-- Criterion: negative log likelihood
-	local criterion = nn.ClassNLLCriterion()
-
-	return model, criterion
-end
-
-
 --- Train the Model ---
 function train(Xtrain, ytrain, Xtest, ytest, model, criterion)
-	for epoch = 1, epochs do
-		local nll_arr = torch.Tensor(Xtrain:size(1))
-		model:zeroGradParameters()
+	model:training()
+	last_nll = 999999
+	epoch = 1
+	while true do
+		nll = 0
 		for j = 1, Xtrain:size(1) do
 			-- Forward
 			local out = model:forward(Xtrain[j])
-			nll_arr[j] = criterion:forward(out, ytrain[j])
+			nll = nll + criterion:forward(out, ytrain[j])
 
 			-- Backward
+			model:zeroGradParameters()
 			local deriv = criterion:backward(out, ytrain[j])
 			model:backward(Xtrain[j], deriv)
 			model:updateParameters(learning_rate)
 			model:zeroGradParameters()
 		end
 		-- print(torch.mean(nll_arr))
-		print("Epoch:", epoch, torch.mean(nll_arr))
+		print("Epoch:", epoch, nll / Xtrain:size(1))
+		model:evaluate()
 		eval(Xtrain, ytrain, model, criterion)
 		eval(Xtest, ytest, model, criterion)
+		model:training()
+		if last_nll < nll then break end
+		last_nll = nll
+		epoch = epoch + 1
 	end
 end
 
@@ -98,28 +91,24 @@ end
 
 function main() 
 	-- Contants
-	embedding_size = 250
-	hidden_size = 250
-	epochs = 20
+	embedding_size = 200
+	hidden_size = 200
 	learning_rate = 0.01
+	dropout = 0.0
+	print("hidden size", hidden_size)
+	print("learning rate", learning_rate)
+	print("dropout", dropout)
 
 	-- Load data
-	local f = hdf5.open("data/chorales.hdf5")
+	local f = hdf5.open("data/chorales_sm.hdf5")
 	local Xtrain = f:read('Xtrain'):all()
-	local Xdev = f:read('Xdev'):all()
 	local Xtest = f:read('Xtest'):all()
+	local ytrain = f:read('ytrain'):all()
+	local ytest = f:read('ytest'):all()
+	local Xall = torch.cat(Xtrain, Xtest, 1)
+	local yall = torch.cat(ytrain, ytest, 1)
 	f:close()
 
-	Xtrain = Xtrain[{ {}, {1,10} }]
-	Xdev = Xdev[{ {}, {1,10} }]
-	Xtest = Xtest[{ {}, {1,10} }]
-	Xtrain = torch.cat(Xtrain, Xdev, 1)
-	local Xall = torch.cat(Xtrain, Xtest, 1)
-
-	local f = hdf5.open("data/chorales_sm.hdf5")
-	local ytrain = f:read('ytrainfeat'):all() -- this contains both the training and dev sets
-	local ytest = f:read('ytestfeat'):all()
-	local yall = f:read('yallfeat'):all()
 	local max_index = torch.max(Xall)
 	local output_size = torch.max(yall)
 
@@ -127,7 +116,7 @@ function main()
 	model, criterion = make_model(max_index, output_size)
 
 	-- Train
-	train(Xtrain, ytrain, Xtestex, ytestex, model, criterion)
+	train(Xtrain, ytrain, Xtest, ytest, model, criterion)
 end
 
 main()

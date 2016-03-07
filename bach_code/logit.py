@@ -134,6 +134,13 @@ def test3():
 	encoder, Xtrainsparse, Xtestsparse = encode(Xtrain, Xtest)
 	RF = RandomForestClassifier(10, "entropy", None)
 	RF.fit(Xtrain, ytrain)
+	# Write full harmonization data
+	with h5py.File('data/chorales_sm.hdf5', "w", libver="latest") as f:
+		f.create_dataset("Xtrain", Xtrain.shape, dtype="i", data=Xtrain)
+		f.create_dataset("ytrain", ytrain.shape, dtype="i", data=ytrain)
+		f.create_dataset("Xtest", Xtest.shape, dtype="i", data=Xtest)
+		f.create_dataset("ytest", ytest.shape, dtype="i", data=ytest)
+	print "Full harmonization data written"
 	score_RF_train = RF.score(Xtrain, ytrain)
 	score_RF_test = RF.score(Xtest, ytest)
 	print "R-FOREST: %.2f%% training, %.2f%% test" % (score_RF_train * 100, score_RF_test * 100)
@@ -150,8 +157,8 @@ def test3():
 
 def run():
 	# test1()
-	# test2()
-	test3()
+	test2()
+	# test3()
 
 run()
 

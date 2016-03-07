@@ -1,0 +1,936 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{allan2005harmonising}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Allan}{A.}%
+     {Moray}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Williams}{W.}%
+     {Christopher~KI}{C.~K.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{chorales, machine learning, harmonization}
+  \strng{namehash}{AMWCK1}
+  \strng{fullhash}{AMWCK1}
+  \field{labelyear}{2005}
+  \field{sortinit}{A}
+  \field{pages}{25\bibrangedash 32}
+  \field{title}{Harmonising chorales by probabilistic inference}
+  \field{volume}{17}
+  \field{journaltitle}{Advances in neural information processing systems}
+  \field{year}{2005}
+\endentry
+
+\entry{breiman2001}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Breiman}{B.}%
+     {Leo}{L.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Springer}%
+  }
+  \keyw{machine learning}
+  \strng{namehash}{BL1}
+  \strng{fullhash}{BL1}
+  \field{labelyear}{2001}
+  \field{sortinit}{B}
+  \field{number}{1}
+  \field{pages}{5\bibrangedash 32}
+  \field{title}{Random forests}
+  \field{volume}{45}
+  \field{journaltitle}{Machine learning}
+  \field{year}{2001}
+\endentry
+
+\entry{2014gct}{book}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Cambouropoulos}{C.}%
+     {Emilios}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kaliakatsos-Papakostas}{K.-P.}%
+     {Maximos}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tsougras}{T.}%
+     {Costas}{C.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Ann Arbor, MI: Michigan Publishing, University of Michigan Library}%
+  }
+  \keyw{machine learning, music theory, harmonization}
+  \strng{namehash}{CEKPMTC1}
+  \strng{fullhash}{CEKPMTC1}
+  \field{labelyear}{2014}
+  \field{sortinit}{C}
+  \field{title}{An idiom-independent representation of chords for computational
+  music analysis and generation}
+  \field{year}{2014}
+\endentry
+
+\entry{cuthbertmusic21}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Cuthbert}{C.}%
+     {Michael~Scott}{M.~S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ariza}{A.}%
+     {Christopher}{C.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{music21}
+  \strng{namehash}{CMSAC1}
+  \strng{fullhash}{CMSAC1}
+  \field{labelyear}{2010}
+  \field{sortinit}{C}
+  \field{pages}{637\bibrangedash 642}
+  \field{title}{music21: A toolkit for computer-aided musicology and symbolic
+  music data}
+  \field{journaltitle}{International Society for Music Information Retrieval}
+  \field{year}{2010}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{dreyfus1996bach}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Dreyfus}{D.}%
+     {Laurence}{L.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Harvard University Press}%
+  }
+  \keyw{music theory, musical structure}
+  \strng{namehash}{DL1}
+  \strng{fullhash}{DL1}
+  \field{labelyear}{1996}
+  \field{sortinit}{D}
+  \field{title}{Bach and the Patterns of Invention}
+  \field{year}{1996}
+\endentry
+
+\entry{eck2002structure}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Eck}{E.}%
+     {Douglas}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schmidhuber}{S.}%
+     {Juergen}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{LSTM, RNN, neural networks, jazz}
+  \strng{namehash}{EDSJ1}
+  \strng{fullhash}{EDSJ1}
+  \field{labelyear}{2002}
+  \field{extrayear}{1}
+  \field{sortinit}{E}
+  \field{title}{A first look at music composition using lstm recurrent neural
+  networks}
+  \field{journaltitle}{Istituto Dalle Molle Di Studi Sull Intelligenza
+  Artificiale}
+  \field{annotation}{%
+  Upon examining attempts at automated composition using standard recurrent
+  neural networks (RNNs), the authors Eck and Schmidhuber conclude that these
+  models alone fail to grasp larger musical structures, and therefore are
+  unsuccessful at generating convincing musical compositions. However, a subset
+  of RNNs labeled LSTMs (Long Short-Term Memory) have shown much greater
+  promise due to their ability to retain information about decisions in
+  previous time frames. With respect to music generation, the authors
+  demonstrate its ability to successfully learn a 12-bar blues form and
+  improvise melodies over those harmonies.%
+  }
+  \field{year}{2002}
+\endentry
+
+\entry{eck2002blues}{inproceedings}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Eck}{E.}%
+     {Douglas}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schmidhuber}{S.}%
+     {Jurgen}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {IEEE}%
+  }
+  \keyw{neural networks, RNN, LSTM, jazz}
+  \strng{namehash}{EDSJ2}
+  \strng{fullhash}{EDSJ2}
+  \field{labelyear}{2002}
+  \field{extrayear}{2}
+  \field{sortinit}{E}
+  \field{booktitle}{Neural Networks for Signal Processing, 2002. Proceedings of
+  the 2002 12th IEEE Workshop on}
+  \field{pages}{747\bibrangedash 756}
+  \field{title}{Finding temporal structure in music: Blues improvisation with
+  LSTM recurrent networks}
+  \field{annotation}{%
+  This article is a further development of the ideas Eck proposes in his other
+  2002 paper (cite-key: eck2002structure), where he demonstrates the ability of
+  LSTMs to develop an understanding of larger musical structures, such as the
+  12-bar blues form. Here, Eck argues that LSTMs are also highly effective at
+  learning to compose music by analyzing examples of a machine that is able to
+  produce blues melodies. Eck is one of the few researchers to explore the
+  realm of computational harmonic analysis in jazz, and he loves many topics
+  untouched where others could explore.%
+  }
+  \field{year}{2002}
+\endentry
+
+\entry{franklin2006jazz}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Franklin}{F.}%
+     {Judy~A}{J.~A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {World Scientific}%
+  }
+  \keyw{jazz, neural networks, RNN}
+  \strng{namehash}{FJA1}
+  \strng{fullhash}{FJA1}
+  \field{labelyear}{2006}
+  \field{sortinit}{F}
+  \field{number}{04}
+  \field{pages}{623\bibrangedash 650}
+  \field{title}{Jazz melody generation using recurrent networks and
+  reinforcement learning}
+  \field{volume}{15}
+  \field{journaltitle}{International Journal on Artificial Intelligence Tools}
+  \field{year}{2006}
+\endentry
+
+\entry{goldberg2015nnlp}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Goldberg}{G.}%
+     {Yoav}{Y.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{machine learning, neural networks, RNN, LSTM}
+  \strng{namehash}{GY1}
+  \strng{fullhash}{GY1}
+  \field{labelyear}{2015}
+  \field{sortinit}{G}
+  \field{title}{A Primer on Neural Network Models for Natural Language
+  Processing}
+  \list{institution}{1}{%
+    {Bar-Ilan University}%
+  }
+  \field{type}{techreport}
+  \field{year}{2015}
+\endentry
+
+\entry{greentree2005}{collection}{}
+  \name{editor}{1}{}{%
+    {{}%
+     {Greentree}{G.}%
+     {Margaret}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{chorales}
+  \strng{namehash}{GM1}
+  \strng{fullhash}{GM1}
+  \field{labelyear}{2005}
+  \field{sortinit}{G}
+  \field{note}{Retrieved October 2015 from music21.}
+  \field{title}{Chorales harmonized by J.S. Bach}
+  \field{year}{2005}
+\endentry
+
+\entry{greff2015lstm}{article}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Greff}{G.}%
+     {Klaus}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Srivastava}{S.}%
+     {Rupesh~Kumar}{R.~K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Koutnik}{K.}%
+     {Jan}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Steunebrink}{S.}%
+     {Bas~R.}{B.~R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Schmidhuber}{S.}%
+     {Jurgen}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{LSTM, neural networks, chorales}
+  \strng{namehash}{GK+1}
+  \strng{fullhash}{GKSRKKJSBRSJ1}
+  \field{labelyear}{2015}
+  \field{sortinit}{G}
+  \field{abstract}{%
+  Several variants of the Long Short-Term Memory (LSTM) architecture for
+  recurrent neural networks have been proposed since its inception in 1995. In
+  recent years, these networks have become the state-of-the-art models for a
+  variety of machine learning problems. This has led to a renewed interest in
+  understanding the role and utility of various computational components of
+  typical LSTM variants. In this paper, we present the first large-scale
+  analysis of eight LSTM variants on three representative tasks: speech
+  recognition, handwriting recognition, and polyphonic music modeling. The
+  hyperparameters of all LSTM variants for each task were optimized separately
+  using random search and their importance was assessed using the powerful
+  fANOVA framework. In total, we summarize the results of 5400 experimental
+  runs (about 15 years of CPU time), which makes our study the largest of its
+  kind on LSTM networks. Our results show that none of the variants can improve
+  upon the standard LSTM architecture significantly, and demonstrate the forget
+  gate and the output activation function to be its most critical components.
+  We further observe that the studied hyperparameters are virtually independent
+  and derive guidelines for their efficient adjustment.%
+  }
+  \field{title}{LSTM: A Search Space Odyssey}
+  \verb{url}
+  \verb http://adsabs.harvard.edu/abs/2015arXiv150304069G
+  \endverb
+  \field{journaltitle}{arXiv:1503.04069}
+  \field{year}{2015}
+\endentry
+
+\entry{hild1992harmonet}{inproceedings}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Hild}{H.}%
+     {Hermann}{H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Feulner}{F.}%
+     {Johannes}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Menzel}{M.}%
+     {Wolfram}{W.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{neural networks, chorales, harmonization}
+  \strng{namehash}{HHFJMW1}
+  \strng{fullhash}{HHFJMW1}
+  \field{labelyear}{1992}
+  \field{sortinit}{H}
+  \field{booktitle}{Advances in Neural Information Processing Systems}
+  \field{pages}{267\bibrangedash 274}
+  \field{title}{HARMONET: A neural net for harmonizing chorales in the style of
+  JS Bach}
+  \field{year}{1992}
+\endentry
+
+\entry{kaliakatsos2014}{inproceedings}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Kaliakatsos-Papakostas}{K.-P.}%
+     {Maximos}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cambouropoulos}{C.}%
+     {Emilios}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Ann Arbor, MI: Michigan Publishing, University of Michigan Library}%
+  }
+  \keyw{chorales, harmonization, Markov}
+  \strng{namehash}{KPMCE1}
+  \strng{fullhash}{KPMCE1}
+  \field{labelyear}{2014}
+  \field{sortinit}{K}
+  \field{booktitle}{ICMC|SMC}
+  \field{title}{Probabilistic harmonization with fixed intermediate chord
+  constraints}
+  \field{year}{2014}
+\endentry
+
+\entry{2015gct}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Kaliakatsos-Papakostas}{K.-P.}%
+     {Maximos}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zacharakis}{Z.}%
+     {Asterios}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tsougras}{T.}%
+     {Costas}{C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cambouropoulos}{C.}%
+     {Emilios}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{machine learning, harmonization, musical structure}
+  \strng{namehash}{KPM+1}
+  \strng{fullhash}{KPMZATCCE1}
+  \field{labelyear}{2015}
+  \field{sortinit}{K}
+  \field{title}{Evaluating the General Chord Type Representation in Tonal Music
+  and Organizing GCT Choral Labels in Functional Chord Categories}
+  \field{journaltitle}{16th International Society for Music Information
+  Retrieval Conference}
+  \field{year}{2015}
+\endentry
+
+\entry{karpathy2015rnn}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Karpathy}{K.}%
+     {Andrej}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{RNN, neural networks}
+  \strng{namehash}{KA1}
+  \strng{fullhash}{KA1}
+  \field{labelyear}{2015}
+  \field{sortinit}{K}
+  \field{howpublished}{Blog}
+  \field{title}{The Unreasonable Effectiveness of Recurrent Neural Networks}
+  \verb{url}
+  \verb http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+  \endverb
+  \field{year}{2015}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{laitz2008}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Laitz}{L.}%
+     {Steven~Geoffrey}{S.~G.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Oxford University Press, USA}%
+  }
+  \keyw{musical structure, harmonization, music theory}
+  \strng{namehash}{LSG1}
+  \strng{fullhash}{LSG1}
+  \field{labelyear}{2012}
+  \field{sortinit}{L}
+  \field{edition}{3rd}
+  \field{title}{The complete musician: An integrated approach to tonal theory,
+  analysis, and listening}
+  \field{volume}{1}
+  \list{location}{1}{%
+    {New York}%
+  }
+  \field{year}{2012}
+\endentry
+
+\entry{leaverchorale}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Leaver}{L.}%
+     {Robin~A.}{R.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Marshall}{M.}%
+     {Robert~L.}{R.~L.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{musical structure, chorales}
+  \strng{namehash}{LRAMRL1}
+  \strng{fullhash}{LRAMRL1}
+  \field{labelyear}{2015}
+  \field{sortinit}{L}
+  \field{title}{Chorale}
+  \verb{url}
+  \verb http://www.oxfordmusiconline.com.ezp-prod1.hul.harvard.edu/subscriber/a
+  \verb rticle/grove/music/05652
+  \endverb
+  \field{journaltitle}{Grove Music Online. Oxford Music Online}
+  \field{year}{2015}
+\endentry
+
+\entry{leonard2015rnn}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {L{\'e}onard}{L.}%
+     {Nicholas}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Waghmare}{W.}%
+     {Sagar}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Wang}{W.}%
+     {Yang}{Y.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{neural networks, machine learning}
+  \strng{namehash}{LNWSWY1}
+  \strng{fullhash}{LNWSWY1}
+  \field{labelyear}{2015}
+  \field{sortinit}{L}
+  \field{number}{1511.07889}
+  \field{title}{rnn: Recurrent Library for Torch}
+  \field{journaltitle}{arXiv}
+  \field{year}{2015}
+\endentry
+
+\entry{madsen2002}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Madsen}{M.}%
+     {Soren~Tjagvad}{S.~T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Jorgensen}{J.}%
+     {Martin~Elmer}{M.~E.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{chorales, neural networks}
+  \strng{namehash}{MSTJME1}
+  \strng{fullhash}{MSTJME1}
+  \field{labelyear}{2002}
+  \field{sortinit}{M}
+  \field{pages}{31}
+  \field{title}{Harmonisation of Bach chorales: KBS project report}
+  \list{institution}{1}{%
+    {University of Aarhus}%
+  }
+  \field{annotation}{%
+  This report represents a fairly standard approach to the task of automatic
+  harmonization of Bach chorales. Given the melody of a chorale, the authors
+  developed a neural network to provide harmonic support for each note in the
+  melody, which has been abstracted to series a quarter notes for the sake of
+  evenly distributed time frames. Input features include past and previous
+  elements of the melody, previously determined harmonies, and contextual
+  elements of the current soprano note, such as beat strength. After
+  experimenting with several different data representations for the feature
+  vectors, they discovered a relatively effective solution when they
+  represented the output vector as a range of MIDI notes from which the alto,
+  tenor, and bass voices were selected. This paper is also somewhat dated and
+  doesn't provide an adequate explanation of their neural network construction.
+  However, their method is preprocessing (that is, abstracting chorales into
+  quarter-note time frames) is intruiging and likely to be used in my initial
+  experiments with RNNs.%
+  }
+  \field{year}{2002}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{mozer1994neural}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Mozer}{M.}%
+     {Michael~C}{M.~C.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Taylor \& Francis}%
+  }
+  \keyw{harmonization, chorales, neural networks}
+  \strng{namehash}{MMC1}
+  \strng{fullhash}{MMC1}
+  \field{labelyear}{1994}
+  \field{sortinit}{M}
+  \field{number}{2-3}
+  \field{pages}{247\bibrangedash 280}
+  \field{title}{Neural network music composition by prediction: Exploring the
+  benefits of psychoacoustic constraints and multi-scale processing}
+  \field{volume}{6}
+  \field{journaltitle}{Connection Science}
+  \field{year}{1994}
+\endentry
+
+\entry{murphy2012machine}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Murphy}{M.}%
+     {Kevin~P}{K.~P.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {MIT press}%
+  }
+  \keyw{machine learning}
+  \strng{namehash}{MKP1}
+  \strng{fullhash}{MKP1}
+  \field{labelyear}{2012}
+  \field{sortinit}{M}
+  \field{title}{Machine learning: a probabilistic perspective}
+  \list{location}{1}{%
+    {Cambridge, Massachusetts}%
+  }
+  \field{year}{2012}
+\endentry
+
+\entry{nagler2014schubot}{thesis}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Nagler}{N.}%
+     {Dylan~Jeremy}{D.~J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Schubert, chorales, machine learning}
+  \strng{namehash}{NDJ1}
+  \strng{fullhash}{NDJ1}
+  \field{labelyear}{2014}
+  \field{sortinit}{N}
+  \field{title}{SCHUBOT: Machine Learning Tools for the Automated Analysis of
+  Schubert's Lieder}
+  \list{institution}{1}{%
+    {Harvard University}%
+  }
+  \field{type}{Honors thesis}
+  \field{annotation}{%
+  Dylan Nagler's undergraduate represents one of the most recent attempts to
+  apply a variety of machine learning models to musical tasks. This
+  demonstrates how the basic questions about automatic harmonization continue
+  to be asked many years later, although the author here applies them to a less
+  common data set - Schubert lieder. He first describes a number of supervised
+  learning methods which might be applied, including hidden Markov models and
+  PCFGs (grammars). He then describes a program he wrote to harmonically
+  analyze Schubert lieder and the metholodogy behind his approach. Nagler is
+  very descriptive in explaining his methodology, which will be additionally
+  useful because of his use of the music21 musicology library to preprocess his
+  data.%
+  }
+  \field{year}{2014}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{colah2015lstms}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Olah}{O.}%
+     {Christopher}{C.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{LSTM, neural networks}
+  \strng{namehash}{OC1}
+  \strng{fullhash}{OC1}
+  \field{labelyear}{2015}
+  \field{sortinit}{O}
+  \field{howpublished}{Blog}
+  \field{title}{Understanding LSTM Networks}
+  \verb{url}
+  \verb http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+  \endverb
+  \field{annotation}{%
+  In his recent blog post, Chris Olah describe a special model of recurrent
+  neural networks known as LSTM Networks, or Long Short-Term Memory Networks.
+  He describes the significant advances that recurrent neural networks made
+  over "vanilla" (or non-recurrent) neural networks by allowing information to
+  persist within the model. Theoretically, RNNs should be able to draw on
+  information from previous decisions to make its current one, but in practice
+  they have only proven effective when the distance between the relevant past
+  information and the time frame in which it is required is small. LSTMs solved
+  this problem by altering the structure of the network's hidden activation
+  layers to create a pipeline of persisting information and a series of control
+  gates for allowing new information to enter the pipeline. This blog post is
+  aimed at machine learning researching with a general understanding of neural
+  networks and are seeking a more visual and approachable introduction to
+  LSTMs. While a young author, Chris is a highly accomplished researcher and
+  engineer in the field, and his explanations are concise, descriptive, and
+  well-researched, citing several relevant papers.%
+  }
+  \field{year}{2015}
+  \warn{\item Invalid format of field 'date' \item Invalid format of field
+  'date'}
+\endentry
+
+\entry{scikit-learn}{article}{}
+  \name{author}{16}{}{%
+    {{}%
+     {Pedregosa}{P.}%
+     {F.}{F.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Varoquaux}{V.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Gramfort}{G.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Michel}{M.}%
+     {V.}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Thirion}{T.}%
+     {B.}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Grisel}{G.}%
+     {O.}{O.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Blondel}{B.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Prettenhofer}{P.}%
+     {P.}{P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Weiss}{W.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dubourg}{D.}%
+     {V.}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vanderplas}{V.}%
+     {J.}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Passos}{P.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cournapeau}{C.}%
+     {D.}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Brucher}{B.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Perrot}{P.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Duchesnay}{D.}%
+     {E.}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{machine learning}
+  \strng{namehash}{PF+1}
+  \strng{fullhash}{PFVGGAMVTBGOBMPPWRDVVJPACDBMPMDE1}
+  \field{labelyear}{2011}
+  \field{sortinit}{P}
+  \field{pages}{2825\bibrangedash 2830}
+  \field{title}{Scikit-learn: Machine Learning in {P}ython}
+  \field{volume}{12}
+  \field{journaltitle}{Journal of Machine Learning Research}
+  \field{year}{2011}
+\endentry
+
+\entry{cross2008}{inproceedings}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Rohrmeier}{R.}%
+     {Martin}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cross}{C.}%
+     {Ian}{I.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Hokkaido University Sapporo, Japan}%
+  }
+  \keyw{harmonization, chorales}
+  \strng{namehash}{RMCI1}
+  \strng{fullhash}{RMCI1}
+  \field{labelyear}{2008}
+  \field{sortinit}{R}
+  \field{booktitle}{Proceedings of the 10th international conference on music
+  perception and cognition}
+  \field{pages}{619\bibrangedash 627}
+  \field{title}{Statistical properties of tonal harmony in Bach's chorales}
+  \field{year}{2008}
+\endentry
+
+\entry{sun2009classification}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Sun}{S.}%
+     {Yanmin}{Y.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Wong}{W.}%
+     {Andrew~KC}{A.~K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kamel}{K.}%
+     {Mohamed~S}{M.~S.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {World Scientific}%
+  }
+  \keyw{machine learning}
+  \strng{namehash}{SYWAKKMS1}
+  \strng{fullhash}{SYWAKKMS1}
+  \field{labelyear}{2009}
+  \field{sortinit}{S}
+  \field{number}{04}
+  \field{pages}{687\bibrangedash 719}
+  \field{title}{Classification of imbalanced data: A review}
+  \field{volume}{23}
+  \field{journaltitle}{International Journal of Pattern Recognition and
+  Artificial Intelligence}
+  \field{year}{2009}
+\endentry
+
+\entry{petri1995bebop}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Toiviainen}{T.}%
+     {Petri}{P.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{language}{1}{%
+    {English}%
+  }
+  \list{publisher}{1}{%
+    {University of California Press}%
+  }
+  \keyw{jazz, bebop, neural networks}
+  \strng{namehash}{TP1}
+  \strng{fullhash}{TP1}
+  \field{labelyear}{1995}
+  \field{sortinit}{T}
+  \field{abstract}{%
+  In cognitive science and research on artificial intelligence, there are two
+  central paradigms: symbolic and analogical. Within the analogical paradigm,
+  artificial neural networks (ANNs) have recently been successfully used to
+  model and simulate cognitive phenomena. One of the most prominent features of
+  ANNs is their ability to learn by example and, to a certain extent,
+  generalize what they have learned. Improvisation, the art of spontaneously
+  creating music while playing or singing, fundamentally has an imitative
+  nature. Regardless of how much one studies and analyzes, the art of
+  improvisation is learned mostly by example. Instead of memorizing explicit
+  rules, the student mimics the playing of other musicians. This kind of
+  learning procedure cannot be easily modeled with rule- based symbolic
+  systems. ANNs, on the other hand, provide an effective means of modeling and
+  simulating this kind of imitative learning. In this article, a model of jazz
+  improvisation that is based on supervised learning ANNs is described. Some
+  results, achieved by simulations with the model, are presented. The
+  simulations show that the model is able to apply the material it has learned
+  in a new context. It can even create new melodic patterns based on the
+  learned patterns. This kind of adaptability is a direct consequence of the
+  fact that the knowledge resides in a distributed form in the network.%
+  }
+  \field{issn}{07307829}
+  \field{number}{4}
+  \field{pages}{pp. 399\bibrangedash 413}
+  \field{title}{Modeling the Target-Note Technique of Bebop-Style Jazz
+  Improvisation: An Artificial Neural Network Approach}
+  \verb{url}
+  \verb http://www.jstor.org/stable/40285674
+  \endverb
+  \field{volume}{12}
+  \field{journaltitle}{Music Perception: An Interdisciplinary Journal}
+  \field{annotation}{%
+  Petri Toivainen presents an artificial neural network (ANN) that given a
+  series of chord changes is able to improvise over them in a jazz bebop style.
+  The target-note technique describes provides signposts at the beginning of
+  each chord change, giving the ANN targets with which to arrive at using a
+  series of melodic patterns. The result is a suprisingly decent melodic
+  improvisation given a small training set - consisting of Clifford Brown's
+  solos on "All the Things You Are" and "Getrude's Bounce".Toivainen's paper is
+  an early example of a computational approach to jazz composition.%
+  }
+  \field{year}{1995}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

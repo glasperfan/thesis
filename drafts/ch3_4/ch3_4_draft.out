@@ -1,15 +1,15 @@
-\BOOKMARK [1][-]{section.1}{Introducing Neural Networks}{}% 1
-\BOOKMARK [1][-]{section.2}{Non-Recurrent Models}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Full Harmonization}{section.2}% 3
-\BOOKMARK [1][-]{section.3}{Recurrent Models}{}% 4
-\BOOKMARK [2][-]{subsection.3.1}{Oracle experiment}{section.3}% 5
-\BOOKMARK [2][-]{subsection.3.2}{RNN Implementation}{section.3}% 6
-\BOOKMARK [1][-]{section.4}{Chapter 4 - Looking forward}{}% 7
-\BOOKMARK [2][-]{subsection.4.1}{Further Exploration: The Bach Inventions}{section.4}% 8
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Added complexity}{subsection.4.1}% 9
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Subject identification}{subsection.4.1}% 10
-\BOOKMARK [3][-]{subsubsection.4.1.3}{Form identification}{subsection.4.1}% 11
-\BOOKMARK [3][-]{subsubsection.4.1.4}{Harmonic identification}{subsection.4.1}% 12
-\BOOKMARK [3][-]{subsubsection.4.1.5}{Contrapuntal melodic generation}{subsection.4.1}% 13
-\BOOKMARK [2][-]{subsection.4.2}{Conclusion}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.3}{Code and related files}{section.4}% 15
+\BOOKMARK [0][-]{chapter.1}{A Neural approach to harmonic analysis and prediction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Introducing Neural Networks}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Methods}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Two approaches to harmonization}{section.1.2}% 4
+\BOOKMARK [2][-]{subsection.1.2.2}{Oracle experiment}{section.1.2}% 5
+\BOOKMARK [2][-]{subsection.1.2.3}{Architecture for neural models}{section.1.2}% 6
+\BOOKMARK [1][-]{section.1.3}{Results}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.4}{Discussion}{chapter.1}% 8
+\BOOKMARK [2][-]{subsection.1.4.1}{Neural network results}{section.1.4}% 9
+\BOOKMARK [2][-]{subsection.1.4.2}{Analyzing Random Forest harmonizations}{section.1.4}% 10
+\BOOKMARK [2][-]{subsection.1.4.3}{Methods for an improved sequential subtask model}{section.1.4}% 11
+\BOOKMARK [0][-]{chapter.2}{Chapter 4 - Looking forward}{}% 12
+\BOOKMARK [1][-]{section.2.1}{Further Exploration: The Bach Inventions}{chapter.2}% 13
+\BOOKMARK [1][-]{section.2.2}{Conclusion}{chapter.2}% 14
+\BOOKMARK [2][-]{subsection.2.2.1}{Code and related files}{section.2.2}% 15

@@ -318,6 +318,41 @@
   \field{year}{2014}
 \endentry
 
+\entry{2015gct}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Kaliakatsos-Papakostas}{K.-P.}%
+     {Maximos}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zacharakis}{Z.}%
+     {Asterios}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tsougras}{T.}%
+     {Costas}{C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cambouropoulos}{C.}%
+     {Emilios}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{machine learning, harmonization, musical structure}
+  \strng{namehash}{KPM+1}
+  \strng{fullhash}{KPMZATCCE1}
+  \field{labelyear}{2015}
+  \field{sortinit}{K}
+  \field{title}{Evaluating the General Chord Type Representation in Tonal Music
+  and Organizing GCT Choral Labels in Functional Chord Categories}
+  \field{journaltitle}{16th International Society for Music Information
+  Retrieval Conference}
+  \field{year}{2015}
+\endentry
+
 \entry{leonard2015rnn}{article}{}
   \name{author}{3}{}{%
     {{}%

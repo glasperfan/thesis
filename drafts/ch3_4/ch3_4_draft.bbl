@@ -100,6 +100,28 @@
   \field{year}{2006}
 \endentry
 
+\entry{goldberg2015nnlp}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Goldberg}{G.}%
+     {Yoav}{Y.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{machine learning, neural networks, RNN, LSTM}
+  \strng{namehash}{GY1}
+  \strng{fullhash}{GY1}
+  \field{labelyear}{2015}
+  \field{sortinit}{G}
+  \field{title}{A Primer on Neural Network Models for Natural Language
+  Processing}
+  \list{institution}{1}{%
+    {Bar-Ilan University}%
+  }
+  \field{type}{techreport}
+  \field{year}{2015}
+\endentry
+
 \entry{nagler2014schubot}{thesis}{}
   \name{author}{1}{}{%
     {{}%

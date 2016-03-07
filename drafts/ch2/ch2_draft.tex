@@ -41,25 +41,67 @@ Research specifically on models for the Bach chorales have seen a variety of app
 
 My approach consists of applying a variety of non-neural and neural models to the task of chorale harmonization. Recent harmonization and generative models (\cite{allan2005harmonising}; \cite{kaliakatsos2014}; \cite{greff2015lstm}) relied on a dataset that includes only pitch information about each time step, and the objective was in all cases next step pitch prediction. My goal was to extract a new set of features from Bach's chorales and examine how those features improved or worsened model performance. Moreover, the objective was to learn a series of musical processes that decide the harmony at each time step that include both harmonic analysis and note selection. I chose this approach to mimic the decisions a musician would make today in harmonizing a chorale.
 
-\subsection{Harmonization tasks}
+\section{Baseline models}
 
-Each model was tasked with learning both harmonic analysis and harmonic prediction processes. In order to evaluate a model's ability to learn different aspects of the harmonization process the decision process was broken into 4 sequential subtasks. For each melody note in each chorale, the following target outputs were extracted.
+Due to unique classification problems chosen for this paper, previous computational research on the chorales does not provide any adequate baseline models. Baseline models are important because they provide a basis for comparison when evaluating other models. As the complexity of the model changes and the features are added or removed, it is important to have a metric to compare against to see how those changes improved or worsened the results. In classification problems, a crude baseline model can be achieved by choosing the class with the most observations and using that class as the result for all predictions. TABLE 2 lists the baseline frequencies for the most common classes for each subtask. I also trained three other classifiers to get a sense of the complexity of each subtask. These classifiers are described below: \\
+\textit{Multiclass logistic regression} was introduced in Chapter 1 as a generalization of the binary classification system of logistic regression. Despite its name, this regression is a linear model. The objective is to minimize the following cost function, given the learned parameters $\theta$.
+$$ J(\theta) = -\frac{1}{m} \sum_{i = 1}^{m} \sum_{k  = 1}^{K} \{ \boldy^{(i)} = k \} \log \Big( \frac{ \exp(a_{ik}) } { \sum_j \exp(a_{ij}) } \Big) $$
+Where $m$ is the number of examples, $k$ is the number of classes, and $a_{ik}$ is the "activation" function $\theta^{(k)T} x^{(i)}$, denoted for the $i$th example and the $k$th class.
 
+\textit{Multinomial naive Bayes} generalizes the naive Bayes algorithm for multi-class data, and it makes the "naive" assumption of independence between every pair of input features. The assumption therefore states that, given the input vector $\boldx$ and the class $c \in [1, K]$
+$$P(\boldx | c) = P(\boldx_1, \boldx_2, \ldots, \boldx_n | c) = \prod_{i=1}^{n} P(\boldx_i | c)$$
+And based on that assumption, this baseline classifier the predicted output class is decided by
+$$P(c | \boldx) = \frac{ P(\boldx | c) P(c) }{ \sum_j P(\boldx | C_j) P(C_j) } = \frac{ \prod_i P(\boldx_i | c) P(c) }{ \sum_j \prod_i P(\boldx_i | C_j) P(C_j) }$$\\
+
+\textit{Random forests} are a powerful supervised learning technique that involves classification based on a the majority vote of a series of decision trees. Each tree is initialized with data from a random subset of features and then is trained on the data by sampling with replacement. This randomness is known to be highly effective in preventing overfitting on training data, and random forests generalize well on weaker datasets where one or more training examples do not strongly suggest differences between classes \citep[p.~18]{breiman2001}.
+
+
+\section{Harmonization tasks}
+
+Each model was tasked with learning both harmonic analysis and harmonic prediction processes. Each of these processes is referred to as a \textit{subtask}, and together represent a full set of decisions about the harmony for a specific time step. Initially, 4 subtasks were selected. The first two are referred to as harmonic analysis subtasks because they relate to the general classification of harmony. However, together these subtasks imply the pitch class sequence of the bass voice.
 \begin{enumerate}
-\item \textit{Roman numeral}. The model first decided the general harmonic function by selecting a Roman numeral per Roman numeral analysis. This decision holds the most importance since it decides what notes are allowed for the alto and tenor voices.
-\item \textit{Inversion}. The chord inversion provides additional harmonic information since, for example, a \rom{1}$^6$ harmony has different implications about future harmonies than a \rom{1} chord in root position. The inversion also implies the pitch class of the bass voice.
-\item \textit{Alto}. The alto voice is then selected as the first inner voice. There is no reason for selecting the alto voice before the tenor voice since both function similarly as inner voices that support the harmony decided in the previous subtasks.
-\item \textit{Tenor}. Selection of the tenor voice completes the harmonization.
+\item \textit{Roman numeral}. This subtask symbolizes the choice of the numeral in Roman numeral analysis. This decision carries most of the weight in harmonic classification since it implies the both the root of the harmony as well as the quality of the triad built upon it (i.e. major, minor, diminished, etc.).
+\item \textit{Inversion}. The subtask decides the chord inversion, which provides additional harmonic information about the ordering of the voices. The inversion implies which pitch class in the harmony is assigned to the bass voice, so this is also in some sense a harmonic prediction subtask as well. However, it is designated as analytical because the inversion remains a crucial component Roman numeral analysis. An inverted harmony also carries different implications about future harmonies. First inversion triads can lessen the weight of a tonic or dominant harmony by not placing the chord root in the bass. Inversions are also utilized to improve voice leading bass.
+\end{enumerate}
+The next two are referred to as harmonic prediction subtasks, as they decide the pitch class sequence of the inner voices.
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item \textit{Alto}. This subtask decides which pitch should be assigned to the alto voice, which should be a pitch that supports the chosen harmony. 
+\item \textit{Tenor}. This subtask decides the pitch assigned to the tenor voice. Selection of the tenor voice completes the harmonization.
 \end{enumerate}
 
-Mathematically, the algorithm should take as input the chorale, represented a sequence of notes, and it should output a corresponding sequence of 3-voice chords that represent the alto, tenor, and bass voices. We will say we have $m$ data points with $n$ features, and $Y$ output classes.
-\begin{itemize}
-\item $\boldX \in V^{m \times n}$ is our input data
-\item $\boldY \in Y^m$ is our output data for a given subtask
-\item The objective is to approximate the complex function $f: \boldX \to \boldY$
-\end{itemize}
+\subsection{Introduction GCT encoding}
 
-In order to generate the correct Roman numeral analysis for the first two subtasks, I relied on a combination of \textsc{music21}'s \texttt{roman} module for initial analysis followed by substantial manual correction due some incomplete functionality in the analysis module. The alto and tenor voices were extracted as MIDI note values. \\
+While Roman numeral analysis has been the traditional method for describing harmony in the Chorales, it presents issues for statistical learning. Roman numeral classification mainly depends on the key signature, but also requires the context of the preceding harmonies. For example, a D major chord in a C major chorale might be labelled as a \rom{2} or \rom{5}/\rom{5} depending on whether a modulation to D major had occurred or whether the preceding harmonies indicate that it functions as a secondary dominant. During training, finding two or more inputs that suggest a D major chord but are labeled differently can cause confusion in learning, particularly since in non-recurrent models there is no sense of context about other local harmonies. Roman numeral chord labeling can be further complicated by the presence of non-chord tones, which makes, for example, differentiating \rom{4}$^6$ and \lrom{2}$^7$ chords computationally difficult.\\
+
+The general chord type (GCT) representation provides an idiom-independent solution to encoding harmony that assigns a unique encoding to each chord, regardless of context \citep{2014gct}. To encode a chordal harmony, the GCT algorithm takes as input the chord to be encoded, a pitch scale that describes the tonality, and a binary "consonance vector" $\boldv$ such that $\boldv[n] = 1$ if an interval of $n$ semitones is considered consonant for $0 \leq n \leq 11$. In this study, I chose $\boldv = [1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0]$.  GCT then constructs an ordering of the chord pitches that maximizes the consonant intervals between all pairs of pitches. The remaining notes that create dissonant intervals are labeled as "extensions". The algorithm outputs a encoding of the form [root, [base, extensions]], where root is the pitch class of the chord root relative to the tonic, and the base is the ordering of maximal consonance. I adapted the algorithm to also output the degree of inversion, where 0 represents root position, 1 represents first inversion, and so on. Figure 2 demonstrates an application of the GCT algorithm to a tonal harmonic progression, comparing the Roman numeral analysis with the GCT encoding. The base [0, 4, 7] encodes a major triad, while [0, 3, 7, 10] encodes a minor seventh chord. \\
+
+\begin{figure}[h]
+\begin{center}
+\caption{Comparison of GCT and Roman numeral analysis notation, courtesy of \citet{2015gct}.}
+\includegraphics[scale=0.54]{GCT}
+\end{center}
+\end{figure}
+
+In comparison with a Roman numeral analysis dataset compiled by David Temperley, GCT labeled 92\% of the chords accurately, of which about 1/3 of mislabeled chords were diminished sevenths - excusable because each note in the chord can function as the root \citep[p.~3]{2015gct}. In order to minimize duplicate encodings, I implemented the following policies, partially drawn from suggestions by the original authors of GCT encoding.
+\begin{enumerate}
+\item For dyads, prefer an interval of a 5th over a 4th, and an interval of a 7th over a 2nd.
+\item Preference encodings where all intervals are larger than a major 2nd. This heuristic preferences a minor 7th or a major chord with an added 6th, and generally more evenly spaced encodings.
+\item If more than one encoding remains, choose randomly.
+\end{enumerate}
+
+The GCT algorithm was incorporated into a newly generated dataset for the chorales by replacing the numeral and inversion subtasks in $\boldY$ with the new root, base, and inversion subtasks. The root subtasks establishes the chord root, while the remaining chord structure is decided by the base. As in Roman numeral analysis, the inversion implies which chord tone is assigned to the bass. As well, the new dataset classified the tenor and alto voices by their distance from the tonic pitch, instead of encoding MIDI values directly, in order to make the decision key-independent and reduce the output class space to a maximum of 12 classes (for the 12 chromatic intervals).\\
+
+The same baseline models were used to evaluate the new subtasks. In both cases, there were 293 chorales in the training set, and 33 chorales in the test set.
+
+\subsection{Subtask objective}
+
+\noin Mathematically, the objective is approximate the complex function $f: \boldX \to \boldY$
+\begin{itemize}
+\item $\boldX \in V^{m \times m}$ is the aggregate input data over $n$ data points, each with $m$ observations ($\boldx \in \reals^m$)
+\item $\boldY \in Y^{n \times K}$ contains the output distributions for a subtask over $n$ data points and $K$ output classes
+\end{itemize}
+Each observation describes the melody note at a specific time step, which we use to predict the most probable harmony and voicing for that time step as a series of smaller subtasks.  Figure 1 illustrates the subtask learning process.
 
 \begin{figure}[h]
 \begin{center}
@@ -88,7 +130,6 @@ In order to generate the correct Roman numeral analysis for the first two subtas
 \end{center}
 \end{figure}
 
-
 \section{Methods}
 
 \subsection{Important resources}
@@ -99,19 +140,18 @@ In order to construct and train neural networks, the scientific computing framew
 
 \subsection{Data}
 
-The dataset consists of 326 4-voice chorales gathered from the \textsc{music21} library. Once collected, some manual cleaning was then performed to correct mistakes in the musicXML format related to key signatures and significant mistakes in notation (based on a visual comparison with the Riemenschneider edition of the Chorales). Chorales with significant periods of rest were removed from the dataset because 3-voice harmonies have ambiguous implications in the 4-voice model that the chorales conventionally observe. Next, the chorales were "quantized" to create strictly chordal progressions of 4-voice harmony. Like modern church hymns, Bach's chorales are uniformly structured as chordal progressions, with a consistent beat-long rate of harmonic transition. Therefore, the process of quantizing each chorale into a series of discrete and uniform time steps, each the length of a beat, could be accomplished without damaging the underlying harmonic progression. Eighth notes were removed from the voices to eliminate additional rhythmic complexity. Eighth notes facilitate voice leading in Bach's harmonizations, but rarely function as an essential part of the harmony, making their removal a reasonable design decision. This process of quantizing the chorale into quarter-note samples has been found to be effective in several other studies (\cite{hild1992harmonet}; \cite{madsen2002}; \cite{kaliakatsos2014}).
+The dataset consists of 326 4-voice chorales gathered from the \textsc{music21} library. Once collected, some manual cleaning was then performed to correct mistakes in the musicXML format related to key signatures and significant mistakes in notation (based on a visual comparison with the Riemenschneider edition of the Chorales). Chorales with significant periods of rest were removed from the dataset because 3-voice harmonies have ambiguous implications in the 4-voice model that the chorales conventionally observe. Next, the chorales were "quantized" to create strictly chordal progressions of 4-voice harmony. Like modern church hymns, Bach's chorales are uniformly structured as chordal progressions, with a consistent beat-long rate of harmonic transition. Therefore, the process of quantizing each chorale into a series of discrete and uniform time steps, each the length of a beat, could be accomplished without damaging the underlying harmonic progression. Eighth notes were removed from the voices to eliminate additional rhythmic complexity. Eighth notes facilitate voice leading in Bach's harmonizations, but rarely function as an essential part of the harmony, making their removal a reasonable design decision. This process of quantizing the chorale into quarter-note samples has been found to be effective in several other studies (\cite{hild1992harmonet}; \cite{madsen2002}; \cite{kaliakatsos2014}). \\
 
+From the chorales, data for each subtasks needed to be extracted for each time step of each chorale. For the harmonic analysis subtasks, Roman numeral analysis was implemented to extract the correct Roman numeral and inversion. We relied on a combination of \textsc{music21}'s \texttt{roman} module for initial analysis followed by substantial manual correction due to incomplete functionality in the \texttt{roman} module. For the The alto and tenor voices were extracted as MIDI note values. \\
 
-\subsection{Feature Extraction}
-
-In order to learn each of these subtasks, the following information was extracted for each melody note in each chorale.
+For each time step, a feature vector $\boldx$ was extracted that represents an observation about the melody note. A Python script was used to preprocess the chorales to extract the above features from each time step of each chorale, and stores the generated training and test data in an HDF5 file. The selected attributes of each feature vector are enumerated below:
 
 \begin{enumerate}
 \item The number of sharps in the key signature. Flats were given negative values.
 \item The mode (i.e. major or minor) of the chorale.
 \item The time signature of the chorale.
 \item Beat strength, or metrical accent. A 4/4 measure would be assigned the following pattern: [ 1.0, 0.25, 0.5, 0.25 ]
-\item The presence of a fermata - a binary feature indicating a cadence.
+\item The presence of a fermata - a binary attribute indicating a cadence.
 \item Number of beats until the next fermata.
 \item Number of measures until the end of the chorale.
 \item The melody pitch, encoded as a MIDI value. A search across all chorales indicated that each voice had a well-defined pitch range, verified by \citet{madsen2002}: 
@@ -127,30 +167,16 @@ In order to learn each of these subtasks, the following information was extracte
 \item The inversion for the previous time step.
 \end{enumerate}
 
-Features 11 and 12 were used only for Oracle experiments and demonstrating the potential of RNNs, discussed later in Chapter 3. \\
+The first 10 attributes are used for all experiments in Chapter 2, while the final two attributes are introduced only for the "Oracle experiments" in Chapter 3. In the GCT implementation, the two Oracle attributes are substituted for attributes that describes the GCT encoding (root, base, inversion) for the previous time step. \\
 
-The Python script used to preprocess the chorales (see wrangle.py in Appendix B) \footnote{There will be an Appendix B that contains the most important code for the project.} extracts the above features from each time step of each chorale, and stores the generated training and tests in an HDF5 file. For baseline models, the extracted data was fed as input to another Python script that performed classified learning using models from the\textsc{scikit-learn} module. For neural models, the data was fed into Lua scripts that use the scientific computing framework Torch to construct models and training on supervised classification tasks.
+These attributes were carefully chosen. The key signature (attributes 1 and 2) and time signature (3) are constant across all features vector for a chorale since they denote chorale-wide features. The pitch of the melody note (8) and the presence of a fermata (5)  provide information about the melody note, but all of the remaining features denote contextual information. Beat strength (4) denotes the melody note's position (and the weight of that position) within the measure. Features 6 and 7 describes the melody's note location with the current phrase. Features 9 and 10 describe the local direction of the melody voice.
 
-
-\section{Baseline models}
-
-Due to unique classification problems chosen for this paper, previous computational research on the chorales does not provide any adequate baseline models. Baseline models are important because they provide a basis for comparison when evaluating other models. As the complexity of the model changes and the features are added or removed, it is important to have a metric to compare against to see how those changes improved or worsened the results. In classification problems, a crude baseline model can be achieved by choosing the class with the most observations and using that class as the result for all predictions. TABLE 2 lists the baseline frequencies for the most common classes for each subtask. I also trained three other classifiers to get a sense of the complexity of each subtask. These classifiers are described below: \\
-\textit{Multiclass logistic regression} was introduced in Chapter 1 as a generalization of the binary classification system of logistic regression. Despite its name, this regression is a linear model. The objective is to minimize the following cost function, given the learned parameters $\theta$.
-$$ J(\theta) = -\frac{1}{m} \sum_{i = 1}^{m} \sum_{k  = 1}^{K} \{ \boldy^{(i)} = k \} \log \Big( \frac{ \exp(a_{ik}) } { \sum_j \exp(a_{ij}) } \Big) $$
-Where $m$ is the number of examples, $k$ is the number of classes, and $a_{ik}$ is the "activation" function $\theta^{(k)T} x^{(i)}$, denoted for the $i$th example and the $k$th class.
-
-\textit{Multinomial naive Bayes} generalizes the naive Bayes algorithm for multi-class data, and it makes the "naive" assumption of independence between every pair of input features. The assumption therefore states that, given the input vector $\boldx$ and the class $c \in [1, K]$
-$$P(\boldx | c) = P(\boldx_1, \boldx_2, \ldots, \boldx_n | c) = \prod_{i=1}^{n} P(\boldx_i | c)$$
-And based on that assumption, this baseline classifier the predicted output class is decided by
-$$P(c | \boldx) = \frac{ P(\boldx | c) P(c) }{ \sum_j P(\boldx | C_j) P(C_j) } = \frac{ \prod_i P(\boldx_i | c) P(c) }{ \sum_j \prod_i P(\boldx_i | C_j) P(C_j) }$$\\
-
-\textit{Random forests} are a powerful supervised learning technique that involves classification based on a the majority vote of a series of decision trees. Each tree is initialized with data from a random subset of features and then is trained on the data by sampling with replacement. This randomness is known to be highly effective in preventing overfitting on training data, and random forests generalize well on weaker datasets where one or more training examples do not strongly suggest differences between classes \citep[p.~18]{breiman2001}.
-
-The results for each baseline model are described in Table 1. \\
+\section{Results}
+Results for baseline model performance on the Roman numeral analysis subtasks and harmonic prediction subtasks are shown in Table 1. Table 2 lists the frequencies of the most frequent class for each subtask (Table 2), which serves as a basic metric of comparison. With the exception of inversion, all baseline models performed significantly above the most common class frequency. The models performed only marginally better than the MCCF threshold for the inversion subtasks, but the uniquely high MCCF should be taken into account. Amongst the baseline models, the random forest classifier outperformed the other models by a non-trivial degree, averaging 9.75\% increase in accuracy over multinomial logistic regression. 
 
 \begin{table}[h]
 \begin{center}
-\caption[Table caption text]{\textbf{Baseline model test accuracy on harmonization subtasks.}}
+\caption[Table caption text]{\textbf{Baseline model accuracy on test set, harmonization subtasks.}}
 \begin{tabular}{l | c c c c}
 Classifier & Numeral & Inversion & Alto & Tenor \\ \hline
 Multi-Class Logistic & 31.61\% & 59.76\% & 37.55\% & 37.86\% \\
@@ -162,7 +188,7 @@ Random Forests & 49.29\% & 61.64\% & 49.44\% & 45.43\% \\
 
 \begin{table}[h]
 \begin{center}
-\caption[Table caption text]{\textbf{Most common class frequency.}}
+\caption[Table caption text]{\textbf{Most common class frequency (MCCF).}}
 \begin{tabular}{l | c c}
 Subtask & Training Set & Test Set \\ \hline
 Numeral & 19.2\% & 19.2\% \\
@@ -173,34 +199,11 @@ Tenor & 15.6\% & 15.5\%
 \end{center}
 \end{table}
 
-
-\subsection{GCT Algorithm}
-
-While Roman numeral analysis has been the traditional method for describing harmony in the Chorales, it presents issues for statistical learning. Roman numeral classification mainly depends on the key signature, but also requires the context of the preceding harmonies. For example, a D major chord in a C major chorale might be labelled as a \rom{2} or \rom{5}/\rom{5} depending on whether a modulation to D major had occurred or whether the preceding harmonies indicate that it functions as a secondary dominant. During training, finding two or more inputs that suggest a D major chord but are labeled differently can cause confusion in learning, particularly since in non-recurrent models there is no sense of context about other local harmonies. Roman numeral chord labeling can be further complicated by the presence of non-chord tones, which makes, for example, differentiating \rom{4}$^6$ and \lrom{2}$^7$ chords computationally difficult.\\
-
-The general chord type (GCT) representation provides an idiom-independent solution to encoding harmony that assigns a unique encoding to each chord, regardless of context \citep{2014gct}. To encode a chordal harmony, the GCT algorithm takes as input the chord to be encoded, a pitch scale that describes the tonality, and a binary "consonance vector" $\boldv$ such that $\boldv[n] = 1$ if an interval of $n$ semitones is considered consonant for $0 \leq n \leq 11$. In this study, I chose $\boldv = [1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0]$.  GCT then constructs an ordering of the chord pitches that maximizes the consonant intervals between all pairs of pitches. The remaining notes that create dissonant intervals are labeled as "extensions". The algorithm outputs a encoding of the form [root, [base, extensions]], where root is the pitch class of the chord root relative to the tonic, and the base is the ordering of maximal consonance. I adapted the algorithm to also output the degree of inversion, where 0 represents root position, 1 represents first inversion, and so on. Figure 2 demonstrates an application of the GCT algorithm to a tonal harmonic progression, comparing the Roman numeral analysis with the GCT encoding. The base [0, 4, 7] encodes a major triad, while [0, 3, 7, 10] encodes a minor seventh chord.
-
-\begin{figure}[h]
-\begin{center}
-\caption{Example of the GCT and Roman numeral notation.}
-\includegraphics[scale=0.7]{GCT}
-\end{center}
-\end{figure}
-
-In comparison with a Roman numeral analysis dataset compiled by David Temperley, GCT labeled 92\% of the chords accurately, of which about 1/3 of mislabeled chords were diminished sevenths - excusable because each note in the chord can function as the root \citep{2014gct}. In order to minimize duplicate encodings, I implemented the following policies, partially drawn from suggestions by the original authors.
-\begin{enumerate}
-\item For dyads, prefer an interval of a 5th over a 4th, and an interval of a 7th over a 2nd.
-\item Preference encodings where all intervals are larger than a major 2nd. This heuristic preferences a minor 7th or a major chord with an added 6th, and generally more evenly spaced encodings.
-\item If more than one encoding remains, choose randomly.
-\end{enumerate}
-
-The GCT algorithm was incorporated into a newly generated dataset for the chorales by replacing the numeral and inversion subtasks in $\boldY$ with the new root, base, and inversion subtasks. The root subtasks establishes the chord root, while the remaining chord structure is decided by the base. As in Roman numeral analysis, the inversion implies which chord tone is assigned to the bass. As well, the new dataset classified the tenor and alto voices by their distance from the tonic pitch, instead of encoding MIDI values directly, in order to make the decision key-independent and reduce the output class space to a maximum of 12 classes (for the 12 chromatic intervals).\\
-
-The same baseline models were used to evaluate the new subtasks. In both cases, there were 293 chorales in the training set, and 33 chorales in the test set.
+These experiments were repeated after substituting the Roman numeral analysis subtasks with the GCT ones. For the harmonic subtasks, the objective was to now independently predict the root, the harmonic function (base), and the inversion. In this set of experiments, inversion was encoded using the GCT representation, which explains the change in class distribution. The harmonic prediction subtasks, however, remained the same, but are still included in the results shown in Table 3. 
 
 \begin{table}[h]
 \begin{center}
-\caption[Table caption text]{\textbf{Baseline model test accuracy with new GCT subtasks.}}
+\caption[Table caption text]{\textbf{Baseline model accuracy on test with substituted GCT analysis subtasks.}}
 \begin{tabular}{l c c c c c}
 Classifier & Root & Base & Inversion & Alto & Tenor \\ \hline
 Multi-Class Logistic & 58.29\% & 56.09\% & 67.06\% & 38.22\% & 36.33\% \\
@@ -212,7 +215,7 @@ Random Forests & 63.71\% & 59.72\% & 69.73\% & 47.22\% & 46.81\% \\
 
 \begin{table}[h]
 \begin{center}
-\caption[Table caption text]{\textbf{Majority class frequency (MCCF), with GCT subtasks.}}
+\caption[Table caption text]{\textbf{MCCF with GCT subtasks.}}
 \begin{tabular}{l | c c}
 Subtask & Training Set & Test Set \\ \hline
 Root & 28.5\% & 28.0\% \\
@@ -229,10 +232,13 @@ Tenor & 20.3\% & 22.0\%
 \centerline{\includegraphics[scale=0.5]{subtasks}}
 \end{figure*}
 
+\section{Discussion}
 
+Figure 3 provides a visual comparison of baseline model performance across all harmonization subtasks. For all subtasks, a majority of the multinomial models outperformed the MCCF baselines. In particular, Random Forests consistently outperformed the other models, with a 35\% increase in accuracy over the MCCF baseline for the root subtask. However, the multinomial models struggled to perform above the MCCF baselines  for both the base and inversion subtasks, which appears correlated with a high predominance of a single class in the dataset. Musically, this is not surprising. The predominance of a single class in the base subtask is consistent with the frequencies of the major triad found by \citet{cross2008} in the Chorales, while the vast majority of harmonies in the dataset - and in other corpora from the Baroque era - are in root position. In contrast, the more even class distribution of the Roman numeral and GCT root subtasks are consistent with the well-known harmonic complexity of the Chorales. \\
 
-Figure 3 provides a visual comparison of baseline model performance across all harmonization subtasks. For all subtasks, a majority of the multinomial models outperformed the MCCF baselines. In particular, Random Forests consistently outperformed the other models, with a 35\% increase in accuracy over the MCCF baseline for the root subtask. However, the multinomial models struggled to perform above the MCCF baselines  for both the base and inversion subtasks, which appears correlated with a high predominance of a single class in the dataset. This points to an issue with an imbalance class distribution in the data. Of the 133 output classes for the GCT base subtask, the most common class is associated with 50\% of all observations in entire dataset (this happens to be the major triad), and the top 3 most frequent classes account for 77\% of all observations. Consequently, the vast majority of output classes are observed too infrequently in the training data to be classified accurately in the test data. Imbalanced data is a widely recognized phenomenon in data mining that is comprehensively detailed in \citet{sun2009classification}. The significant advantage achieved using random forests can potentially be explained by its known effectiveness at classification when one or more observations is not sufficient to generally distinguish a class \citep[pg.~18]{breiman2001}.
+The variation in performance between subtasks suggests a general issue with imbalanced class distributions in the data. Of the 133 output classes for the GCT base subtask, the most common class is associated with 50\% of all observations in entire dataset (this happens to be the major triad), and the top 3 most frequent classes account for 77\% of all observations. Consequently, the vast majority of output classes are observed too infrequently in the training data to be classified accurately in the test data. Imbalanced data is a widely recognized phenomenon in data mining that is comprehensively detailed in \citet{sun2009classification}. The significant advantage achieved using random forests can potentially be explained by its known effectiveness at classification when one or more observations is not sufficient to generally distinguish a class \citep[pg.~18]{breiman2001}.
 
+\newpage
 \printbibliography
 
 

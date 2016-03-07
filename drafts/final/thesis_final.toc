@@ -1,0 +1,73 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\enlargethispage {\baselineskip }
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {1}A Theoretical Overview}{1}{chapter.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.1}An introduction for the musician}{2}{section.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.2}An introduction to tonal harmony and the chorale}{11}{section.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {2}Establishing a baseline model}{19}{chapter.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.1}Motivation for the harmonization task}{19}{section.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.2}Literature Review}{20}{section.2.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.3}Baseline models}{22}{section.2.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.4}Harmonization tasks}{24}{section.2.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Introduction GCT encoding}{25}{section*.20}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Subtask objective}{27}{section*.22}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.5}Methods}{28}{section.2.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Important resources}{28}{section*.24}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Data}{28}{section*.25}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.6}Results}{31}{section.2.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.7}Discussion}{32}{section.2.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {3}A Neural approach to harmonic analysis and prediction}{34}{chapter.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.1}Introducing Neural Networks}{34}{section.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.2}Methods}{35}{section.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Two approaches to harmonization}{35}{section*.31}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Oracle experiment}{36}{section*.32}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Architecture for neural models}{37}{section*.33}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.3}Results}{39}{section.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.4}Discussion}{40}{section.3.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Neural network results}{40}{section*.37}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Analyzing Random Forest harmonizations}{41}{section*.38}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Methods for an improved sequential subtask model}{45}{section*.39}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {4}Chapter 4 - Looking forward}{47}{chapter.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.1}Further Exploration: The Bach Inventions}{47}{section.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Added complexity}{48}{section*.41}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Subject identification}{49}{section*.42}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Form identification}{50}{section*.44}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Harmonic identification}{51}{section*.45}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Contrapuntal melodic generation}{51}{section*.47}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.2}Conclusion}{52}{section.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{Code and related files}{53}{section*.48}
